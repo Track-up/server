@@ -1,0 +1,7 @@
+HTTPS
+
+DOCKER SECRETS PARA LA CONEXION A LA BD
+
+
+
+Estudiar Funciones lambda y genericos
