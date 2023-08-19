@@ -91,7 +91,7 @@ public class SecurityConfig {
         jwtAuthenticationFilter.setFilterProcessesUrl("/login");
 
         return httpSecurity
-                .csrf().disable()
+                //.csrf().disable()
                 .authorizeHttpRequests(auth -> {
                     // auth.requestMatchers("/doc/swagger-ui.html").permitAll();
                     auth.anyRequest().permitAll();// .authenticated();

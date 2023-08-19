@@ -79,7 +79,7 @@ public class UsersServiceImpl implements UsersService {
     }
 
     private ResponseEntity<String> getLogin(UserRegistryDTO userRegistryDTO) {
-        String url = "http://localhost:8080/login"; // Cambia la URL y el puerto según tu configuración
+        String url = "https://server-production-79b3.up.railway.app/login"; // Cambia la URL y el puerto según tu configuración
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON); // Cambia el tipo de contenido a JSON
 
