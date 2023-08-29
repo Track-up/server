@@ -2,8 +2,8 @@ package com.gimnsio.libreta.controllers;
 
 
 import com.gimnsio.libreta.services.UsersService;
-import com.gimnsio.libreta.users.UserDTO;
-import com.gimnsio.libreta.users.UserRegistryDTO;
+import com.gimnsio.libreta.DTO.users.UserDTO;
+import com.gimnsio.libreta.DTO.users.UserRegistryDTO;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Pageable;

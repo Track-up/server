@@ -1,4 +1,4 @@
-package com.gimnsio.libreta.users;
+package com.gimnsio.libreta.DTO.users;
 
 import com.gimnsio.libreta.domain.Routine;
 import com.gimnsio.libreta.domain.Workout;

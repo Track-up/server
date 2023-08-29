@@ -1,4 +1,4 @@
-package com.gimnsio.libreta.users;
+package com.gimnsio.libreta.DTO.users;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -4,8 +4,6 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Set;
-
 
 @NoArgsConstructor
 @Entity(name="exercises")
@@ -16,14 +14,18 @@ public class ExerciseEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
     private String name;
-    private String image;
-    private String video;
+    private String gifUrl;
     private String description;
-    @ManyToMany
-    @JoinTable(
-            name = "muscles_exercises",
-            joinColumns = @JoinColumn(name = "exercise_id"),
-            inverseJoinColumns = @JoinColumn(name = "muscle_id")
-    )
-    private Set<MuscleEntity> muscles;
+
+    @ManyToOne
+    @JoinColumn(name = "body_part")
+    private BodyPartEntity bodyPart;
+
+    @ManyToOne
+    @JoinColumn(name = "equipment")
+    private EquipmentEntity equipment;
+
+    @ManyToOne
+    @JoinColumn(name = "target")
+    private MuscleEntity target;
 }

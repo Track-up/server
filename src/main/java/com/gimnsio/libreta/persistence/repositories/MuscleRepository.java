@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface MuscleRepository extends JpaRepository<MuscleEntity, Long> {
 
+    MuscleEntity findByName(String name);
+
 }

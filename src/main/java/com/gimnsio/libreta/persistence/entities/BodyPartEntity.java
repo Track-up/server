@@ -1,21 +1,21 @@
 package com.gimnsio.libreta.persistence.entities;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-@Entity(name="muscles")
-public class MuscleEntity {
-
+@Entity(name="body_part")
+public class BodyPartEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
     private String name;
     private String description;
     private String image;
-    @ManyToOne
-    @JoinColumn(name = "body_part")
-    private BodyPartEntity bodyPart;
+
+    public BodyPartEntity(Long id){
+        this.id = id;
+    }
 }

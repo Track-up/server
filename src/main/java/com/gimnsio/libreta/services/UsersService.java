@@ -1,8 +1,8 @@
 package com.gimnsio.libreta.services;
 
-import com.gimnsio.libreta.users.UserBasicsDTO;
-import com.gimnsio.libreta.users.UserDTO;
-import com.gimnsio.libreta.users.UserRegistryDTO;
+import com.gimnsio.libreta.DTO.users.UserBasicsDTO;
+import com.gimnsio.libreta.DTO.users.UserDTO;
+import com.gimnsio.libreta.DTO.users.UserRegistryDTO;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 

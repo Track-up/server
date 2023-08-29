@@ -1,15 +1,18 @@
 package com.gimnsio.libreta.services;
 
+import com.gimnsio.libreta.DTO.exercises.ExerciseToImportDTO;
 import com.gimnsio.libreta.Mapper.ExerciseMapper;
 import com.gimnsio.libreta.domain.Exercise;
 import com.gimnsio.libreta.persistence.entities.ExerciseEntity;
+import com.gimnsio.libreta.persistence.repositories.BodyPartRepository;
+import com.gimnsio.libreta.persistence.repositories.EquipmentRepository;
 import com.gimnsio.libreta.persistence.repositories.ExerciseRepository;
+import com.gimnsio.libreta.persistence.repositories.MuscleRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -18,6 +21,17 @@ public class ExerciseServiceImpl implements ExerciseService {
     ExerciseRepository exerciseRepository;
 
     ExerciseMapper exerciseMapper;
+
+    //OJO QUE VA ALGO CUTRE
+    @Autowired
+    BodyPartRepository bodyPartRepository;
+    @Autowired
+    EquipmentRepository equipmentRepository;
+    @Autowired
+    MuscleRepository muscleRepository;
+
+
+    //AQUÍ ACABA
 
     public ExerciseServiceImpl(ExerciseRepository exerciseRepository, ExerciseMapper exerciseMapper) {
         this.exerciseRepository = exerciseRepository;
@@ -86,6 +100,29 @@ public class ExerciseServiceImpl implements ExerciseService {
             return exerciseMapper.mapExercise(exerciseEntity);
         }).collect(Collectors.toList());
 //        return null;
+    }
+
+    public Set<ExerciseEntity> createExercises (Set<ExerciseToImportDTO> exercisesToImportDTO){
+        Set<ExerciseEntity> exercisesSaved = new HashSet<>();
+        for (ExerciseToImportDTO exercise: exercisesToImportDTO) {
+            ExerciseEntity exerciseEntity = new ExerciseEntity();
+            //Mapeamos manualmente
+            exerciseEntity.setId(Long.parseLong(exercise.getId()));
+            exerciseEntity.setName(exercise.getName());
+            exerciseEntity.setTarget(muscleRepository.findByName(exercise.getTarget()));
+            exerciseEntity.setEquipment(equipmentRepository.findByName(exercise.getEquipment()));
+            exerciseEntity.setGifUrl(exercise.getGifUrl());
+            exerciseEntity.setBodyPart(bodyPartRepository.findByName(exercise.getBodyPart()));
+
+
+
+            exercisesSaved.add(exerciseRepository.save((exerciseEntity)));
+        }
+
+        return exercisesSaved;
+
+
+
     }
 
 //    @Override

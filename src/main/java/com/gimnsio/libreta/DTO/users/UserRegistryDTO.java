@@ -1,4 +1,4 @@
-package com.gimnsio.libreta.users;
+package com.gimnsio.libreta.DTO.users;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

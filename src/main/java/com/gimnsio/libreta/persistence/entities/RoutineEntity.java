@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -29,6 +31,16 @@ public class RoutineEntity {
     @ManyToOne
     @JoinColumn(name = "creator")
     private UserEntity creator;
+    @ManyToMany
+    @JoinTable(
+            name = "routines_body_part",
+            joinColumns = @JoinColumn(name = "routine_id"),
+            inverseJoinColumns = @JoinColumn(name = "body_part_id")
+    )
+    private List<BodyPartEntity> bodyParts;
+    private Date dateOfCreation;
+    private Long durationMinutes;
+    private boolean isPublic;
 
 
 }

@@ -5,7 +5,7 @@ import com.gimnsio.libreta.Mapper.RoutineMapper;
 import com.gimnsio.libreta.domain.Routine;
 import com.gimnsio.libreta.persistence.entities.RoutineEntity;
 import com.gimnsio.libreta.persistence.repositories.RoutineRepository;
-import com.gimnsio.libreta.users.UserDTO;
+import com.gimnsio.libreta.DTO.users.UserDTO;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 

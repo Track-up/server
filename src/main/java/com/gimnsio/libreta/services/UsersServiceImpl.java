@@ -4,9 +4,9 @@ import com.gimnsio.libreta.Mapper.UserMapper;
 import com.gimnsio.libreta.exception.ApiRequestException;
 import com.gimnsio.libreta.persistence.entities.UserEntity;
 import com.gimnsio.libreta.persistence.repositories.UserRepository;
-import com.gimnsio.libreta.users.UserBasicsDTO;
-import com.gimnsio.libreta.users.UserDTO;
-import com.gimnsio.libreta.users.UserRegistryDTO;
+import com.gimnsio.libreta.DTO.users.UserBasicsDTO;
+import com.gimnsio.libreta.DTO.users.UserDTO;
+import com.gimnsio.libreta.DTO.users.UserRegistryDTO;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.*;
@@ -79,7 +79,7 @@ public class UsersServiceImpl implements UsersService {
     }
 
     private ResponseEntity<String> getLogin(UserRegistryDTO userRegistryDTO) {
-        String url = "https://server-production-79b3.up.railway.app/login"; // Cambia la URL y el puerto según tu configuración
+        String url = "localhost:8080/login"; // Cambia la URL y el puerto según tu configuración
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON); // Cambia el tipo de contenido a JSON
 

@@ -1,7 +1,6 @@
 package com.gimnsio.libreta.domain;
 
-import com.gimnsio.libreta.persistence.entities.UserEntity;
-import com.gimnsio.libreta.users.UserDTO;
+import com.gimnsio.libreta.DTO.users.UserDTO;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Data;
