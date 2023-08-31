@@ -1,7 +1,6 @@
 package com.gimnsio.libreta.persistence.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,11 +9,11 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity(name = "routines")
 public class RoutineEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(nullable = false, updatable = false)
     private Long id;
     private String name;
 
@@ -40,6 +39,7 @@ public class RoutineEntity {
     private Date dateOfCreation;
     private Long durationMinutes;
     private boolean isPublic;
+
 
 
 }

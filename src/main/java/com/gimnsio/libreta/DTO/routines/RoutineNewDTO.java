@@ -1,7 +1,5 @@
 package com.gimnsio.libreta.DTO.routines;
 
-import com.gimnsio.libreta.DTO.exercises.ExerciseMinimalDTO;
-import com.gimnsio.libreta.DTO.users.UserIdDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -12,7 +10,7 @@ import java.util.List;
 public class RoutineNewDTO {
 
     private String name;
-    private List<ExerciseMinimalDTO> exercises;
-    private UserIdDTO creator;
+    private List<Long> exercisesId;
+    private Long creatorId;
 
 }

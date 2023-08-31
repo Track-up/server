@@ -56,7 +56,12 @@ public class RoutineServiceImpl implements RoutineService {
     @Override
     public RoutineEntity createRoutine(RoutineNewDTO routineNewDTO) {
         RoutineEntity routineEntity = routineMapper.newToEntity(routineNewDTO);
-        routineRepository.save(routineEntity);
+        routineEntity.setDateOfCreation(new Date());
+        try {
+            routineRepository.save(routineEntity);
+        }catch (Exception e){
+
+        }
         return routineEntity;
     }
 
