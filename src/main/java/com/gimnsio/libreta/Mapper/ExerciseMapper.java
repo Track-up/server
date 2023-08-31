@@ -1,5 +1,6 @@
 package com.gimnsio.libreta.Mapper;
 
+import com.gimnsio.libreta.DTO.exercises.ExerciseMinimalDTO;
 import com.gimnsio.libreta.domain.Exercise;
 import com.gimnsio.libreta.persistence.entities.ExerciseEntity;
 import org.mapstruct.Mapper;
@@ -10,6 +11,10 @@ public interface ExerciseMapper {
     public Exercise mapExercise(ExerciseEntity exerciseEntity);
 
     public ExerciseEntity mapExerciseEntity(Exercise exercise);
+
+    public ExerciseEntity exerciseMinimalDTOListToExerciseEntitySet(ExerciseMinimalDTO exerciseMinimalDTO);
+
+    public ExerciseMinimalDTO entityToMinimalDTO(ExerciseEntity exerciseEntity);
 //    @Mappings(value = {
 //            @Mapping(target = "id", expression = "java(Long.parseLong(exercisesToImportDTO.getId()))"),
 //            @Mapping(target = "bodyPart", source = "java(mapStringToBodyPartEntity(exercisesToImportDTO.bodyPart))"),

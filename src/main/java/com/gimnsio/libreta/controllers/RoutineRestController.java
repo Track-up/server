@@ -1,6 +1,7 @@
 package com.gimnsio.libreta.controllers;
 
-import com.gimnsio.libreta.domain.Routine;
+import com.gimnsio.libreta.DTO.routines.RoutineNewDTO;
+import com.gimnsio.libreta.DTO.routines.RoutineDTO;
 import com.gimnsio.libreta.services.RoutineService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Pageable;
@@ -21,7 +22,7 @@ public class RoutineRestController {
 
     @GetMapping
     public ResponseEntity<?> getAllRoutines(
-            @PageableDefault(size = 5) Pageable pageable) {
+            @PageableDefault(size = 20) Pageable pageable) {
         return ResponseEntity.ok(this.routineService.getAllRoutines(pageable));
     }
 
@@ -31,13 +32,13 @@ public class RoutineRestController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createRoutine(@RequestBody Routine routine) {
-        return ResponseEntity.ok(this.routineService.createRoutine(routine));// TODO FALLA
+    public ResponseEntity<?> createRoutine(@RequestBody RoutineNewDTO routineNewDTO) {
+        return ResponseEntity.ok(this.routineService.createRoutine(routineNewDTO));// TODO FALLA
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateRoutine(@PathVariable Long id, @RequestBody Routine routine) {
-        return ResponseEntity.ok(this.routineService.updateRoutine(id, routine));// TODO Modificar para que dentro le
+    public ResponseEntity<?> updateRoutine(@PathVariable Long id, @RequestBody RoutineDTO routineDTO) {
+        return ResponseEntity.ok(this.routineService.updateRoutine(id, routineDTO));// TODO Modificar para que dentro le
                                                                                  // pase solo X ejercicios y los
                                                                                  // modifique
     }
@@ -52,4 +53,7 @@ public class RoutineRestController {
     public ResponseEntity<?> getRoutineByUser(@PathVariable Long id) {
         return ResponseEntity.ok(this.routineService.getRoutinesByUser(id));
     }
+
+
+
 }

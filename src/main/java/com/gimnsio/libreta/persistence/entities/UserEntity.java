@@ -7,6 +7,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
 import java.util.Set;
 
 
@@ -24,10 +25,14 @@ public class UserEntity {
     @Column(nullable = false, updatable = false)
     private Long id;
 
+    private int level;
+
     @NotBlank
     @Size(max = 30)
     @Column(name = "username", unique = true, nullable = false)
     private String username;
+
+    private String image;
 
     @Email
     @Size(max = 80)
@@ -53,7 +58,13 @@ public class UserEntity {
     )
     private Set<RoleEntity> roles;
 
-//    private Set<Workout> workouts_done;
+    @ManyToMany(fetch = FetchType.EAGER, targetEntity = RoleEntity.class, cascade = CascadeType.PERSIST)
+    @JoinTable(
+            name = "workouts_done",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "workout_id")
+    )
+    private Set<WorkoutEntity> workouts_done;
 
-//    private Date dateOfCreation;
+    private Date dateOfCreation;
 }

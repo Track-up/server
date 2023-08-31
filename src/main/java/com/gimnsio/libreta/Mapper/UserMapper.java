@@ -1,11 +1,8 @@
 package com.gimnsio.libreta.Mapper;
 
 
+import com.gimnsio.libreta.DTO.users.*;
 import com.gimnsio.libreta.persistence.entities.UserEntity;
-import com.gimnsio.libreta.DTO.users.UserBasicsDTO;
-import com.gimnsio.libreta.DTO.users.UserDTO;
-import com.gimnsio.libreta.DTO.users.UserRegisteredDTO;
-import com.gimnsio.libreta.DTO.users.UserRegistryDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
@@ -29,6 +26,8 @@ public interface UserMapper {
     public UserEntity userRegistryDTOToUserEntity(UserRegistryDTO userRegistryDTO);
 
     public UserBasicsDTO userEntityToUserBasicsDTO(UserEntity userEntity);
+
+    public UserEntity userIdDTOToUserEntity(UserIdDTO userIdDTO);
 
 
 }

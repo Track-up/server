@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -25,7 +24,7 @@ public class RoutineEntity {
             joinColumns = @JoinColumn(name = "routine_id"),
             inverseJoinColumns = @JoinColumn(name = "exercise_id")
     )
-    private Set<ExerciseEntity> exercises;
+    private List<ExerciseEntity> exercises;
 
     // Relación muchos a uno con la clase User
     @ManyToOne

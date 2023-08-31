@@ -1,18 +1,17 @@
 package com.gimnsio.libreta.services;
 
+import com.gimnsio.libreta.DTO.routines.RoutineBasicsDTO;
+import com.gimnsio.libreta.DTO.routines.RoutineNewDTO;
 import com.gimnsio.libreta.Mapper.ExerciseMapper;
 import com.gimnsio.libreta.Mapper.RoutineMapper;
-import com.gimnsio.libreta.domain.Routine;
+import com.gimnsio.libreta.DTO.routines.RoutineDTO;
 import com.gimnsio.libreta.persistence.entities.RoutineEntity;
 import com.gimnsio.libreta.persistence.repositories.RoutineRepository;
 import com.gimnsio.libreta.DTO.users.UserDTO;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 @Service
 public class RoutineServiceImpl implements RoutineService {
@@ -29,14 +28,16 @@ public class RoutineServiceImpl implements RoutineService {
     }
 
     @Override
-    public List<Routine> getAllRoutines(Pageable pageable) {
+    public List<RoutineBasicsDTO> getAllRoutines(Pageable pageable) {
         return routineRepository.findAll(pageable).stream().map(routineEntity -> {
-            return routineMapper.mapRoutine(routineEntity);
+
+            return routineMapper.entityToBasics(routineEntity);
+
         }).collect(Collectors.toList());
     }
 
     @Override
-    public Routine getRoutineById(long id) {
+    public RoutineDTO getRoutineById(long id) {
 
         Optional<RoutineEntity> routineEntityOptional = routineRepository.findById(id);
 
@@ -48,18 +49,19 @@ public class RoutineServiceImpl implements RoutineService {
     }
 
     @Override
-    public List<Routine> getRoutinesByUserCreator(UserDTO userDTO) {
+    public List<RoutineDTO> getRoutinesByUserCreator(UserDTO userDTO) {
         return null;
     }
 
     @Override
-    public Routine createRoutine(Routine routine) {
-        routineRepository.save(routineMapper.mapRoutineEntity(routine));
-        return routine;
+    public RoutineEntity createRoutine(RoutineNewDTO routineNewDTO) {
+        RoutineEntity routineEntity = routineMapper.newToEntity(routineNewDTO);
+        routineRepository.save(routineEntity);
+        return routineEntity;
     }
 
     @Override
-    public Routine updateRoutine(long id, Routine routine) {
+    public RoutineDTO updateRoutine(long id, RoutineDTO routineDTO) {
 
         Optional<RoutineEntity> routineEntityOptional = routineRepository.findById(id);
 
@@ -68,7 +70,7 @@ public class RoutineServiceImpl implements RoutineService {
             routineEntity = routineEntityOptional.get();
 
             // Actualiza los ejercicios de la rutina TODO OJO AQUI
-            routineEntity.setExercises(routine.getExercises().stream().map(exerciseMapper::mapExerciseEntity).collect(Collectors.toSet()));
+            routineEntity.setExercises(routineDTO.getExercises().stream().map(exerciseMapper::mapExerciseEntity).collect(Collectors.toList()));
             // ... Actualiza otros campos según tus necesidades ...
             routineEntity.setId(id);
             routineRepository.save(routineEntity);
@@ -91,12 +93,14 @@ public class RoutineServiceImpl implements RoutineService {
     }
 
     @Override
-    public Set<Routine> getRoutinesByUser(long user_id) {
+    public Set<RoutineDTO> getRoutinesByUser(long user_id) {
         Set<RoutineEntity> routinesEntity = routineRepository.findByUser(user_id);
-        Set<Routine> routines = null;
+        Set<RoutineDTO> routineDTOS = null;
         if (!routinesEntity.isEmpty()){
-            routines = routinesEntity.stream().map(routineMapper::mapRoutine).collect(Collectors.toSet());
+            routineDTOS = routinesEntity.stream().map(routineMapper::mapRoutine).collect(Collectors.toSet());
         }
-        return routines;
+        return routineDTOS;
     }
+
+
 }

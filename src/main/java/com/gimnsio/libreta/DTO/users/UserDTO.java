@@ -1,13 +1,8 @@
 package com.gimnsio.libreta.DTO.users;
 
-import com.gimnsio.libreta.domain.Routine;
-import com.gimnsio.libreta.domain.Workout;
 import com.gimnsio.libreta.persistence.entities.RoleEntity;
 import com.gimnsio.libreta.persistence.entities.RoutineEntity;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import com.gimnsio.libreta.persistence.entities.WorkoutEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,10 +18,11 @@ public class UserDTO {
     private String username;
     private String email;
     private String password;
-    private Set<Routine> routines;
+    private Set<RoutineEntity> routines;
     private Set<RoleEntity> roles;
-    private Set<Workout> workouts_done;
+    private Set<WorkoutEntity> workouts_done;
     private Date dateOfCreation;
+
 
 
     // Add  likes???
