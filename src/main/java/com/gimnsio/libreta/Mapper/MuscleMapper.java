@@ -1,6 +1,7 @@
 package com.gimnsio.libreta.Mapper;
 
 import com.gimnsio.libreta.DTO.muscles.MuscleToImportDTO;
+import com.gimnsio.libreta.DTO.muscles.MuscleForExerciseDTO;
 import com.gimnsio.libreta.domain.Muscle;
 import com.gimnsio.libreta.persistence.entities.BodyPartEntity;
 import com.gimnsio.libreta.persistence.entities.MuscleEntity;
@@ -19,6 +20,8 @@ public interface MuscleMapper {
             @Mapping(target = "bodyPart", expression = "java(new BodyPartEntity(Long.parseLong(muscleToImportDTO.getBodyPartId())))")
     })
     public MuscleEntity muscleToImportDTOToEntity(MuscleToImportDTO muscleToImportDTO);
+
+    public MuscleForExerciseDTO entityToForExerciseDTO(MuscleEntity muscleEntity);
 
     public Muscle mapNoThing(BodyPartEntity muscleEntity);
 }
