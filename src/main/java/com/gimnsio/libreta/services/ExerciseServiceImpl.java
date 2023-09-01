@@ -1,5 +1,6 @@
 package com.gimnsio.libreta.services;
 
+import com.gimnsio.libreta.DTO.exercises.ExerciseDTO;
 import com.gimnsio.libreta.DTO.exercises.ExerciseToImportDTO;
 import com.gimnsio.libreta.Mapper.ExerciseMapper;
 import com.gimnsio.libreta.domain.Exercise;
@@ -39,10 +40,10 @@ public class ExerciseServiceImpl implements ExerciseService {
     }
 
     @Override
-    public List<Exercise> getAllExercises(Pageable pageable) {
+    public List<ExerciseDTO> getAllExercises(Pageable pageable) {
 
         return this.exerciseRepository.findAll(pageable).stream().map(exerciseEntity -> {
-            return exerciseMapper.mapExercise(exerciseEntity);
+            return exerciseMapper.entityToDTO(exerciseEntity);
         }).collect(Collectors.toList());
     }
 
