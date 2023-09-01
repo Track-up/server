@@ -67,4 +67,8 @@ public class UserEntity {
     private Set<WorkoutEntity> workouts_done;
 
     private Date dateOfCreation;
+
+    public UserEntity(Long id){
+        this.id = id;
+    }
 }

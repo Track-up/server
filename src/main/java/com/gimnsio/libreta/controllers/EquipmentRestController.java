@@ -18,7 +18,7 @@ public class EquipmentRestController {
     private EquipmentService equipmentService;
 
     @PostMapping("/insert")
-    public ResponseEntity<?> createMuscles(@RequestBody Set<EquipmentEntity> equipments) {
+    public ResponseEntity<?> createEquipment(@RequestBody Set<EquipmentEntity> equipments) {
         ;
         return ResponseEntity.ok(equipmentService.createEquipments(equipments));
     }

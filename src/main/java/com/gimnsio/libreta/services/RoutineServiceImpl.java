@@ -19,6 +19,7 @@ public class RoutineServiceImpl implements RoutineService {
     final private RoutineRepository routineRepository;
 
     final private RoutineMapper routineMapper;
+
     final private ExerciseMapper exerciseMapper;
 
     public RoutineServiceImpl (RoutineRepository routineRepository,RoutineMapper routineMapper,ExerciseMapper exerciseMapper){
@@ -56,28 +57,33 @@ public class RoutineServiceImpl implements RoutineService {
     @Override
     public RoutineEntity createRoutine(RoutineNewDTO routineNewDTO) {
         RoutineEntity routineEntity = routineMapper.newToEntity(routineNewDTO);
-        routineRepository.save(routineEntity);
+        routineEntity.setDateOfCreation(new Date());
+        try {
+            routineRepository.save(routineEntity);
+        }catch (Exception e){
+
+        }
         return routineEntity;
     }
 
     @Override
     public RoutineDTO updateRoutine(long id, RoutineDTO routineDTO) {
 
-        Optional<RoutineEntity> routineEntityOptional = routineRepository.findById(id);
+//        Optional<RoutineEntity> routineEntityOptional = routineRepository.findById(id);
+//
+//        RoutineEntity routineEntity = null;
+//        if (routineEntityOptional.isPresent()) {
+//            routineEntity = routineEntityOptional.get();
+//
+//            // Actualiza los ejercicios de la rutina TODO OJO AQUI
+//            routineEntity.setExercises(routineDTO.getExercises().stream().map(exerciseMapper::mapExerciseEntity).collect(Collectors.toList()));
+//            // ... Actualiza otros campos según tus necesidades ...
+//            routineEntity.setId(id);
+//            routineRepository.save(routineEntity);
+//
+//        }
 
-        RoutineEntity routineEntity = null;
-        if (routineEntityOptional.isPresent()) {
-            routineEntity = routineEntityOptional.get();
-
-            // Actualiza los ejercicios de la rutina TODO OJO AQUI
-            routineEntity.setExercises(routineDTO.getExercises().stream().map(exerciseMapper::mapExerciseEntity).collect(Collectors.toList()));
-            // ... Actualiza otros campos según tus necesidades ...
-            routineEntity.setId(id);
-            routineRepository.save(routineEntity);
-
-        }
-
-        return routineMapper.mapRoutine(routineEntity);
+        return null;//routineMapper.mapRoutine(routineEntity);
     }
 
     @Override

@@ -28,4 +28,8 @@ public class ExerciseEntity {
     @ManyToOne
     @JoinColumn(name = "target")
     private MuscleEntity target;
+
+    public ExerciseEntity(Long id) {
+        this.id = id;
+    }
 }

@@ -1,7 +1,7 @@
 package com.gimnsio.libreta.DTO.routines;
 
+import com.gimnsio.libreta.DTO.exercises.ExerciseForRoutineDTO;
 import com.gimnsio.libreta.DTO.users.UserDTO;
-import com.gimnsio.libreta.domain.Exercise;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,7 +18,7 @@ public class RoutineDTO {
     private Long id;
     private String name;
     // description
-    private List<Exercise> exercises;
+    private List<ExerciseForRoutineDTO> exercises;
     private UserDTO creator;
     private Date dateOfCreation;
     private Long durationMinutes;
