@@ -46,6 +46,11 @@ public class ExerciseRestController {
         return ResponseEntity.ok(exerciseService.getExercisesByMuscle(muscle_id));
     }
 
+    @GetMapping("/body_part/{id}")
+    public ResponseEntity<?> getExercisesByBodyPart(@PathVariable Long id){
+        return ResponseEntity.ok(exerciseService.getExercisesByBodyPart(id));
+    }
+
     //
     // @GetMapping("/muscle/{muscleId}/type/{type}")
     // public ResponseEntity<?> getExercisesByMuscleAndType(@PathVariable Long
