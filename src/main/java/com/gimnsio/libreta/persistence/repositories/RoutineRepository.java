@@ -9,6 +9,6 @@ import java.util.Set;
 
 @Repository
 public interface RoutineRepository extends JpaRepository<RoutineEntity,Long> {
-    @Query(value = "select * from routines where id in (select routine_id from users_routines where user_id = :user_id)", nativeQuery=true)
+    @Query(value = "select * from routines where creator = :user_id", nativeQuery=true)
     public Set<RoutineEntity> findByUser(Long user_id);
 }

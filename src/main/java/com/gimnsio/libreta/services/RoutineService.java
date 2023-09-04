@@ -19,7 +19,7 @@ public interface RoutineService {
     public RoutineDTO updateRoutine(long id, RoutineDTO routineDTO);
     public void deleteRoutine(long id);
 
-    public Set<RoutineDTO> getRoutinesByUser (long user_id);
+    public Set<RoutineBasicsDTO> getRoutinesByUser (long user_id);
 
 
 }

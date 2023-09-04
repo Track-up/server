@@ -33,7 +33,7 @@ public class RoutineRestController {
 
     @PostMapping
     public ResponseEntity<?> createRoutine(@RequestBody RoutineNewDTO routineNewDTO) {
-        return ResponseEntity.ok(this.routineService.createRoutine(routineNewDTO));// TODO FALLA
+        return ResponseEntity.ok(this.routineService.createRoutine(routineNewDTO));
     }
 
     @PutMapping("/{id}")

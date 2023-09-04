@@ -99,11 +99,11 @@ public class RoutineServiceImpl implements RoutineService {
     }
 
     @Override
-    public Set<RoutineDTO> getRoutinesByUser(long user_id) {
+    public Set<RoutineBasicsDTO> getRoutinesByUser(long user_id) {
         Set<RoutineEntity> routinesEntity = routineRepository.findByUser(user_id);
-        Set<RoutineDTO> routineDTOS = null;
+        Set<RoutineBasicsDTO> routineDTOS = null;
         if (!routinesEntity.isEmpty()){
-            routineDTOS = routinesEntity.stream().map(routineMapper::mapRoutine).collect(Collectors.toSet());
+            routineDTOS = routinesEntity.stream().map(routineMapper::entityToBasics).collect(Collectors.toSet());
         }
         return routineDTOS;
     }
