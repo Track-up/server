@@ -13,10 +13,7 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -59,7 +56,8 @@ public class UsersServiceImpl implements UsersService {
 
     public ResponseEntity<?> createUser(UserRegistryDTO userRegistryDTO) {
         UserEntity userEntity = userMapper.userRegistryDTOToUserEntity(userRegistryDTO);
-        //UserRegisteredDTO userRegisteredDTO = userMapper.userEntityToUserRegisteredDTO(userRepository.save(userEntity));
+
+        userEntity.setDateOfCreation(new Date());
         try {
             userRepository.save(userEntity);
         } catch (DataIntegrityViolationException e) {
