@@ -8,6 +8,7 @@ import com.gimnsio.libreta.DTO.routines.RoutineDTO;
 import com.gimnsio.libreta.persistence.entities.RoutineEntity;
 import com.gimnsio.libreta.persistence.repositories.RoutineRepository;
 import com.gimnsio.libreta.DTO.users.UserDTO;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -99,13 +100,13 @@ public class RoutineServiceImpl implements RoutineService {
     }
 
     @Override
-    public Set<RoutineBasicsDTO> getRoutinesByUser(long user_id) {
-        Set<RoutineEntity> routinesEntity = routineRepository.findByUser(user_id);
-        Set<RoutineBasicsDTO> routineDTOS = null;
-        if (!routinesEntity.isEmpty()){
-            routineDTOS = routinesEntity.stream().map(routineMapper::entityToBasics).collect(Collectors.toSet());
+    public Page<RoutineBasicsDTO> getRoutinesByUser(long user_id, Pageable pageable) {
+        Page<RoutineEntity> routinesEntity = routineRepository.findByUser(user_id,pageable);
+
+        if (routinesEntity.isEmpty()){
+            return Page.empty();
         }
-        return routineDTOS;
+        return routinesEntity.map(routineMapper::entityToBasics);
     }
 
 
