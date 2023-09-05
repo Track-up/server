@@ -15,5 +15,8 @@ public interface ExerciseRepository extends JpaRepository<ExerciseEntity, Long> 
     @Query(value = "select * from exercises where id in (select exercise_id from muscles_exercises where muscle_id = :muscle_id)", nativeQuery=true)
     public Set<ExerciseEntity> findByMuscle(Long muscle_id);
 
+    @Query(value = "select * from exercises where body_part = :id", nativeQuery=true)
+    public Set<ExerciseEntity> findByBodyPart(Long id);
+
 
 }

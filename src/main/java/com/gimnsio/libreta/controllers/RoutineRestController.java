@@ -33,7 +33,7 @@ public class RoutineRestController {
 
     @PostMapping
     public ResponseEntity<?> createRoutine(@RequestBody RoutineNewDTO routineNewDTO) {
-        return ResponseEntity.ok(this.routineService.createRoutine(routineNewDTO));// TODO FALLA
+        return ResponseEntity.ok(this.routineService.createRoutine(routineNewDTO));
     }
 
     @PutMapping("/{id}")
@@ -50,8 +50,9 @@ public class RoutineRestController {
     }
 
     @GetMapping("/user/{id}")
-    public ResponseEntity<?> getRoutineByUser(@PathVariable Long id) {
-        return ResponseEntity.ok(this.routineService.getRoutinesByUser(id));
+    public ResponseEntity<?> getRoutineByUser(@PathVariable Long id,
+                                              @PageableDefault(size = 20) Pageable pageable) {
+        return ResponseEntity.ok(this.routineService.getRoutinesByUser(id,pageable));
     }
 
 

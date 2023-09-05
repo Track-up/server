@@ -25,4 +25,6 @@ public interface ExerciseService {
     public List<Exercise> getExercisesByMuscle(Long muscle_id);
 
     public Set<ExerciseEntity> createExercises (Set<ExerciseToImportDTO> exercisesToImportDTO);
+
+    public Set<ExerciseDTO> getExercisesByBodyPart(Long id);
 }

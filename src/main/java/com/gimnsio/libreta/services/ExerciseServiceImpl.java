@@ -126,6 +126,17 @@ public class ExerciseServiceImpl implements ExerciseService {
 
     }
 
+//    return this.exerciseRepository.findByMuscle(muscle_id).stream().map(exerciseEntity -> {
+//        return exerciseMapper.mapExercise(exerciseEntity);
+//    }).collect(Collectors.toList());
+
+    @Override
+    public Set<ExerciseDTO> getExercisesByBodyPart(Long id) {
+        return this.exerciseRepository.findByBodyPart(id).stream().map(exerciseEntity -> {
+            return exerciseMapper.entityToDTO(exerciseEntity);
+        }).collect(Collectors.toSet());
+    }
+
 //    @Override
 //    public List<Exercise> getExercisesByMuscle(Long muscle_id, Pageable pageable) {
 //        return exerciseRepository.findByMuscle(muscle_id,pageable);
