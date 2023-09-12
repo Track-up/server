@@ -17,14 +17,14 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-public class UsersServiceImpl implements UsersService {
+public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
     private UserMapper userMapper;
 
     private RestTemplate restTemplate;
 
-    public UsersServiceImpl(UserRepository userRepository,UserMapper userMapper, RestTemplate restTemplate) {
+    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper, RestTemplate restTemplate) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
         this.restTemplate = restTemplate;
@@ -42,6 +42,16 @@ public class UsersServiceImpl implements UsersService {
         }
 
 
+    }
+
+    @Override
+    public UserEntity getUserEntityById(long id) {
+        Optional<UserEntity> userEntityOptional = userRepository.findById(id);
+        if(userEntityOptional.isPresent()){
+            return userEntityOptional.get();
+        }else {
+            throw new ApiRequestException("No se encontró el usuario con el ID: " + id);
+        }
     }
 
     @Override

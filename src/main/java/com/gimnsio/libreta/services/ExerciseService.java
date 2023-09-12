@@ -14,7 +14,7 @@ public interface ExerciseService {
     public List<ExerciseDTO> getAllExercises(Pageable pageable);
 
 
-    public Exercise getExerciseById(Long id);
+    public ExerciseEntity getExerciseById(Long id);
 
     public Exercise updateExercise(Long exerciseId, Exercise updatedExercise);
 

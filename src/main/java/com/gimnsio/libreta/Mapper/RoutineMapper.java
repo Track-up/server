@@ -2,6 +2,7 @@ package com.gimnsio.libreta.Mapper;
 
 import com.gimnsio.libreta.DTO.routines.RoutineBasicsDTO;
 import com.gimnsio.libreta.DTO.routines.RoutineDTO;
+import com.gimnsio.libreta.DTO.routines.RoutineForWorkoutDTO;
 import com.gimnsio.libreta.DTO.routines.RoutineNewDTO;
 import com.gimnsio.libreta.persistence.entities.RoutineEntity;
 import org.mapstruct.Mapper;
@@ -24,10 +25,12 @@ public interface RoutineMapper {
     })
     public RoutineBasicsDTO entityToBasics(RoutineEntity routineEntity);
 
+    public RoutineForWorkoutDTO entityToWorkout(RoutineEntity routineEntity);
+
 
     @Mappings({
             @Mapping(target = "creator", expression = "java(new UserEntity(routineNewDTO.getCreatorId()))"),
             @Mapping(target = "exercises", expression = "java(routineNewDTO.getExercisesId().stream().map(id -> new ExerciseEntity(id)).collect(Collectors.toList()))"),
     })
-    public RoutineEntity newToEntity(RoutineNewDTO routineNewDTO);
+    public RoutineEntity newToEntity(RoutineNewDTO routineNewDTO);  
 }

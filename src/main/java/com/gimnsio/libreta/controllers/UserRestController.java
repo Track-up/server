@@ -1,7 +1,7 @@
 package com.gimnsio.libreta.controllers;
 
 
-import com.gimnsio.libreta.services.UsersService;
+import com.gimnsio.libreta.services.UserService;
 import com.gimnsio.libreta.DTO.users.UserDTO;
 import com.gimnsio.libreta.DTO.users.UserRegistryDTO;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -21,22 +21,22 @@ import java.util.stream.Collectors;
 @Tag(name = "Usuarios", description = "CRUD de usurarios")
 public class UserRestController {
 
-    private UsersService usersService;
+    private UserService userService;
 
-    public UserRestController(UsersService usersService) {
-        this.usersService = usersService;
+    public UserRestController(UserService userService) {
+        this.userService = userService;
     }
 
     @GetMapping
     public ResponseEntity<?> getAllUsers(
             @PageableDefault(size = 5) Pageable pageable) {
-        return ResponseEntity.ok(this.usersService.getAllUsers(pageable));
+        return ResponseEntity.ok(this.userService.getAllUsers(pageable));
 
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getUserById(@PathVariable long id) {
-        return ResponseEntity.ok(usersService.getUserById(id));
+        return ResponseEntity.ok(userService.getUserById(id));
     }
 
 //    @PostMapping
@@ -59,7 +59,7 @@ public class UserRestController {
                     .collect(Collectors.toList());
             return ResponseEntity.badRequest().body(errors);
         }
-        return usersService.createUser(userRegistryDTO);
+        return userService.createUser(userRegistryDTO);
 
 
     }
@@ -77,12 +77,12 @@ public class UserRestController {
 //    }
     @PutMapping("/{id}")
     public ResponseEntity<?> editUser(@RequestBody UserDTO userDTO, @PathVariable Long id) {
-        return ResponseEntity.ok(usersService.updateUser(id, userDTO));
+        return ResponseEntity.ok(userService.updateUser(id, userDTO));
     }
 
     @DeleteMapping("{id}")
     public ResponseEntity<?> deleteUser(@PathVariable Long id) {
-        usersService.deleteUser(id);
+        userService.deleteUser(id);
         return ResponseEntity.noContent().build();
     }
 
