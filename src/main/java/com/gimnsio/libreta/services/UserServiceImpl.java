@@ -1,12 +1,14 @@
 package com.gimnsio.libreta.services;
 
+import com.gimnsio.libreta.DTO.users.StatsDTO;
+import com.gimnsio.libreta.DTO.users.UserBasicsDTO;
+import com.gimnsio.libreta.DTO.users.UserDTO;
+import com.gimnsio.libreta.DTO.users.UserRegistryDTO;
 import com.gimnsio.libreta.Mapper.UserMapper;
 import com.gimnsio.libreta.exception.ApiRequestException;
 import com.gimnsio.libreta.persistence.entities.UserEntity;
 import com.gimnsio.libreta.persistence.repositories.UserRepository;
-import com.gimnsio.libreta.DTO.users.UserBasicsDTO;
-import com.gimnsio.libreta.DTO.users.UserDTO;
-import com.gimnsio.libreta.DTO.users.UserRegistryDTO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.*;
@@ -19,16 +21,20 @@ import java.util.stream.Collectors;
 @Service
 public class UserServiceImpl implements UserService {
 
+    @Autowired
     private UserRepository userRepository;
+    @Autowired
     private UserMapper userMapper;
-
+    @Autowired
+    private StatsService statsService;
+    @Autowired
     private RestTemplate restTemplate;
 
-    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper, RestTemplate restTemplate) {
-        this.userRepository = userRepository;
-        this.userMapper = userMapper;
-        this.restTemplate = restTemplate;
-    }
+//    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper, RestTemplate restTemplate) {
+//        this.userRepository = userRepository;
+//        this.userMapper = userMapper;
+//        this.restTemplate = restTemplate;
+//    }
 
 
     @Override
@@ -87,7 +93,7 @@ public class UserServiceImpl implements UserService {
     }
 
     private ResponseEntity<String> getLogin(UserRegistryDTO userRegistryDTO) {
-        String url = "localhost:8080/login"; // Cambia la URL y el puerto según tu configuración
+        String url = "localhost:8080/login"; // TODO Cambia la URL y el puerto según tu configuración
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON); // Cambia el tipo de contenido a JSON
 
@@ -111,6 +117,22 @@ public class UserServiceImpl implements UserService {
     @Override
     public ResponseEntity<?> deleteUser(long id) {
         return null;
+    }
+
+    @Override
+    public StatsDTO updateUserStats(Long id, StatsDTO statsDTO) {
+
+        Optional<UserEntity> userEntityOptional = userRepository.findById(id);
+        if (userEntityOptional.isPresent()){
+            UserEntity userEntity = userEntityOptional.get();
+
+            userEntity.setStats(statsService.createStats(statsDTO));
+            userEntity.getStats().setUser(userEntity);// is this a chapuza en toda regla?
+            userRepository.save(userEntity);
+            return statsDTO;
+        }else throw new NoSuchElementException("No se encontró el usuario con el ID: " + id);
+
+
     }
 
 

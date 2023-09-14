@@ -1,6 +1,7 @@
 package com.gimnsio.libreta.controllers;
 
 
+import com.gimnsio.libreta.DTO.users.StatsDTO;
 import com.gimnsio.libreta.services.UserService;
 import com.gimnsio.libreta.DTO.users.UserDTO;
 import com.gimnsio.libreta.DTO.users.UserRegistryDTO;
@@ -78,6 +79,11 @@ public class UserRestController {
     @PutMapping("/{id}")
     public ResponseEntity<?> editUser(@RequestBody UserDTO userDTO, @PathVariable Long id) {
         return ResponseEntity.ok(userService.updateUser(id, userDTO));
+    }
+
+    @PutMapping("/{id}/change_stats")
+    public ResponseEntity<?> changeStats(@RequestBody StatsDTO statsDTO, @PathVariable Long id) {
+        return ResponseEntity.ok(userService.updateUserStats(id, statsDTO));
     }
 
     @DeleteMapping("{id}")
