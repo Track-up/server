@@ -11,6 +11,6 @@ public class RoutineBasicsDTO {
     private String name;
     private int numExercises;
     private String creator;
-    private int durationMinutes;
+    private String image;
 
 }

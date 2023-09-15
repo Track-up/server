@@ -16,6 +16,7 @@ public class RoutineEntity {
     @Column(nullable = false, updatable = false)
     private Long id;
     private String name;
+    private String image;
 
     @ManyToMany
     @JoinTable(
@@ -37,7 +38,6 @@ public class RoutineEntity {
     )
     private List<BodyPartEntity> bodyParts;
     private Date dateOfCreation;
-    private Long durationMinutes;
     private boolean isPublic;
 
 
