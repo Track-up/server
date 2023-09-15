@@ -22,6 +22,7 @@ public class UserDTO {
     private Set<RoleEntity> roles;
     private Set<WorkoutEntity> workouts_done;
     private Date dateOfCreation;
+    private StatsForUserDTO stats;
 
 
 

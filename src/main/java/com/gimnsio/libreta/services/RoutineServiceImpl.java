@@ -1,6 +1,7 @@
 package com.gimnsio.libreta.services;
 
 import com.gimnsio.libreta.DTO.routines.RoutineBasicsDTO;
+import com.gimnsio.libreta.DTO.routines.RoutineForWorkoutDTO;
 import com.gimnsio.libreta.DTO.routines.RoutineNewDTO;
 import com.gimnsio.libreta.Mapper.ExerciseMapper;
 import com.gimnsio.libreta.Mapper.RoutineMapper;
@@ -107,6 +108,17 @@ public class RoutineServiceImpl implements RoutineService {
             return Page.empty();
         }
         return routinesEntity.map(routineMapper::entityToBasics);
+    }
+
+    @Override
+    public RoutineForWorkoutDTO getRoutineForWorkout(long id) {
+        Optional<RoutineEntity> routineEntityOptional = routineRepository.findById(id);
+
+        if(routineEntityOptional.isPresent()){
+            return routineMapper.entityToWorkout(routineEntityOptional.get());
+        }else {
+            throw new NoSuchElementException("No se encontró la rutina con ID: " + id);
+        }
     }
 
 

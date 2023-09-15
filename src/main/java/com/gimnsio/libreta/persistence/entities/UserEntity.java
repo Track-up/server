@@ -68,6 +68,9 @@ public class UserEntity {
 
     private Date dateOfCreation;
 
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private StatsEntity stats;
+
     public UserEntity(Long id){
         this.id = id;
     }

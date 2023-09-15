@@ -9,7 +9,7 @@ import org.mapstruct.Mappings;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {StatsMapper.class})
 public interface UserMapper {
 
     PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();

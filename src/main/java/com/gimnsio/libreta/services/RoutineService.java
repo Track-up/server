@@ -2,6 +2,7 @@ package com.gimnsio.libreta.services;
 
 import com.gimnsio.libreta.DTO.routines.RoutineBasicsDTO;
 import com.gimnsio.libreta.DTO.routines.RoutineDTO;
+import com.gimnsio.libreta.DTO.routines.RoutineForWorkoutDTO;
 import com.gimnsio.libreta.DTO.routines.RoutineNewDTO;
 import com.gimnsio.libreta.DTO.users.UserDTO;
 import com.gimnsio.libreta.persistence.entities.RoutineEntity;
@@ -20,6 +21,7 @@ public interface RoutineService {
     public void deleteRoutine(long id);
 
     public Page<RoutineBasicsDTO> getRoutinesByUser (long user_id, Pageable pageable);
+    public RoutineForWorkoutDTO getRoutineForWorkout(long id);
 
 
 }

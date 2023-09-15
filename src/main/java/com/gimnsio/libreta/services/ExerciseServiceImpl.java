@@ -48,12 +48,12 @@ public class ExerciseServiceImpl implements ExerciseService {
     }
 
     @Override
-    public Exercise getExerciseById(Long id) {
+    public ExerciseEntity getExerciseById(Long id) {
         Optional<ExerciseEntity> exerciseEntityOptional = exerciseRepository.findById(id);
 
         if (exerciseEntityOptional.isPresent()) {
             ExerciseEntity exerciseEntity = exerciseEntityOptional.get();
-            return exerciseMapper.mapExercise(exerciseEntity);
+            return exerciseEntity;//exerciseMapper.mapExercise(exerciseEntity);
         } else {
             throw new NoSuchElementException("No se encontró el ejercicio con el ID: " + id);
         }
