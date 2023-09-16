@@ -9,6 +9,7 @@ import com.gimnsio.libreta.exception.ApiRequestException;
 import com.gimnsio.libreta.persistence.entities.UserEntity;
 import com.gimnsio.libreta.persistence.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.*;
@@ -20,6 +21,9 @@ import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
+
+    @Value("${url.backend}")
+    private String urlBase;
 
     @Autowired
     private UserRepository userRepository;
@@ -85,7 +89,10 @@ public class UserServiceImpl implements UserService {
             } else {
                 errorMessage = "Error de duplicación en la base de datos. Por favor, verifica los campos.";
             }
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
+
+            Map<String, Object> httpResponse = new HashMap<>();
+            httpResponse.put("message", errorMessage);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(httpResponse);
         }
         ResponseEntity<String> response = getLogin(userRegistryDTO);
 
@@ -93,7 +100,8 @@ public class UserServiceImpl implements UserService {
     }
 
     private ResponseEntity<String> getLogin(UserRegistryDTO userRegistryDTO) {
-        String url = "localhost:8080/login"; // TODO Cambia la URL y el puerto según tu configuración
+
+        String url = urlBase.concat("/login"); // TODO Cambia la URL y el puerto según tu configuración
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON); // Cambia el tipo de contenido a JSON
 
