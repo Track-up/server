@@ -29,5 +29,7 @@ public interface UserMapper {
 
     public UserEntity userIdDTOToUserEntity(UserIdDTO userIdDTO);
 
+    public UserIdDTO entityToIdDTO(UserEntity userEntity);
+
 
 }

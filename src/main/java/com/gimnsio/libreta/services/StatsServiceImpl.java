@@ -24,8 +24,8 @@ public class StatsServiceImpl implements StatsService {
     @Override
     public StatsEntity createStats(StatsDTO statsDTO) {
 
-        StatsEntity statsX = statsRepository.findByUser(statsDTO.getUserId());
-        StatsHistoryEntity statsHistoryEntity = statsMapper.entityToHistory(statsX);
+
+        StatsHistoryEntity statsHistoryEntity = statsMapper.entityToHistory(statsRepository.findByUser(statsDTO.getUserId()));
         statsHistoryRepository.save(statsHistoryEntity);
         try {
             statsRepository.deleteByUser(statsDTO.getUserId()); //TODO Mejorable arreglar esto
