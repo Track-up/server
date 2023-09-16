@@ -29,6 +29,7 @@ public class SecurityConfig {
 
     JwtAuthorizationFilter authorizationFilter;
 
+
     public SecurityConfig(UserDetailsServiceImpl userDetailsService, JwtUtils jwtUtils,
             JwtAuthorizationFilter authorizationFilter) {
         this.userDetailsService = userDetailsService;
@@ -87,6 +88,7 @@ public class SecurityConfig {
             throws Exception {
 
         JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(jwtUtils);
+        jwtAuthenticationFilter.setUserService(userDetailsService);
         jwtAuthenticationFilter.setAuthenticationManager(authenticationManager);
         jwtAuthenticationFilter.setFilterProcessesUrl("/login");
 

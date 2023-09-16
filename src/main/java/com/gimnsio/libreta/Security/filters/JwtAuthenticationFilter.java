@@ -3,8 +3,10 @@ package com.gimnsio.libreta.Security.filters;
 import com.fasterxml.jackson.core.exc.StreamReadException;
 import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gimnsio.libreta.DTO.users.UserIdDTO;
 import com.gimnsio.libreta.Security.jwt.JwtUtils;
 import com.gimnsio.libreta.persistence.entities.UserEntity;
+import com.gimnsio.libreta.services.UserDetailsServiceImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -27,9 +29,18 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
     private JwtUtils jwtUtils;
 
-    public JwtAuthenticationFilter(JwtUtils jwtUtils){
+
+    private UserDetailsServiceImpl userDetailsService;
+
+    public JwtAuthenticationFilter(JwtUtils jwtUtils ){
         this.jwtUtils = jwtUtils;
+
     }
+
+    public void setUserService(UserDetailsServiceImpl userDetailsService) {
+        this.userDetailsService = userDetailsService;
+    }
+
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request,
                                                 HttpServletResponse response) throws AuthenticationException {
@@ -82,7 +93,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         }
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        response.getWriter().write("{\"error\": \"" + errorMessage + "\"}");
+        response.getWriter().write("{\"message\": \"" + errorMessage + "\"}");
         response.getWriter().flush();
 
 
@@ -96,13 +107,15 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         User user = (User) authResult.getPrincipal();
         String token = jwtUtils.generateAccessToken(user.getUsername());
+        UserIdDTO userIdDTO = userDetailsService.getUserIdDTOByUsername(user.getUsername());
 
         response.addHeader("Authorization", token);
 
         Map<String, Object> httpResponse = new HashMap<>();
+        httpResponse.put("id",userIdDTO.getId());
         httpResponse.put("token", token);
-        httpResponse.put("Message","Autentificación correcta");
-        httpResponse.put("Username", user.getUsername());
+        httpResponse.put("message","Autentificación correcta");
+        httpResponse.put("username", user.getUsername());
 
         response.getWriter().write(new ObjectMapper().writeValueAsString(httpResponse));
         response.setStatus(HttpStatus.OK.value());
