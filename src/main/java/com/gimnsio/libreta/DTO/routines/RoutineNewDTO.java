@@ -10,6 +10,7 @@ import java.util.List;
 public class RoutineNewDTO {
 
     private String name;
+    private String image;
     private List<Long> exercisesId;
     private Long creatorId;
 

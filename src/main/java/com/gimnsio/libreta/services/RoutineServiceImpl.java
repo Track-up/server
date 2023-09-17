@@ -1,19 +1,22 @@
 package com.gimnsio.libreta.services;
 
 import com.gimnsio.libreta.DTO.routines.RoutineBasicsDTO;
+import com.gimnsio.libreta.DTO.routines.RoutineDTO;
 import com.gimnsio.libreta.DTO.routines.RoutineForWorkoutDTO;
 import com.gimnsio.libreta.DTO.routines.RoutineNewDTO;
+import com.gimnsio.libreta.DTO.users.UserDTO;
 import com.gimnsio.libreta.Mapper.ExerciseMapper;
 import com.gimnsio.libreta.Mapper.RoutineMapper;
-import com.gimnsio.libreta.DTO.routines.RoutineDTO;
 import com.gimnsio.libreta.persistence.entities.RoutineEntity;
 import com.gimnsio.libreta.persistence.repositories.RoutineRepository;
-import com.gimnsio.libreta.DTO.users.UserDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.stream.Collectors;
 @Service
 public class RoutineServiceImpl implements RoutineService {
@@ -24,10 +27,13 @@ public class RoutineServiceImpl implements RoutineService {
 
     final private ExerciseMapper exerciseMapper;
 
-    public RoutineServiceImpl (RoutineRepository routineRepository,RoutineMapper routineMapper,ExerciseMapper exerciseMapper){
+    final private ExerciseService exerciseService;
+
+    public RoutineServiceImpl (RoutineRepository routineRepository,RoutineMapper routineMapper,ExerciseMapper exerciseMapper, ExerciseService exerciseService){
         this.routineMapper=routineMapper;
         this.routineRepository=routineRepository;
         this.exerciseMapper= exerciseMapper;
+        this.exerciseService = exerciseService;
     }
 
     @Override
@@ -58,8 +64,12 @@ public class RoutineServiceImpl implements RoutineService {
 
     @Override
     public RoutineEntity createRoutine(RoutineNewDTO routineNewDTO) {
+        if (routineNewDTO.getImage().isEmpty()){
+            routineNewDTO.setImage(exerciseService.getExerciseById(routineNewDTO.getExercisesId().get(0)).getGifUrl());
+        }
         RoutineEntity routineEntity = routineMapper.newToEntity(routineNewDTO);
         routineEntity.setDateOfCreation(new Date());
+
         try {
             routineRepository.save(routineEntity);
         }catch (Exception e){
