@@ -1,7 +1,7 @@
 package com.gimnsio.libreta.controllers;
 
+import com.gimnsio.libreta.DTO.routines.RoutineEditDTO;
 import com.gimnsio.libreta.DTO.routines.RoutineNewDTO;
-import com.gimnsio.libreta.DTO.routines.RoutineDTO;
 import com.gimnsio.libreta.services.RoutineService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Pageable;
@@ -36,11 +36,9 @@ public class RoutineRestController {
         return ResponseEntity.ok(this.routineService.createRoutine(routineNewDTO));
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<?> updateRoutine(@PathVariable Long id, @RequestBody RoutineDTO routineDTO) {
-        return ResponseEntity.ok(this.routineService.updateRoutine(id, routineDTO));// TODO Modificar para que dentro le
-                                                                                 // pase solo X ejercicios y los
-                                                                                 // modifique
+    @PutMapping
+    public ResponseEntity<?> updateRoutine(@RequestBody RoutineEditDTO routineEditDTO) {
+        return ResponseEntity.ok(this.routineService.updateRoutine(routineEditDTO));// Mejorable
     }
 
     @DeleteMapping("/{id}")

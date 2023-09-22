@@ -17,11 +17,12 @@ public class RoutineDTO {
     @Id
     private Long id;
     private String name;
+    private String image;
     // description
     private List<ExerciseForRoutineDTO> exercises;
     private UserBasicsDTO creator;
     private Date dateOfCreation;
-    private Long durationMinutes;
+    private Date dateOfLastEdition;
     private boolean isPublic;// Puede ser pública o privada.
 
     // Add , etc.
