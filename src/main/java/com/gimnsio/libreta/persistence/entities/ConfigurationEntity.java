@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity(name = "configurations")
 public class ConfigurationEntity {
+
     @Id
-    private Long id;
     @OneToOne
     private UserEntity user;
     private String weightUnit;
