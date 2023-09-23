@@ -71,6 +71,9 @@ public class UserEntity {
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private StatsEntity stats;
 
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private ConfigurationEntity configuration;
+
     public UserEntity(Long id){
         this.id = id;
     }
