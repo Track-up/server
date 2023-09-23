@@ -38,6 +38,7 @@ public class RoutineEntity {
     )
     private List<BodyPartEntity> bodyParts;
     private Date dateOfCreation;
+    private Date dateOfLastEdition;
     private boolean isPublic;
 
 

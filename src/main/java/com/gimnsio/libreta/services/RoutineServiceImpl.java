@@ -1,19 +1,19 @@
 package com.gimnsio.libreta.services;
 
-import com.gimnsio.libreta.DTO.routines.RoutineBasicsDTO;
-import com.gimnsio.libreta.DTO.routines.RoutineForWorkoutDTO;
-import com.gimnsio.libreta.DTO.routines.RoutineNewDTO;
+import com.gimnsio.libreta.DTO.routines.*;
+import com.gimnsio.libreta.DTO.users.UserDTO;
 import com.gimnsio.libreta.Mapper.ExerciseMapper;
 import com.gimnsio.libreta.Mapper.RoutineMapper;
-import com.gimnsio.libreta.DTO.routines.RoutineDTO;
 import com.gimnsio.libreta.persistence.entities.RoutineEntity;
 import com.gimnsio.libreta.persistence.repositories.RoutineRepository;
-import com.gimnsio.libreta.DTO.users.UserDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.stream.Collectors;
 @Service
 public class RoutineServiceImpl implements RoutineService {
@@ -24,10 +24,16 @@ public class RoutineServiceImpl implements RoutineService {
 
     final private ExerciseMapper exerciseMapper;
 
-    public RoutineServiceImpl (RoutineRepository routineRepository,RoutineMapper routineMapper,ExerciseMapper exerciseMapper){
+    final private ExerciseService exerciseService;
+
+    final private UserService userService;
+
+    public RoutineServiceImpl (RoutineRepository routineRepository, RoutineMapper routineMapper, ExerciseMapper exerciseMapper, ExerciseService exerciseService, UserService userService){
         this.routineMapper=routineMapper;
         this.routineRepository=routineRepository;
         this.exerciseMapper= exerciseMapper;
+        this.exerciseService = exerciseService;
+        this.userService = userService;
     }
 
     @Override
@@ -58,8 +64,14 @@ public class RoutineServiceImpl implements RoutineService {
 
     @Override
     public RoutineEntity createRoutine(RoutineNewDTO routineNewDTO) {
+        checkUser(routineNewDTO.getCreatorId());
+        if (routineNewDTO.getImage().isEmpty()){
+            routineNewDTO.setImage(exerciseService.getExerciseById(routineNewDTO.getExercisesId().get(0)).getGifUrl());
+        }
         RoutineEntity routineEntity = routineMapper.newToEntity(routineNewDTO);
         routineEntity.setDateOfCreation(new Date());
+        routineEntity.setDateOfLastEdition(new Date());
+
         try {
             routineRepository.save(routineEntity);
         }catch (Exception e){
@@ -69,23 +81,28 @@ public class RoutineServiceImpl implements RoutineService {
     }
 
     @Override
-    public RoutineDTO updateRoutine(long id, RoutineDTO routineDTO) {
+    public RoutineDTO updateRoutine(RoutineEditDTO routineEditDTO) {
 
-//        Optional<RoutineEntity> routineEntityOptional = routineRepository.findById(id);
-//
-//        RoutineEntity routineEntity = null;
-//        if (routineEntityOptional.isPresent()) {
-//            routineEntity = routineEntityOptional.get();
-//
-//            // Actualiza los ejercicios de la rutina TODO OJO AQUI
-//            routineEntity.setExercises(routineDTO.getExercises().stream().map(exerciseMapper::mapExerciseEntity).collect(Collectors.toList()));
-//            // ... Actualiza otros campos según tus necesidades ...
-//            routineEntity.setId(id);
-//            routineRepository.save(routineEntity);
-//
-//        }
+        checkRoutine(routineEditDTO.getId());
+        checkUser(routineEditDTO.getCreatorId());
+        Optional<RoutineEntity> routineEntityOptional = routineRepository.findById(routineEditDTO.getId());
+        if (routineEntityOptional.isEmpty()){
+            throw new NoSuchElementException("No se encontró la rutina con ID: " + routineEditDTO.getId());
+        }
+        RoutineEntity routineEntity = routineEntityOptional.get();
+        routineMapper.UpdateRoutineFromEditDTO(routineEditDTO,routineEntity);
+//        RoutineEntity routineEntity = routineMapper.editToEntity(routineEditDTO);
+//        routineEntity.setDateOfCreation(routineEntityOptional.get().getDateOfCreation());
 
-        return null;//routineMapper.mapRoutine(routineEntity);
+        return routineMapper.mapRoutine(routineRepository.save(routineEntity));
+    }
+
+    private void checkUser(Long id) {
+        userService.getUserEntityById(id);
+    }
+
+    private void checkRoutine(long id) {
+
     }
 
     @Override
@@ -120,6 +137,4 @@ public class RoutineServiceImpl implements RoutineService {
             throw new NoSuchElementException("No se encontró la rutina con ID: " + id);
         }
     }
-
-
 }
