@@ -69,7 +69,7 @@ public class UserEntity {
     private Date dateOfCreation;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    private StatsEntity stats;
+    private MeasuresEntity stats;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private ConfigurationEntity configuration;

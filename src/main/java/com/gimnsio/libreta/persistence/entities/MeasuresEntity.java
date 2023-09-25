@@ -4,21 +4,24 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+
 import java.util.Date;
-@Data
+
+@Entity(name = "measures")
 @NoArgsConstructor
-@Entity(name = "stats_history")
-public class StatsHistoryEntity {
+@Data
+public class MeasuresEntity {
 
     @Id
-    private Long id;
-
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "user_id")
     private UserEntity user;
 
     private long weight;
     private long height;
 
+
     private Date date;
+
+
 }
