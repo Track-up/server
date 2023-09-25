@@ -35,6 +35,12 @@ public class ExerciseRestController {
         return ResponseEntity.ok(exerciseService.getExerciseById(id));
     }
 
+    @GetMapping("/name/{name}")
+    public ResponseEntity<?> getExercisesByName(@PathVariable String name,
+                                                @PageableDefault(size = 20) Pageable pageable){
+        return ResponseEntity.ok(exerciseService.getExercisesByName(name, pageable));
+    }
+
     // @GetMapping("/type/{type}")
     // public ResponseEntity<?> getExercisesByType(@PathVariable String type,
     // @PageableDefault(size = 5) Pageable pageable){
