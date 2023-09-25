@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
 @Service
 public class RoutineServiceImpl implements RoutineService {
 
@@ -28,10 +29,10 @@ public class RoutineServiceImpl implements RoutineService {
 
     final private UserService userService;
 
-    public RoutineServiceImpl (RoutineRepository routineRepository, RoutineMapper routineMapper, ExerciseMapper exerciseMapper, ExerciseService exerciseService, UserService userService){
-        this.routineMapper=routineMapper;
-        this.routineRepository=routineRepository;
-        this.exerciseMapper= exerciseMapper;
+    public RoutineServiceImpl(RoutineRepository routineRepository, RoutineMapper routineMapper, ExerciseMapper exerciseMapper, ExerciseService exerciseService, UserService userService) {
+        this.routineMapper = routineMapper;
+        this.routineRepository = routineRepository;
+        this.exerciseMapper = exerciseMapper;
         this.exerciseService = exerciseService;
         this.userService = userService;
     }
@@ -50,9 +51,9 @@ public class RoutineServiceImpl implements RoutineService {
 
         Optional<RoutineEntity> routineEntityOptional = routineRepository.findById(id);
 
-        if(routineEntityOptional.isPresent()){
+        if (routineEntityOptional.isPresent()) {
             return routineMapper.mapRoutine(routineEntityOptional.get());
-        }else {
+        } else {
             throw new NoSuchElementException("No se encontró la rutina con ID: " + id);
         }
     }
@@ -63,21 +64,17 @@ public class RoutineServiceImpl implements RoutineService {
     }
 
     @Override
-    public RoutineEntity createRoutine(RoutineNewDTO routineNewDTO) {
+    public RoutineIdDTO createRoutine(RoutineNewDTO routineNewDTO) {
         checkUser(routineNewDTO.getCreatorId());
-        if (routineNewDTO.getImage().isEmpty()){
-            routineNewDTO.setImage(exerciseService.getExerciseById(routineNewDTO.getExercisesId().get(0)).getGifUrl());
+        if (routineNewDTO.getImage().isEmpty()) {
+            routineNewDTO.setImage(exerciseService.getExerciseById(routineNewDTO.getExercisesId().get(0)).getGifUrl());//para un futuro en el mapper directamente
         }
         RoutineEntity routineEntity = routineMapper.newToEntity(routineNewDTO);
         routineEntity.setDateOfCreation(new Date());
         routineEntity.setDateOfLastEdition(new Date());
+        ;
 
-        try {
-            routineRepository.save(routineEntity);
-        }catch (Exception e){
-
-        }
-        return routineEntity;
+        return routineMapper.entityToIdDTO(routineRepository.save(routineEntity));
     }
 
     @Override
@@ -86,11 +83,11 @@ public class RoutineServiceImpl implements RoutineService {
         checkRoutine(routineEditDTO.getId());
         checkUser(routineEditDTO.getCreatorId());
         Optional<RoutineEntity> routineEntityOptional = routineRepository.findById(routineEditDTO.getId());
-        if (routineEntityOptional.isEmpty()){
+        if (routineEntityOptional.isEmpty()) {
             throw new NoSuchElementException("No se encontró la rutina con ID: " + routineEditDTO.getId());
         }
         RoutineEntity routineEntity = routineEntityOptional.get();
-        routineMapper.UpdateRoutineFromEditDTO(routineEditDTO,routineEntity);
+        routineMapper.UpdateRoutineFromEditDTO(routineEditDTO, routineEntity);
 //        RoutineEntity routineEntity = routineMapper.editToEntity(routineEditDTO);
 //        routineEntity.setDateOfCreation(routineEntityOptional.get().getDateOfCreation());
 
@@ -109,9 +106,9 @@ public class RoutineServiceImpl implements RoutineService {
     public void deleteRoutine(long id) {
         Optional<RoutineEntity> routineEntityOptional = routineRepository.findById(id);
 
-        if(routineEntityOptional.isPresent()){
+        if (routineEntityOptional.isPresent()) {
             routineRepository.deleteById(id);//TODO FALLA org.postgresql.util.PSQLException: ERROR: update or delete on table "exercises" violates foreign key constraint "fk58bhggitkrg5uyg7s7qwtevsu" on table "routine_exercise"
-        }else{
+        } else {
             throw new NoSuchElementException("No se encontró la rutina con ID: " + id);
         }
 
@@ -119,9 +116,9 @@ public class RoutineServiceImpl implements RoutineService {
 
     @Override
     public Page<RoutineBasicsDTO> getRoutinesByUser(long user_id, Pageable pageable) {
-        Page<RoutineEntity> routinesEntity = routineRepository.findByUser(user_id,pageable);
+        Page<RoutineEntity> routinesEntity = routineRepository.findByUser(user_id, pageable);
 
-        if (routinesEntity.isEmpty()){
+        if (routinesEntity.isEmpty()) {
             return Page.empty();
         }
         return routinesEntity.map(routineMapper::entityToBasics);
@@ -131,9 +128,9 @@ public class RoutineServiceImpl implements RoutineService {
     public RoutineForWorkoutDTO getRoutineForWorkout(long id) {
         Optional<RoutineEntity> routineEntityOptional = routineRepository.findById(id);
 
-        if(routineEntityOptional.isPresent()){
+        if (routineEntityOptional.isPresent()) {
             return routineMapper.entityToWorkout(routineEntityOptional.get());
-        }else {
+        } else {
             throw new NoSuchElementException("No se encontró la rutina con ID: " + id);
         }
     }

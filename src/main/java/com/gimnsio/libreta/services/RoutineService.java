@@ -2,7 +2,6 @@ package com.gimnsio.libreta.services;
 
 import com.gimnsio.libreta.DTO.routines.*;
 import com.gimnsio.libreta.DTO.users.UserDTO;
-import com.gimnsio.libreta.persistence.entities.RoutineEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -13,7 +12,7 @@ public interface RoutineService {
     public List<RoutineBasicsDTO> getAllRoutines(Pageable pageable);
     public RoutineDTO getRoutineById(long id);
     public List<RoutineDTO> getRoutinesByUserCreator(UserDTO userDTO);
-    public RoutineEntity createRoutine(RoutineNewDTO routineNewDTO);
+    public RoutineIdDTO createRoutine(RoutineNewDTO routineNewDTO);
     public RoutineDTO updateRoutine(RoutineEditDTO routineEditDTO);
     public void deleteRoutine(long id);
 
