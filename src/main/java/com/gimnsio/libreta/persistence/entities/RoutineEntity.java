@@ -28,7 +28,7 @@ public class RoutineEntity {
 
     // Relación muchos a uno con la clase User
     @ManyToOne
-    @JoinColumn(name = "creator")
+    @JoinColumn(name = "creator_id")
     private UserEntity creator;
     @ManyToMany
     @JoinTable(

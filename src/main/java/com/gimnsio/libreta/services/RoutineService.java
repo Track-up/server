@@ -17,6 +17,9 @@ public interface RoutineService {
     public void deleteRoutine(long id);
 
     public Page<RoutineBasicsDTO> getRoutinesByUser (long user_id, Pageable pageable);
+    public Page<RoutineBasicsDTO> getRoutinesByUsername (String username, Pageable pageable);
+    public Page<RoutineBasicsDTO> getRoutinesByName (String name, Pageable pageable);
+    public List<Page<RoutineBasicsDTO>> getRoutinesByString (String name, Pageable pageable);
     public RoutineForWorkoutDTO getRoutineForWorkout(long id);
 
 

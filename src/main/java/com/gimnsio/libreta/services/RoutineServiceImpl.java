@@ -10,10 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -122,6 +119,35 @@ public class RoutineServiceImpl implements RoutineService {
             return Page.empty();
         }
         return routinesEntity.map(routineMapper::entityToBasics);
+    }
+
+    @Override
+    public Page<RoutineBasicsDTO> getRoutinesByUsername(String username, Pageable pageable) {
+        Page<RoutineEntity> routinesEntity = routineRepository.findByUsername(username, pageable);
+
+        if (routinesEntity.isEmpty()) {
+            return Page.empty();
+        }
+        return routinesEntity.map(routineMapper::entityToBasics);
+    }
+
+    @Override
+    public Page<RoutineBasicsDTO> getRoutinesByName(String name, Pageable pageable) {
+        Page<RoutineEntity> routinesEntity = routineRepository.findByName(name, pageable);
+
+        if (routinesEntity.isEmpty()) {
+            return Page.empty();
+        }
+        return routinesEntity.map(routineMapper::entityToBasics);
+    }
+
+    @Override
+    public List<Page<RoutineBasicsDTO>> getRoutinesByString(String name, Pageable pageable) {
+        List<Page<RoutineBasicsDTO>> pageList = new ArrayList<>();
+        pageList.add(getRoutinesByName(name, pageable));
+        pageList.add(getRoutinesByUsername(name, pageable));
+        return pageList;
+
     }
 
     @Override

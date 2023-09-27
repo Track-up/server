@@ -42,13 +42,13 @@ public class UserEntity {
     @NotBlank
     private String password;
 
-    @ManyToMany
-    @JoinTable(
-            name = "users_routines",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "routine_id")
-    )
-    private Set<RoutineEntity> routines;
+//    @ManyToMany
+//    @JoinTable(
+//            name = "users_routines",
+//            joinColumns = @JoinColumn(name = "user_id"),
+//            inverseJoinColumns = @JoinColumn(name = "routine_id")
+//    )
+//    private Set<RoutineEntity> routines;
 
     @ManyToMany(fetch = FetchType.EAGER, targetEntity = RoleEntity.class, cascade = CascadeType.PERSIST)
     @JoinTable(
@@ -77,4 +77,5 @@ public class UserEntity {
     public UserEntity(Long id){
         this.id = id;
     }
+
 }
