@@ -1,10 +1,9 @@
 package com.gimnsio.libreta.controllers;
 
 
-import com.gimnsio.libreta.DTO.users.StatsDTO;
-import com.gimnsio.libreta.services.UserService;
 import com.gimnsio.libreta.DTO.users.UserDTO;
 import com.gimnsio.libreta.DTO.users.UserRegistryDTO;
+import com.gimnsio.libreta.services.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Pageable;
@@ -85,10 +84,10 @@ public class UserRestController {
         return ResponseEntity.ok(userService.updateUser(id, userDTO));
     }
 
-    @PutMapping("/{id}/change_stats")
-    public ResponseEntity<?> changeStats(@RequestBody StatsDTO statsDTO, @PathVariable Long id) {
-        return ResponseEntity.ok(userService.updateUserStats(id, statsDTO));
-    }
+//    @PutMapping("/{id}/change_stats")
+//    public ResponseEntity<?> changeStats(@RequestBody MeasuresDTO measuresDTO, @PathVariable Long id) {
+//        return ResponseEntity.ok(userService.updateUserStats(id, measuresDTO));
+//    }
 
     @DeleteMapping("{id}")
     public ResponseEntity<?> deleteUser(@PathVariable Long id) {

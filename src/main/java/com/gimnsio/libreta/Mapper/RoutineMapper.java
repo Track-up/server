@@ -44,4 +44,7 @@ public interface RoutineMapper {
             @Mapping(target = "dateOfLastEdition", expression = "java(new Date())")
     })
     public void UpdateRoutineFromEditDTO(RoutineEditDTO routineEditDTO, @MappingTarget RoutineEntity routineEntity);
+
+
+    public RoutineIdDTO entityToIdDTO(RoutineEntity routineEntity);
 }

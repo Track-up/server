@@ -7,14 +7,12 @@ import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
-@Entity(name = "stats")
+@Entity(name = "measures")
 @NoArgsConstructor
 @Data
-public class StatsEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+public class MeasuresEntity {
 
+    @Id
     @OneToOne
     @JoinColumn(name = "user_id")
     private UserEntity user;

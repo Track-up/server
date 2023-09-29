@@ -1,6 +1,5 @@
 package com.gimnsio.libreta.services;
 
-import com.gimnsio.libreta.DTO.users.StatsDTO;
 import com.gimnsio.libreta.DTO.users.UserBasicsDTO;
 import com.gimnsio.libreta.DTO.users.UserDTO;
 import com.gimnsio.libreta.DTO.users.UserRegistryDTO;
@@ -29,8 +28,6 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
     @Autowired
     private UserMapper userMapper;
-    @Autowired
-    private StatsService statsService;
     @Autowired
     private RestTemplate restTemplate;
 
@@ -127,21 +124,21 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
-    @Override
-    public StatsDTO updateUserStats(Long id, StatsDTO statsDTO) {
-
-        Optional<UserEntity> userEntityOptional = userRepository.findById(id);
-        if (userEntityOptional.isPresent()){
-            UserEntity userEntity = userEntityOptional.get();
-
-            userEntity.setStats(statsService.createStats(statsDTO));
-            userEntity.getStats().setUser(userEntity);// is this a chapuza en toda regla?
-            userRepository.save(userEntity);
-            return statsDTO;
-        }else throw new NoSuchElementException("No se encontró el usuario con el ID: " + id);
-
-
-    }
+//    @Override
+//    public MeasuresDTO updateUserStats(Long id, MeasuresDTO measuresDTO) {
+//
+//        Optional<UserEntity> userEntityOptional = userRepository.findById(id);
+//        if (userEntityOptional.isPresent()){
+//            UserEntity userEntity = userEntityOptional.get();
+//
+//            userEntity.setStats(statsService.createStats(measuresDTO));
+//            userEntity.getStats().setUser(userEntity);// is this a chapuza en toda regla?
+//            userRepository.save(userEntity);
+//            return measuresDTO;
+//        }else throw new NoSuchElementException("No se encontró el usuario con el ID: " + id);
+//
+//
+//    }
 
 
 //    @Override

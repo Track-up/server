@@ -3,7 +3,6 @@ package com.gimnsio.libreta.services;
 import com.gimnsio.libreta.DTO.users.UserBasicsDTO;
 import com.gimnsio.libreta.DTO.users.UserDTO;
 import com.gimnsio.libreta.DTO.users.UserRegistryDTO;
-import com.gimnsio.libreta.DTO.users.StatsDTO;
 import com.gimnsio.libreta.persistence.entities.UserEntity;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -20,5 +19,5 @@ public interface UserService {
     public ResponseEntity<?> updateUser(long id, UserDTO userDTO);
     public ResponseEntity<?> deleteUser(long id);
 
-    public StatsDTO updateUserStats(Long id, StatsDTO statsDTO);
+//    public MeasuresDTO updateUserStats(Long id, MeasuresDTO measuresDTO);
 }
