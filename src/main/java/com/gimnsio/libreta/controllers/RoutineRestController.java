@@ -1,12 +1,16 @@
 package com.gimnsio.libreta.controllers;
 
-import com.gimnsio.libreta.domain.Routine;
+import com.gimnsio.libreta.DTO.routines.RoutineEditDTO;
+import com.gimnsio.libreta.DTO.routines.RoutineNewDTO;
 import com.gimnsio.libreta.services.RoutineService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/routines")
@@ -21,7 +25,7 @@ public class RoutineRestController {
 
     @GetMapping
     public ResponseEntity<?> getAllRoutines(
-            @PageableDefault(size = 5) Pageable pageable) {
+            @PageableDefault(size = 20) Pageable pageable) {
         return ResponseEntity.ok(this.routineService.getAllRoutines(pageable));
     }
 
@@ -31,15 +35,23 @@ public class RoutineRestController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createRoutine(@RequestBody Routine routine) {
-        return ResponseEntity.ok(this.routineService.createRoutine(routine));// TODO FALLA
+    public ResponseEntity<?> createRoutine(@RequestBody RoutineNewDTO routineNewDTO) {
+
+        Map<String, Object> httpResponse = new HashMap<>();
+        try {
+            httpResponse.put("id", this.routineService.createRoutine(routineNewDTO).getId());
+            httpResponse.put("message", "Rutina creada con exito :)");
+            return ResponseEntity.ok(httpResponse);
+        }catch (Exception e){
+            httpResponse.put("message", e.getMessage());
+            return ResponseEntity.badRequest().body(httpResponse);
+        }
+
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<?> updateRoutine(@PathVariable Long id, @RequestBody Routine routine) {
-        return ResponseEntity.ok(this.routineService.updateRoutine(id, routine));// TODO Modificar para que dentro le
-                                                                                 // pase solo X ejercicios y los
-                                                                                 // modifique
+    @PutMapping
+    public ResponseEntity<?> updateRoutine(@RequestBody RoutineEditDTO routineEditDTO) {
+        return ResponseEntity.ok(this.routineService.updateRoutine(routineEditDTO));// Mejorable
     }
 
     @DeleteMapping("/{id}")
@@ -49,7 +61,29 @@ public class RoutineRestController {
     }
 
     @GetMapping("/user/{id}")
-    public ResponseEntity<?> getRoutineByUser(@PathVariable Long id) {
-        return ResponseEntity.ok(this.routineService.getRoutinesByUser(id));
+    public ResponseEntity<?> getRoutineByUser(@PathVariable Long id,
+                                              @PageableDefault(size = 20) Pageable pageable) {
+        return ResponseEntity.ok(this.routineService.getRoutinesByUser(id,pageable));
     }
+
+    @GetMapping("/username/{username}")
+    public ResponseEntity<?> getRoutineByUsername(@PathVariable String username,
+                                              @PageableDefault(size = 20) Pageable pageable) {
+        return ResponseEntity.ok(this.routineService.getRoutinesByUsername(username,pageable));
+    }
+
+    @GetMapping("/name/{name}")
+    public ResponseEntity<?> getRoutineByName(@PathVariable String name,
+                                              @PageableDefault(size = 20) Pageable pageable) {
+        return ResponseEntity.ok(this.routineService.getRoutinesByName(name,pageable));
+    }
+
+    @GetMapping("/search/{name}")
+    public ResponseEntity<?> getRoutineBySearch(@PathVariable String name,
+                                              @PageableDefault(size = 20) Pageable pageable) {
+        return ResponseEntity.ok(this.routineService.getRoutinesByString(name,pageable));
+    }
+
+
+
 }

@@ -1,5 +1,6 @@
 package com.gimnsio.libreta.controllers;
 
+import com.gimnsio.libreta.DTO.exercises.ExerciseToImportDTO;
 import com.gimnsio.libreta.domain.Exercise;
 import com.gimnsio.libreta.services.ExerciseService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -7,6 +8,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Set;
 
 @RestController
 @RequestMapping("/exercises")
@@ -32,6 +35,12 @@ public class ExerciseRestController {
         return ResponseEntity.ok(exerciseService.getExerciseById(id));
     }
 
+    @GetMapping("/name/{name}")
+    public ResponseEntity<?> getExercisesByName(@PathVariable String name,
+                                                @PageableDefault(size = 20) Pageable pageable){
+        return ResponseEntity.ok(exerciseService.getExercisesByName(name, pageable));
+    }
+
     // @GetMapping("/type/{type}")
     // public ResponseEntity<?> getExercisesByType(@PathVariable String type,
     // @PageableDefault(size = 5) Pageable pageable){
@@ -41,6 +50,11 @@ public class ExerciseRestController {
     @GetMapping("/muscle/{muscle_id}")
     public ResponseEntity<?> getExercisesByMuscle(@PathVariable Long muscle_id) {
         return ResponseEntity.ok(exerciseService.getExercisesByMuscle(muscle_id));
+    }
+
+    @GetMapping("/body_part/{id}")
+    public ResponseEntity<?> getExercisesByBodyPart(@PathVariable Long id){
+        return ResponseEntity.ok(exerciseService.getExercisesByBodyPart(id));
     }
 
     //
@@ -66,6 +80,12 @@ public class ExerciseRestController {
     public ResponseEntity<?> deleteExercise(@PathVariable Long id) {
         exerciseService.deleteExercise(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/insert")
+    public ResponseEntity<?> createExercises(@RequestBody Set<ExerciseToImportDTO> exercises) {
+        ;
+        return ResponseEntity.ok(exerciseService.createExercises(exercises));
     }
 
 }

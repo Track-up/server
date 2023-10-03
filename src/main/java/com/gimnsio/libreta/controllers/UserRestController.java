@@ -1,9 +1,9 @@
 package com.gimnsio.libreta.controllers;
 
 
-import com.gimnsio.libreta.services.UsersService;
-import com.gimnsio.libreta.users.UserDTO;
-import com.gimnsio.libreta.users.UserRegistryDTO;
+import com.gimnsio.libreta.DTO.users.UserDTO;
+import com.gimnsio.libreta.DTO.users.UserRegistryDTO;
+import com.gimnsio.libreta.services.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Pageable;
@@ -13,7 +13,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -21,22 +23,22 @@ import java.util.stream.Collectors;
 @Tag(name = "Usuarios", description = "CRUD de usurarios")
 public class UserRestController {
 
-    private UsersService usersService;
+    private UserService userService;
 
-    public UserRestController(UsersService usersService) {
-        this.usersService = usersService;
+    public UserRestController(UserService userService) {
+        this.userService = userService;
     }
 
     @GetMapping
     public ResponseEntity<?> getAllUsers(
             @PageableDefault(size = 5) Pageable pageable) {
-        return ResponseEntity.ok(this.usersService.getAllUsers(pageable));
+        return ResponseEntity.ok(this.userService.getAllUsers(pageable));
 
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getUserById(@PathVariable long id) {
-        return ResponseEntity.ok(usersService.getUserById(id));
+        return ResponseEntity.ok(userService.getUserById(id));
     }
 
 //    @PostMapping
@@ -52,14 +54,16 @@ public class UserRestController {
 
 
     @PostMapping
-    public ResponseEntity<?> createUser(@Valid @RequestBody UserRegistryDTO userRegistryDTO, BindingResult bindingResult, RedirectAttributes redirectAttributes) {//TODO Devuelve string
+    public ResponseEntity<?> createUser(@Valid @RequestBody UserRegistryDTO userRegistryDTO, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             List<String> errors = bindingResult.getFieldErrors().stream()
                     .map(fieldError -> fieldError.getField() + ": " + fieldError.getDefaultMessage())
                     .collect(Collectors.toList());
-            return ResponseEntity.badRequest().body(errors);
+            Map<String, Object> httpResponse = new HashMap<>();
+            httpResponse.put("message", errors.toString().substring(1, errors.toString().length()-1));
+            return ResponseEntity.badRequest().body(httpResponse);
         }
-        return usersService.createUser(userRegistryDTO);
+        return userService.createUser(userRegistryDTO);
 
 
     }
@@ -77,12 +81,17 @@ public class UserRestController {
 //    }
     @PutMapping("/{id}")
     public ResponseEntity<?> editUser(@RequestBody UserDTO userDTO, @PathVariable Long id) {
-        return ResponseEntity.ok(usersService.updateUser(id, userDTO));
+        return ResponseEntity.ok(userService.updateUser(id, userDTO));
     }
+
+//    @PutMapping("/{id}/change_stats")
+//    public ResponseEntity<?> changeStats(@RequestBody MeasuresDTO measuresDTO, @PathVariable Long id) {
+//        return ResponseEntity.ok(userService.updateUserStats(id, measuresDTO));
+//    }
 
     @DeleteMapping("{id}")
     public ResponseEntity<?> deleteUser(@PathVariable Long id) {
-        usersService.deleteUser(id);
+        userService.deleteUser(id);
         return ResponseEntity.noContent().build();
     }
 

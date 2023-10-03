@@ -1,27 +1,28 @@
-package com.gimnsio.libreta.domain;
+package com.gimnsio.libreta.DTO.routines;
 
-import com.gimnsio.libreta.persistence.entities.UserEntity;
-import com.gimnsio.libreta.users.UserDTO;
+import com.gimnsio.libreta.DTO.exercises.ExerciseForRoutineDTO;
+import com.gimnsio.libreta.DTO.users.UserBasicsDTO;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
-import java.util.Set;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Routine {
+public class RoutineDTO {
     @Id
     private Long id;
     private String name;
+    private String image;
     // description
-    private Set<Exercise> exercises;
-    private UserDTO creator;
+    private List<ExerciseForRoutineDTO> exercises;
+    private UserBasicsDTO creator;
     private Date dateOfCreation;
-    private Long difficulty;
+    private Date dateOfLastEdition;
     private boolean isPublic;// Puede ser pública o privada.
 
     // Add , etc.

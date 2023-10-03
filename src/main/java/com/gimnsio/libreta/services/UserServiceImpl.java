@@ -1,37 +1,41 @@
 package com.gimnsio.libreta.services;
 
+import com.gimnsio.libreta.DTO.users.UserBasicsDTO;
+import com.gimnsio.libreta.DTO.users.UserDTO;
+import com.gimnsio.libreta.DTO.users.UserRegistryDTO;
 import com.gimnsio.libreta.Mapper.UserMapper;
 import com.gimnsio.libreta.exception.ApiRequestException;
 import com.gimnsio.libreta.persistence.entities.UserEntity;
 import com.gimnsio.libreta.persistence.repositories.UserRepository;
-import com.gimnsio.libreta.users.UserBasicsDTO;
-import com.gimnsio.libreta.users.UserDTO;
-import com.gimnsio.libreta.users.UserRegistryDTO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-public class UsersServiceImpl implements UsersService {
+public class UserServiceImpl implements UserService {
 
+    @Value("${url.backend}")
+    private String urlBase;
+
+    @Autowired
     private UserRepository userRepository;
+    @Autowired
     private UserMapper userMapper;
-
+    @Autowired
     private RestTemplate restTemplate;
 
-    public UsersServiceImpl(UserRepository userRepository,UserMapper userMapper, RestTemplate restTemplate) {
-        this.userRepository = userRepository;
-        this.userMapper = userMapper;
-        this.restTemplate = restTemplate;
-    }
+//    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper, RestTemplate restTemplate) {
+//        this.userRepository = userRepository;
+//        this.userMapper = userMapper;
+//        this.restTemplate = restTemplate;
+//    }
 
 
     @Override
@@ -48,6 +52,16 @@ public class UsersServiceImpl implements UsersService {
     }
 
     @Override
+    public UserEntity getUserEntityById(long id) {
+        Optional<UserEntity> userEntityOptional = userRepository.findById(id);
+        if(userEntityOptional.isPresent()){
+            return userEntityOptional.get();
+        }else {
+            throw new ApiRequestException("No se encontró el usuario con el ID: " + id);
+        }
+    }
+
+    @Override
     public Set<UserBasicsDTO> getAllUsers(Pageable pageable) {
         return userRepository.findAll(pageable)
                 .stream()
@@ -59,7 +73,8 @@ public class UsersServiceImpl implements UsersService {
 
     public ResponseEntity<?> createUser(UserRegistryDTO userRegistryDTO) {
         UserEntity userEntity = userMapper.userRegistryDTOToUserEntity(userRegistryDTO);
-        //UserRegisteredDTO userRegisteredDTO = userMapper.userEntityToUserRegisteredDTO(userRepository.save(userEntity));
+
+        userEntity.setDateOfCreation(new Date());
         try {
             userRepository.save(userEntity);
         } catch (DataIntegrityViolationException e) {
@@ -71,7 +86,10 @@ public class UsersServiceImpl implements UsersService {
             } else {
                 errorMessage = "Error de duplicación en la base de datos. Por favor, verifica los campos.";
             }
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
+
+            Map<String, Object> httpResponse = new HashMap<>();
+            httpResponse.put("message", errorMessage);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(httpResponse);
         }
         ResponseEntity<String> response = getLogin(userRegistryDTO);
 
@@ -79,7 +97,8 @@ public class UsersServiceImpl implements UsersService {
     }
 
     private ResponseEntity<String> getLogin(UserRegistryDTO userRegistryDTO) {
-        String url = "https://server-production-79b3.up.railway.app/login"; // Cambia la URL y el puerto según tu configuración
+
+        String url = urlBase.concat("/login"); // TODO Cambia la URL y el puerto según tu configuración
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON); // Cambia el tipo de contenido a JSON
 
@@ -104,6 +123,22 @@ public class UsersServiceImpl implements UsersService {
     public ResponseEntity<?> deleteUser(long id) {
         return null;
     }
+
+//    @Override
+//    public MeasuresDTO updateUserStats(Long id, MeasuresDTO measuresDTO) {
+//
+//        Optional<UserEntity> userEntityOptional = userRepository.findById(id);
+//        if (userEntityOptional.isPresent()){
+//            UserEntity userEntity = userEntityOptional.get();
+//
+//            userEntity.setStats(statsService.createStats(measuresDTO));
+//            userEntity.getStats().setUser(userEntity);// is this a chapuza en toda regla?
+//            userRepository.save(userEntity);
+//            return measuresDTO;
+//        }else throw new NoSuchElementException("No se encontró el usuario con el ID: " + id);
+//
+//
+//    }
 
 
 //    @Override

@@ -1,20 +1,26 @@
 package com.gimnsio.libreta.services;
 
-import com.gimnsio.libreta.domain.Routine;
-import com.gimnsio.libreta.users.UserDTO;
+import com.gimnsio.libreta.DTO.routines.*;
+import com.gimnsio.libreta.DTO.users.UserDTO;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
-import java.util.Set;
 
 public interface RoutineService {
 
-    public List<Routine> getAllRoutines(Pageable pageable);
-    public Routine getRoutineById(long id);
-    public List<Routine> getRoutinesByUserCreator(UserDTO userDTO);
-    public Routine createRoutine(Routine routine);
-    public Routine updateRoutine(long id, Routine routine);
+    public List<RoutineBasicsDTO> getAllRoutines(Pageable pageable);
+    public RoutineDTO getRoutineById(long id);
+    public List<RoutineDTO> getRoutinesByUserCreator(UserDTO userDTO);
+    public RoutineIdDTO createRoutine(RoutineNewDTO routineNewDTO);
+    public RoutineDTO updateRoutine(RoutineEditDTO routineEditDTO);
     public void deleteRoutine(long id);
 
-    public Set<Routine> getRoutinesByUser (long user_id);
+    public Page<RoutineBasicsDTO> getRoutinesByUser (long user_id, Pageable pageable);
+    public Page<RoutineBasicsDTO> getRoutinesByUsername (String username, Pageable pageable);
+    public Page<RoutineBasicsDTO> getRoutinesByName (String name, Pageable pageable);
+    public List<Page<RoutineBasicsDTO>> getRoutinesByString (String name, Pageable pageable);
+    public RoutineForWorkoutDTO getRoutineForWorkout(long id);
+
+
 }

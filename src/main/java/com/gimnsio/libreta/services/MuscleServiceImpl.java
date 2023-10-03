@@ -1,15 +1,17 @@
 package com.gimnsio.libreta.services;
 
+import com.gimnsio.libreta.DTO.muscles.MuscleToImportDTO;
 import com.gimnsio.libreta.Mapper.MuscleMapper;
 import com.gimnsio.libreta.domain.Muscle;
+import com.gimnsio.libreta.persistence.entities.BodyPartEntity;
 import com.gimnsio.libreta.persistence.entities.MuscleEntity;
+import com.gimnsio.libreta.persistence.repositories.BodyPartRepository;
 import com.gimnsio.libreta.persistence.repositories.MuscleRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 @Service
 public class MuscleServiceImpl implements  MuscleService{
@@ -17,6 +19,9 @@ public class MuscleServiceImpl implements  MuscleService{
     MuscleMapper muscleMapper;
 
     MuscleRepository muscleRepository;
+
+    @Autowired
+    BodyPartRepository bodyPartRepository;
 
     public MuscleServiceImpl(MuscleMapper muscleMapper, MuscleRepository muscleRepository){
         this.muscleRepository = muscleRepository;
@@ -67,5 +72,25 @@ public class MuscleServiceImpl implements  MuscleService{
         } else {
             throw new NoSuchElementException("No se encontró el musculo con el ID: " + id);
         }
+    }
+
+    @Override
+    public Set<MuscleEntity> createMuscles(Set<MuscleToImportDTO> muscles) {
+        Set<MuscleEntity> musclesSaved = new HashSet<>();
+        for (MuscleToImportDTO muscle: muscles) {
+            musclesSaved.add(muscleRepository.save(muscleMapper.muscleToImportDTOToEntity(muscle)));
+        }
+
+        return musclesSaved;
+    }
+
+    @Override
+    public Set<BodyPartEntity> createBodyParts(Set<BodyPartEntity> bodyParts) {
+        Set<BodyPartEntity> bodyPartsSaved = new HashSet<>();
+        for (BodyPartEntity bodyPart: bodyParts) {
+            bodyPartsSaved.add(bodyPartRepository.save(bodyPart));
+        }
+
+        return bodyPartsSaved;
     }
 }

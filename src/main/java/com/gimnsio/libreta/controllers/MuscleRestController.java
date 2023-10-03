@@ -1,6 +1,8 @@
 package com.gimnsio.libreta.controllers;
 
+import com.gimnsio.libreta.DTO.muscles.MuscleToImportDTO;
 import com.gimnsio.libreta.domain.Muscle;
+import com.gimnsio.libreta.persistence.entities.BodyPartEntity;
 import com.gimnsio.libreta.services.MuscleService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Pageable;
@@ -9,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/muscles")
@@ -28,9 +31,21 @@ public class MuscleRestController {
     }
 
     @PostMapping
-    public Muscle createMuscles(@RequestBody Muscle muscle) {
+    public Muscle createMuscle(@RequestBody Muscle muscle) {
         return muscleService.createMuscle(muscle);// muscleRepository.save(musculo);
     }
+    @PostMapping("/insert")
+    public ResponseEntity<?> createMuscles(@RequestBody Set<MuscleToImportDTO> muscles) {
+        ;
+        return ResponseEntity.ok(muscleService.createMuscles(muscles));// muscleRepository.save(musculo);
+    }
+
+    @PostMapping("/insert/bodyParts")
+    public ResponseEntity<?> createBodyParts(@RequestBody Set<BodyPartEntity> bodyPart) {
+        return ResponseEntity.ok(muscleService.createBodyParts(bodyPart));// muscleRepository.save(musculo);
+    }
+
+
 
     @GetMapping("/{id}")
     public ResponseEntity<Muscle> getMuscleById(@PathVariable Long id) {

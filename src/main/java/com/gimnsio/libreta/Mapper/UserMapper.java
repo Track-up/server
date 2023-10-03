@@ -1,18 +1,15 @@
 package com.gimnsio.libreta.Mapper;
 
 
+import com.gimnsio.libreta.DTO.users.*;
 import com.gimnsio.libreta.persistence.entities.UserEntity;
-import com.gimnsio.libreta.users.UserBasicsDTO;
-import com.gimnsio.libreta.users.UserDTO;
-import com.gimnsio.libreta.users.UserRegisteredDTO;
-import com.gimnsio.libreta.users.UserRegistryDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {MeasuresMapper.class})
 public interface UserMapper {
 
     PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -29,6 +26,10 @@ public interface UserMapper {
     public UserEntity userRegistryDTOToUserEntity(UserRegistryDTO userRegistryDTO);
 
     public UserBasicsDTO userEntityToUserBasicsDTO(UserEntity userEntity);
+
+    public UserEntity userIdDTOToUserEntity(UserIdDTO userIdDTO);
+
+    public UserIdDTO entityToIdDTO(UserEntity userEntity);
 
 
 }
