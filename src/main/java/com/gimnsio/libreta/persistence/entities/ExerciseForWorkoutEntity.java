@@ -18,5 +18,6 @@ public class ExerciseForWorkoutEntity {
     private ExerciseEntity exercise;
 
     @ManyToOne
+    @JoinColumn(name = "workout_id")
     private WorkoutEntity workout;
 }
