@@ -10,7 +10,6 @@ import com.gimnsio.libreta.persistence.repositories.EquipmentRepository;
 import com.gimnsio.libreta.persistence.repositories.ExerciseRepository;
 import com.gimnsio.libreta.persistence.repositories.MuscleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -139,14 +138,10 @@ public class ExerciseServiceImpl implements ExerciseService {
     }
 
     @Override
-    public Page<ExerciseDTO> getExercisesByName(String name, Pageable pageable) {
-        Page<ExerciseEntity> routinesEntity = exerciseRepository.findByName(name, pageable);
-
-        if (routinesEntity.isEmpty()) {
-            return Page.empty();
-        }
-        return routinesEntity.map(exerciseMapper::entityToDTO);
-
+    public Set<ExerciseDTO> getExercisesByName(String name, Pageable pageable) {
+        return this.exerciseRepository.findByName(name, pageable).stream().map(exerciseEntity -> {
+            return exerciseMapper.entityToDTO(exerciseEntity);
+        }).collect(Collectors.toSet());
     }
 
 //    @Override

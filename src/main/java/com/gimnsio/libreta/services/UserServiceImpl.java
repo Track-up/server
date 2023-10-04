@@ -53,6 +53,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserEntity getUserEntityById(long id) {
+        return findUser(id);
+    }
+    private UserEntity findUser(long id){
         Optional<UserEntity> userEntityOptional = userRepository.findById(id);
         if(userEntityOptional.isPresent()){
             return userEntityOptional.get();
@@ -120,8 +123,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<?> deleteUser(long id) {
-        return null;
+    public void deleteUser(long id) {
+        userRepository.delete(findUser(id));
     }
 
 //    @Override

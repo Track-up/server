@@ -1,6 +1,6 @@
 package com.gimnsio.libreta.DTO.workout;
 
-import com.gimnsio.libreta.persistence.entities.SerieEntity;
+import com.gimnsio.libreta.DTO.exercises.ExerciseForWorkoutDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -12,6 +12,6 @@ import java.util.List;
 public class WorkoutDTO {
 
     private Long id;
-    private List<SerieEntity> exercisesOfWorkout;
+    private List<ExerciseForWorkoutDTO> exercisesOfWorkout;
     private Date date;
 }

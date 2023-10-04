@@ -12,11 +12,7 @@ public class SerieEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(nullable = false, updatable = false)
     private Long id;
-    @ManyToOne
-    @JoinColumn(name = "exercise_id")
-    private ExerciseEntity exercise;
     private int reps;
     private int kg;
-    @ManyToOne
-    private WorkoutEntity workout;
+
 }

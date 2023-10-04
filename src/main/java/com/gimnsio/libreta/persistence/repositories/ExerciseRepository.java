@@ -1,12 +1,12 @@
 package com.gimnsio.libreta.persistence.repositories;
 
 import com.gimnsio.libreta.persistence.entities.ExerciseEntity;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Set;
 
 @Repository
@@ -21,7 +21,7 @@ public interface ExerciseRepository extends JpaRepository<ExerciseEntity, Long> 
     public Set<ExerciseEntity> findByBodyPart(Long id);
 
     @Query(value = "select * from exercises where name like %:name%", nativeQuery=true)
-    public Page<ExerciseEntity> findByName(String name, Pageable pageable);
+    public List<ExerciseEntity> findByName(String name, Pageable pageable);
 
 
 

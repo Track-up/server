@@ -37,7 +37,7 @@ public class SerieServiceImpl implements SerieService{
     @Override
     public List<SerieEntity> getSeriesOfLastWorkoutFromExerciseAndUser(long userId, long exerciseId) {
 //        workoutRepository.
-        return serieRepository.findLastByExerciseAndUser(exerciseId,userId);
+        return null;//serieRepository.findLastByExerciseAndUser(exerciseId,userId);
     }
 
 
