@@ -17,7 +17,7 @@ public interface UserService {
     public UserEntity getUserEntityById(long id);
     public ResponseEntity<?> createUser(UserRegistryDTO userRegistryDTO);
     public ResponseEntity<?> updateUser(long id, UserDTO userDTO);
-    public ResponseEntity<?> deleteUser(long id);
+    public void deleteUser(long id);
 
 //    public MeasuresDTO updateUserStats(Long id, MeasuresDTO measuresDTO);
 }
