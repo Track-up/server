@@ -4,7 +4,6 @@ import com.gimnsio.libreta.DTO.exercises.ExerciseDTO;
 import com.gimnsio.libreta.DTO.exercises.ExerciseToImportDTO;
 import com.gimnsio.libreta.domain.Exercise;
 import com.gimnsio.libreta.persistence.entities.ExerciseEntity;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
@@ -29,5 +28,5 @@ public interface ExerciseService {
 
     public Set<ExerciseDTO> getExercisesByBodyPart(Long id);
 
-    public Page<ExerciseDTO> getExercisesByName(String name, Pageable pageable);
+    public Set<ExerciseDTO> getExercisesByName(String name, Pageable pageable);
 }
