@@ -18,8 +18,8 @@ public interface RoutineMapper {
     public RoutineEntity mapRoutineEntity(RoutineDTO routineDTO);
 
     @Mappings({
-            @Mapping(target = "numExercises", expression = "java(routineEntity.getExercises().size())"),
-            @Mapping(source = "creator.username", target = "creator"),
+//            @Mapping(target = "numExercises", expression = "java(routineEntity.getExercises().size())"),
+//            @Mapping(source = "creator.username", target = "creator"),
             //@Mapping(target = "isPublic", ignore = true) // Assuming you don't need isPublic in RoutineBasicsDTO
     })
     public RoutineBasicsDTO entityToBasics(RoutineEntity routineEntity);
