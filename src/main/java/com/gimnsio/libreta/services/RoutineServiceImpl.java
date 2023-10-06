@@ -112,38 +112,34 @@ public class RoutineServiceImpl implements RoutineService {
     }
 
     @Override
-    public Page<RoutineBasicsDTO> getRoutinesByUser(long user_id, Pageable pageable) {
-        Page<RoutineEntity> routinesEntity = routineRepository.findByUser(user_id, pageable);
+    public List<RoutineBasicsDTO> getRoutinesByUser(long user_id, Pageable pageable) {
 
-        if (routinesEntity.isEmpty()) {
-            return Page.empty();
-        }
-        return routinesEntity.map(routineMapper::entityToBasics);
+        return routineRepository.findByUser(user_id, pageable)
+                .stream()
+                .map(routineMapper::entityToBasics)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public Page<RoutineBasicsDTO> getRoutinesByUsername(String username, Pageable pageable) {
-        Page<RoutineEntity> routinesEntity = routineRepository.findByUsername(username, pageable);
-
-        if (routinesEntity.isEmpty()) {
-            return Page.empty();
-        }
-        return routinesEntity.map(routineMapper::entityToBasics);
+    public List<RoutineBasicsDTO> getRoutinesByUsername(String username, Pageable pageable) {
+        return routineRepository.findByUsername(username, pageable)
+                .stream()
+                .map(routineMapper::entityToBasics)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public Page<RoutineBasicsDTO> getRoutinesByName(String name, Pageable pageable) {
-        Page<RoutineEntity> routinesEntity = routineRepository.findByName(name, pageable);
+    public List<RoutineBasicsDTO> getRoutinesByName(String name, Pageable pageable) {
 
-        if (routinesEntity.isEmpty()) {
-            return Page.empty();
-        }
-        return routinesEntity.map(routineMapper::entityToBasics);
+        return routineRepository.findByName(name, pageable)
+                .stream()
+                .map(routineMapper::entityToBasics)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public List<Page<RoutineBasicsDTO>> getRoutinesByString(String name, Pageable pageable) {
-        List<Page<RoutineBasicsDTO>> pageList = new ArrayList<>();
+    public List<List<RoutineBasicsDTO>> getRoutinesByString(String name, Pageable pageable) {
+        List<List<RoutineBasicsDTO>> pageList = new ArrayList<>();
         pageList.add(getRoutinesByName(name, pageable));
         pageList.add(getRoutinesByUsername(name, pageable));
         return pageList;
