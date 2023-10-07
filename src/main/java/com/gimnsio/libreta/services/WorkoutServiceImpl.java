@@ -7,12 +7,13 @@ import com.gimnsio.libreta.Mapper.WorkoutMapper;
 import com.gimnsio.libreta.persistence.entities.WorkoutEntity;
 import com.gimnsio.libreta.persistence.repositories.WorkoutRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class WorkoutServiceImpl implements WorkoutService {
@@ -36,8 +37,8 @@ public class WorkoutServiceImpl implements WorkoutService {
     private SerieService serieService;
 
     @Override
-    public Page<WorkoutEntity> getAllWorkouts(Pageable pageable) {
-        return workoutRepository.findAll(pageable);
+    public Set<WorkoutEntity> getAllWorkouts(Pageable pageable) {
+        return workoutRepository.findAll(pageable).stream().collect(Collectors.toSet());//TODO NOT TESTED
     }
 
     @Override

@@ -16,10 +16,10 @@ public interface RoutineService {
     public RoutineDTO updateRoutine(RoutineEditDTO routineEditDTO);
     public void deleteRoutine(long id);
 
-    public Page<RoutineBasicsDTO> getRoutinesByUser (long user_id, Pageable pageable);
-    public Page<RoutineBasicsDTO> getRoutinesByUsername (String username, Pageable pageable);
-    public Page<RoutineBasicsDTO> getRoutinesByName (String name, Pageable pageable);
-    public List<Page<RoutineBasicsDTO>> getRoutinesByString (String name, Pageable pageable);
+    public List<RoutineBasicsDTO> getRoutinesByUser (long user_id, Pageable pageable);
+    public List<RoutineBasicsDTO> getRoutinesByUsername (String username, Pageable pageable);
+    public List<RoutineBasicsDTO> getRoutinesByName (String name, Pageable pageable);
+    public List<List<RoutineBasicsDTO>> getRoutinesByString (String name, Pageable pageable);
     public RoutineForWorkoutDTO getRoutineForWorkout(long id);
 
 
