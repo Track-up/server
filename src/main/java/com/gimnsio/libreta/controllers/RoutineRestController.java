@@ -24,9 +24,15 @@ public class RoutineRestController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getAllRoutines(
+    public ResponseEntity<?> getRoutines(
+            @RequestParam(name = "name", required = false) String name,
             @PageableDefault(size = 20) Pageable pageable) {
-        return ResponseEntity.ok(this.routineService.getAllRoutines(pageable));
+        if (name!= null && !name.isEmpty()){
+            return ResponseEntity.ok(this.routineService.getRoutinesByString(name,pageable));
+        }else {
+            return ResponseEntity.ok(this.routineService.getAllRoutines(pageable));
+        }
+
     }
 
     @GetMapping("/{id}")
@@ -78,11 +84,6 @@ public class RoutineRestController {
         return ResponseEntity.ok(this.routineService.getRoutinesByName(name,pageable));
     }
 
-    @GetMapping("/search/{name}")
-    public ResponseEntity<?> getRoutineBySearch(@PathVariable String name,
-                                              @PageableDefault(size = 20) Pageable pageable) {
-        return ResponseEntity.ok(this.routineService.getRoutinesByString(name,pageable));
-    }
 
 
 
