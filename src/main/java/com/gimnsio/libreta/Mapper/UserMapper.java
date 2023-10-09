@@ -5,6 +5,7 @@ import com.gimnsio.libreta.DTO.users.*;
 import com.gimnsio.libreta.persistence.entities.UserEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.Mappings;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -30,6 +31,10 @@ public interface UserMapper {
     public UserEntity userIdDTOToUserEntity(UserIdDTO userIdDTO);
 
     public UserIdDTO entityToIdDTO(UserEntity userEntity);
+    @Mappings({
+            @Mapping(target = "password", expression = "java(passwordEncoder.encode(userUpdateDTO.getPassword()))")
+    })
+    public void updateToEntity(UserUpdateDTO userUpdateDTO, @MappingTarget UserEntity userEntity);
 
 
 }

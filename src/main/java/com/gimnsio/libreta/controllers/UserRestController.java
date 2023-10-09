@@ -1,8 +1,8 @@
 package com.gimnsio.libreta.controllers;
 
 
-import com.gimnsio.libreta.DTO.users.UserDTO;
 import com.gimnsio.libreta.DTO.users.UserRegistryDTO;
+import com.gimnsio.libreta.DTO.users.UserUpdateDTO;
 import com.gimnsio.libreta.services.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -51,8 +51,6 @@ public class UserRestController {
 //    }
 
 
-
-
     @PostMapping
     public ResponseEntity<?> createUser(@Valid @RequestBody UserRegistryDTO userRegistryDTO, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
@@ -60,7 +58,7 @@ public class UserRestController {
                     .map(fieldError -> fieldError.getField() + ": " + fieldError.getDefaultMessage())
                     .collect(Collectors.toList());
             Map<String, Object> httpResponse = new HashMap<>();
-            httpResponse.put("message", errors.toString().substring(1, errors.toString().length()-1));
+            httpResponse.put("message", errors.toString().substring(1, errors.toString().length() - 1));
             return ResponseEntity.badRequest().body(httpResponse);
         }
         return userService.createUser(userRegistryDTO);
@@ -68,7 +66,7 @@ public class UserRestController {
 
     }
 
-//    private void authenticateUserAndSetSession(String username, String password) {
+    //    private void authenticateUserAndSetSession(String username, String password) {
 //        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username, password);
 //
 //        // Configurar la autenticación
@@ -79,9 +77,9 @@ public class UserRestController {
 //        HttpSession session = request.getSession(true);
 //        session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, SecurityContextHolder.getContext());
 //    }
-    @PutMapping("/{id}")
-    public ResponseEntity<?> editUser(@RequestBody UserDTO userDTO, @PathVariable Long id) {
-        return ResponseEntity.ok(userService.updateUser(id, userDTO));
+    @PutMapping
+    public ResponseEntity<?> editUser(@Valid @RequestBody UserUpdateDTO userUpdateDTO) {
+        return ResponseEntity.ok(userService.updateUser(userUpdateDTO));
     }
 
 //    @PutMapping("/{id}/change_stats")
