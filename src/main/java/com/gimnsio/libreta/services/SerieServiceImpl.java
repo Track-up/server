@@ -1,5 +1,7 @@
 package com.gimnsio.libreta.services;
 
+import com.gimnsio.libreta.DTO.serie.SerieForExerciseDTO;
+import com.gimnsio.libreta.Mapper.SerieMapper;
 import com.gimnsio.libreta.exception.ApiRequestException;
 import com.gimnsio.libreta.persistence.entities.SerieEntity;
 import com.gimnsio.libreta.persistence.repositories.SerieRepository;
@@ -19,6 +21,9 @@ public class SerieServiceImpl implements SerieService{
     @Autowired
     WorkoutRepository workoutRepository;
 
+    @Autowired
+    SerieMapper serieMapper;
+
     @Override
     public SerieEntity getSerieEntityById(long id) {
         Optional<SerieEntity> serieEntityOptional = serieRepository.findById(id);
@@ -30,14 +35,14 @@ public class SerieServiceImpl implements SerieService{
     }
 
     @Override
-    public SerieEntity createSerieEntity(SerieEntity serie) {
-        return serieRepository.save(serie);
+    public SerieForExerciseDTO createSerie(SerieEntity serie) {
+        return serieMapper.entityToForExerciseDTO(serieRepository.save(serie));
     }
 
     @Override
-    public List<SerieEntity> getSeriesOfLastWorkoutFromExerciseAndUser(long userId, long exerciseId) {
+    public List<SerieEntity> getSeriesOfLastWorkoutFromExerciseAndUser(long exerciseId, long userId) {
 //        workoutRepository.
-        return null;//serieRepository.findLastByExerciseAndUser(exerciseId,userId);
+        return serieRepository.findLastByExerciseAndUser(exerciseId,userId);
     }
 
 

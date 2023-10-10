@@ -22,7 +22,7 @@ public class WorkoutRestController {
         return ResponseEntity.ok(this.workoutService.getAllWorkouts(pageable));
     }
 
-    @PostMapping("/start/{routine_id}/{user_id}")
+    @PostMapping("/create/{routine_id}/{user_id}")
     public ResponseEntity<?> startTraining(@PathVariable long routine_id, @PathVariable long user_id){
         return ResponseEntity.ok(this.workoutService.startTraining(routine_id,user_id));
     }
