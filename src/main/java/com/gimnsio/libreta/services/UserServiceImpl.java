@@ -3,6 +3,7 @@ package com.gimnsio.libreta.services;
 import com.gimnsio.libreta.DTO.users.UserBasicsDTO;
 import com.gimnsio.libreta.DTO.users.UserDTO;
 import com.gimnsio.libreta.DTO.users.UserRegistryDTO;
+import com.gimnsio.libreta.DTO.users.UserUpdateDTO;
 import com.gimnsio.libreta.Mapper.UserMapper;
 import com.gimnsio.libreta.exception.ApiRequestException;
 import com.gimnsio.libreta.persistence.entities.UserEntity;
@@ -42,9 +43,9 @@ public class UserServiceImpl implements UserService {
     public UserDTO getUserById(long id) {
 
         Optional<UserEntity> userEntityOptional = userRepository.findById(id);
-        if(userEntityOptional.isPresent()){
+        if (userEntityOptional.isPresent()) {
             return userMapper.mapUserDTO(userEntityOptional.get());
-        }else {
+        } else {
             throw new ApiRequestException("No se encontró el usuario con el ID: " + id);
         }
 
@@ -55,11 +56,12 @@ public class UserServiceImpl implements UserService {
     public UserEntity getUserEntityById(long id) {
         return findUser(id);
     }
-    private UserEntity findUser(long id){
+
+    private UserEntity findUser(long id) {
         Optional<UserEntity> userEntityOptional = userRepository.findById(id);
-        if(userEntityOptional.isPresent()){
+        if (userEntityOptional.isPresent()) {
             return userEntityOptional.get();
-        }else {
+        } else {
             throw new ApiRequestException("No se encontró el usuario con el ID: " + id);
         }
     }
@@ -69,8 +71,8 @@ public class UserServiceImpl implements UserService {
         return userRepository.findAll(pageable)
                 .stream()
                 .map(userEntity -> {
-            return userMapper.userEntityToUserBasicsDTO(userEntity);
-        }).collect(Collectors.toSet());
+                    return userMapper.userEntityToUserBasicsDTO(userEntity);
+                }).collect(Collectors.toSet());
     }
 
 
@@ -118,8 +120,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<?> updateUser(long id, UserDTO userDTO) {
-        return null;
+    public UserUpdateDTO updateUser(UserUpdateDTO userUpdateDTO) {
+        UserEntity userEntity = findUser(userUpdateDTO.getId());
+
+        userMapper.updateToEntity(userUpdateDTO, userEntity);
+        userRepository.save(userEntity);
+        return userUpdateDTO;
     }
 
     @Override
@@ -143,30 +149,4 @@ public class UserServiceImpl implements UserService {
 //
 //    }
 
-
-//    @Override
-//    public ResponseEntity<?> updateUser(long id, UserE userE) {
-//
-//        Optional<UserEntity> userEntityOptional = userRepository.findById(id);
-//
-//        if (userEntityOptional.isPresent()) {
-//            UserEntity userEntity = userEntityOptional.get();
-//            userEntity = userMapper.mapUserEntity(userE);
-//            userEntity.setId(id);//TODO Cambiar chapuza
-//            return userMapper.mapUserOld(userRepository.save(userEntity));
-//        } else {
-//            throw new NoSuchElementException("No se encontró el usuario con el ID: " + id);
-//        }
-//    }
-
-//    @Override
-//    public ResponseEntity<?> deleteUser(long id) {
-//        Optional<UserEntity> userEntityOptional = userRepository.findById(id);
-//
-//        if (userEntityOptional.isPresent()) {
-//            userRepository.deleteById(id);
-//        } else {
-//            throw new NoSuchElementException("No se encontró el usuario con el ID: " + id);
-//        }
-//    }
 }

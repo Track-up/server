@@ -1,10 +1,12 @@
 package com.gimnsio.libreta.services;
 
 import com.gimnsio.libreta.DTO.exercises.ExerciseDTO;
+import com.gimnsio.libreta.DTO.exercises.ExerciseForWorkoutDTO;
 import com.gimnsio.libreta.DTO.exercises.ExerciseToImportDTO;
 import com.gimnsio.libreta.Mapper.ExerciseMapper;
 import com.gimnsio.libreta.domain.Exercise;
 import com.gimnsio.libreta.persistence.entities.ExerciseEntity;
+import com.gimnsio.libreta.persistence.entities.ExerciseForWorkoutEntity;
 import com.gimnsio.libreta.persistence.repositories.BodyPartRepository;
 import com.gimnsio.libreta.persistence.repositories.EquipmentRepository;
 import com.gimnsio.libreta.persistence.repositories.ExerciseRepository;
@@ -142,6 +144,11 @@ public class ExerciseServiceImpl implements ExerciseService {
         return this.exerciseRepository.findByName(name, pageable).stream().map(exerciseEntity -> {
             return exerciseMapper.entityToDTO(exerciseEntity);
         }).collect(Collectors.toSet());
+    }
+
+    @Override
+    public ExerciseForWorkoutDTO getExerciseForWorkout(ExerciseForWorkoutEntity exerciseForWorkoutEntity) {
+        return exerciseMapper.forWorkoutEntityToDTO(exerciseForWorkoutEntity);
     }
 
 //    @Override
