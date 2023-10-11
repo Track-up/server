@@ -17,6 +17,6 @@ public class SerieEntity {
     @JoinColumn(name = "exercise_for_workout_id")
     private ExerciseForWorkoutEntity exerciseForWorkout;
     private int reps;
-    private int kg;
+    private double kg;
 
 }

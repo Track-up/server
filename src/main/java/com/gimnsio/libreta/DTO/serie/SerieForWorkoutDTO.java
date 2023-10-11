@@ -9,5 +9,5 @@ public class SerieForWorkoutDTO {
     private Long id;
     private String exercise;
     private int reps;
-    private int kg;
+    private double kg;
 }
