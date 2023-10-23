@@ -16,7 +16,12 @@ public class SerieEntity {
     @ManyToOne
     @JoinColumn(name = "exercise_for_workout_id")
     private ExerciseForWorkoutEntity exerciseForWorkout;
-    private int reps;
+    private long reps;
     private double kg;
 
+    public SerieEntity(ExerciseForWorkoutEntity exerciseForWorkout, long reps, double kg) {
+        this.exerciseForWorkout = exerciseForWorkout;
+        this.reps = reps;
+        this.kg = kg;
+    }
 }

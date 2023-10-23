@@ -16,5 +16,7 @@ public class WorkoutEntity {
 
     @ManyToOne
     private UserEntity worker;
-    private Date date;
+    private Date creationDate;
+    private Date startDate;
+    private Date endDate;
 }
