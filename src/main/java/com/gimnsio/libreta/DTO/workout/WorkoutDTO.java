@@ -13,5 +13,6 @@ public class WorkoutDTO {
 
     private Long id;
     private List<ExerciseForWorkoutDTO> exercisesOfWorkout;
-    private Date date;
+    private Date startDate;
+    private Date endDate;
 }

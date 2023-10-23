@@ -1,5 +1,6 @@
 package com.gimnsio.libreta.controllers;
 
+import com.gimnsio.libreta.DTO.workout.WorkoutDTO;
 import com.gimnsio.libreta.services.WorkoutService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +23,24 @@ public class WorkoutRestController {
         return ResponseEntity.ok(this.workoutService.getAllWorkouts(pageable));
     }
 
-    @PostMapping("/create/{routine_id}/{user_id}")
-    public ResponseEntity<?> startTraining(@PathVariable long routine_id, @PathVariable long user_id){
-        return ResponseEntity.ok(this.workoutService.startTraining(routine_id,user_id));
+    @PostMapping("/create")
+    public ResponseEntity<?> createWorkout(
+            @RequestParam("routine_id") Long routineId,
+            @RequestParam("user_id") Long userId,
+            @RequestParam("difficulty") Long difficulty){
+        return ResponseEntity.ok(this.workoutService.createWorkout(routineId,userId,difficulty ));
+    }
+
+    @PutMapping("/start")
+    public ResponseEntity<?> startWorkout(
+            @RequestBody WorkoutDTO workoutDTO){
+        return ResponseEntity.ok(this.workoutService.startWorkout(workoutDTO));
+    }
+
+    @PutMapping("/end")
+    public ResponseEntity<?> endWorkout(
+            @RequestBody WorkoutDTO workoutDTO){
+        return ResponseEntity.ok(this.workoutService.endWorkout(workoutDTO));
     }
 
 }

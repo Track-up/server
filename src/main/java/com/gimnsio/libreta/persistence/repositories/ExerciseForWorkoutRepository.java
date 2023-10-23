@@ -12,4 +12,5 @@ public interface ExerciseForWorkoutRepository extends JpaRepository <ExerciseFor
 
     List<ExerciseForWorkoutEntity> findByWorkout(WorkoutEntity workout);
 
+
 }

@@ -1,5 +1,6 @@
 package com.gimnsio.libreta.persistence.repositories;
 
+import com.gimnsio.libreta.persistence.entities.ExerciseForWorkoutEntity;
 import com.gimnsio.libreta.persistence.entities.SerieEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -25,6 +26,8 @@ public interface SerieRepository extends JpaRepository<SerieEntity, Long> {
 
     @Query(value = "select s from series s where s.exerciseForWorkout.id = (select MAX(id) from exercises_for_workout e where e.workout.id in (select id from workouts w where w.worker.id = :userId) and e.exercise.id = :exerciseId)")
     public List<SerieEntity> findLastByExerciseAndUser(@Param("exerciseId") Long exerciseId, @Param("userId") Long userId);
+
+    public List<SerieEntity> findByExerciseForWorkout(ExerciseForWorkoutEntity exerciseForWorkout);
 
 
 

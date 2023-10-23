@@ -8,5 +8,5 @@ import lombok.Data;
 public class SerieForExerciseDTO {
     private long id;
     private long reps;
-    private long kg;
+    private double kg;
 }

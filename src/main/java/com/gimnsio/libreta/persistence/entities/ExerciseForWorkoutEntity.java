@@ -11,7 +11,7 @@ public class ExerciseForWorkoutEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private long id;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "exercise_id")
