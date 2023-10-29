@@ -10,7 +10,6 @@ import java.util.List;
 @AllArgsConstructor
 public class ExerciseForWorkoutDTO {
 
-    private long id;
     private String name;
     private String image;
     private List<SerieForExerciseDTO> series;

@@ -3,7 +3,6 @@ package com.gimnsio.libreta.services;
 import com.gimnsio.libreta.DTO.serie.SerieForExerciseDTO;
 import com.gimnsio.libreta.Mapper.SerieMapper;
 import com.gimnsio.libreta.exception.ApiRequestException;
-import com.gimnsio.libreta.persistence.entities.ExerciseForWorkoutEntity;
 import com.gimnsio.libreta.persistence.entities.SerieEntity;
 import com.gimnsio.libreta.persistence.repositories.SerieRepository;
 import com.gimnsio.libreta.persistence.repositories.WorkoutRepository;

@@ -14,14 +14,19 @@ public class SerieEntity {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "exercise_for_workout_id")
-    private ExerciseForWorkoutEntity exerciseForWorkout;
+    @JoinColumn(name = "exercise_id")
+    private ExerciseEntity exercise;
     private long reps;
     private double kg;
 
-    public SerieEntity(ExerciseForWorkoutEntity exerciseForWorkout, long reps, double kg) {
-        this.exerciseForWorkout = exerciseForWorkout;
+    @ManyToOne
+    @JoinColumn(name = "workout_id")
+    private WorkoutEntity workout;
+
+    public SerieEntity(ExerciseEntity exercise, long reps, double kg, WorkoutEntity workout) {
+        this.exercise = exercise;
         this.reps = reps;
         this.kg = kg;
+        this.workout = workout;
     }
 }

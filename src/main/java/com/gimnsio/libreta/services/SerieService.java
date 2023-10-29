@@ -1,7 +1,6 @@
 package com.gimnsio.libreta.services;
 
 import com.gimnsio.libreta.DTO.serie.SerieForExerciseDTO;
-import com.gimnsio.libreta.persistence.entities.ExerciseForWorkoutEntity;
 import com.gimnsio.libreta.persistence.entities.SerieEntity;
 
 import java.util.List;

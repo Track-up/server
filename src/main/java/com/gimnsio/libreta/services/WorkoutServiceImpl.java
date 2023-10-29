@@ -6,10 +6,9 @@ import com.gimnsio.libreta.DTO.routines.RoutineForWorkoutDTO;
 import com.gimnsio.libreta.DTO.serie.SerieForExerciseDTO;
 import com.gimnsio.libreta.DTO.workout.WorkoutDTO;
 import com.gimnsio.libreta.Mapper.WorkoutMapper;
-import com.gimnsio.libreta.persistence.entities.ExerciseForWorkoutEntity;
+import com.gimnsio.libreta.persistence.entities.ExerciseEntity;
 import com.gimnsio.libreta.persistence.entities.SerieEntity;
 import com.gimnsio.libreta.persistence.entities.WorkoutEntity;
-import com.gimnsio.libreta.persistence.repositories.ExerciseForWorkoutRepository;
 import com.gimnsio.libreta.persistence.repositories.WorkoutRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -39,8 +38,6 @@ public class WorkoutServiceImpl implements WorkoutService {
     @Autowired
     private SerieService serieService;
 
-    @Autowired
-    private ExerciseForWorkoutRepository exerciseForWorkoutRepository;
 
     @Override
     public Set<WorkoutEntity> getAllWorkouts(Pageable pageable) {
@@ -65,20 +62,17 @@ public class WorkoutServiceImpl implements WorkoutService {
         List<ExerciseForWorkoutDTO> exerciseForWorkoutDTOs = new ArrayList<>();
 
         for (Long exerciseId : exercisesIds) {
-            ExerciseForWorkoutEntity exerciseForWorkout = new ExerciseForWorkoutEntity();
+            ExerciseEntity exercise = exerciseService.getExerciseById(exerciseId);
             List<SerieForExerciseDTO> series = new ArrayList<>();
-            exerciseForWorkout.setExercise(exerciseService.getExerciseById(exerciseId));//mejorable?
-            exerciseForWorkout.setWorkout(workout);
-
-
             List<SerieEntity> seriesEntity = serieService.getSeriesOfLastWorkoutFromExerciseAndUser(exerciseId, workout.getWorker().getId());
-            exerciseForWorkout = exerciseForWorkoutRepository.save(exerciseForWorkout);
-            if (seriesEntity.isEmpty()) {//TODO aqui le paso un ex4wo con series null y me devolverá un kg para modificar :)
+
+            if (seriesEntity.isEmpty()) {//TODO aqui le paso un ex4wo con series null y me devolverá un kg para modificar :) MUY MEJORABLE
                 for (int i = 0; i < 3; i++) {
                     SerieEntity serieEntity = new SerieEntity();
                     serieEntity.setKg(50);
                     serieEntity.setReps(10);
-                    serieEntity.setExerciseForWorkout(exerciseForWorkout);
+                    serieEntity.setExercise(exercise);
+                    serieEntity.setWorkout(workout);
                     series.add(serieService.saveSerie(serieEntity));
                 }
 
@@ -88,7 +82,8 @@ public class WorkoutServiceImpl implements WorkoutService {
                         SerieEntity serieEntity = new SerieEntity();
                         serieEntity.setKg(serie.getKg());
                         serieEntity.setReps(serie.getReps());
-                        serieEntity.setExerciseForWorkout(exerciseForWorkout);
+                        serieEntity.setExercise(exercise);
+                        serieEntity.setWorkout(workout);
                         series.add(serieService.saveSerie(serieEntity));
                     }
                 } else if (difficulty == 2) {
@@ -101,7 +96,8 @@ public class WorkoutServiceImpl implements WorkoutService {
                             serieEntity.setKg(serie.getKg());
                             serieEntity.setReps(serie.getReps() + 1);
                         }
-                        serieEntity.setExerciseForWorkout(exerciseForWorkout);
+                        serieEntity.setExercise(exercise);
+                        serieEntity.setWorkout(workout);
                         series.add(serieService.saveSerie(serieEntity));
                     }
                 } else if (difficulty == 3) {
@@ -114,19 +110,14 @@ public class WorkoutServiceImpl implements WorkoutService {
                             serieEntity.setKg(serie.getKg());
                             serieEntity.setReps(serie.getReps() + 2);
                         }
-                        serieEntity.setExerciseForWorkout(exerciseForWorkout);
+                        serieEntity.setExercise(exercise);
+                        serieEntity.setWorkout(workout);
                         series.add(serieService.saveSerie(serieEntity));
                     }
                 }
 
             }
-
-            ExerciseForWorkoutDTO exercise = exerciseService.getExerciseForWorkout(exerciseForWorkout);
-            exerciseForWorkout.getExercise().getGifUrl();
-            exercise.setSeries(series);
-
-            exerciseForWorkoutDTOs.add(exercise);
-
+            exerciseForWorkoutDTOs.add(new ExerciseForWorkoutDTO(exercise.getName(),exercise.getGifUrl(),series));
         }
 
         workoutDTO.setExercisesOfWorkout(exerciseForWorkoutDTOs);
@@ -151,7 +142,7 @@ public class WorkoutServiceImpl implements WorkoutService {
             throw new RuntimeException(e);
         }
 
-        List<ExerciseForWorkoutEntity> exercisesFotWorkoutEntityFromDTO = new ArrayList<>();
+        List<ExerciseForWorkoutEntity> exercisesFotWorkoutEntityFromDTO = new ArrayList<>(); 
 
 
         List<SerieForExerciseDTO> seriesDTO = new ArrayList<>();

@@ -6,7 +6,6 @@ import com.gimnsio.libreta.DTO.exercises.ExerciseForWorkoutDTO;
 import com.gimnsio.libreta.DTO.exercises.ExerciseMinimalDTO;
 import com.gimnsio.libreta.domain.Exercise;
 import com.gimnsio.libreta.persistence.entities.ExerciseEntity;
-import com.gimnsio.libreta.persistence.entities.ExerciseForWorkoutEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
