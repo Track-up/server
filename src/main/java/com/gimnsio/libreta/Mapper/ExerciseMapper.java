@@ -24,11 +24,11 @@ public interface ExerciseMapper {
     public ExerciseForRoutineDTO entityToForRoutine(ExerciseEntity exerciseEntity);
 
     public ExerciseDTO entityToDTO(ExerciseEntity exerciseEntity);
-    @Mappings(value = {
-            @Mapping(target = "name", expression = "java(exerciseForWorkoutEntity.getExercise().getName())"),
-            @Mapping(target = "image", expression = "java(exerciseForWorkoutEntity.getExercise().getGifUrl())"),
-    })
-    public ExerciseForWorkoutDTO forWorkoutEntityToDTO(ExerciseForWorkoutEntity exerciseForWorkoutEntity);
+//    @Mappings(value = {
+//            @Mapping(target = "name", expression = "java(exerciseForWorkoutEntity.getExercise().getName())"),
+//            @Mapping(target = "image", expression = "java(exerciseForWorkoutEntity.getExercise().getGifUrl())"),
+//    })
+//    public ExerciseForWorkoutDTO forWorkoutEntityToDTO(ExerciseForWorkoutEntity exerciseForWorkoutEntity);
 
 
 //    @Mappings(value = {

@@ -145,10 +145,10 @@ public class ExerciseServiceImpl implements ExerciseService {
         }).collect(Collectors.toSet());
     }
 
-    @Override
-    public ExerciseForWorkoutDTO getExerciseForWorkout(ExerciseForWorkoutEntity exerciseForWorkoutEntity) {
-        return exerciseMapper.forWorkoutEntityToDTO(exerciseForWorkoutEntity);
-    }
+//    @Override
+//    public ExerciseForWorkoutDTO getExerciseForWorkout(ExerciseForWorkoutEntity exerciseForWorkoutEntity) {
+//        return exerciseMapper.forWorkoutEntityToDTO(exerciseForWorkoutEntity);
+//    }
 
 //    @Override
 //    public List<Exercise> getExercisesByMuscle(Long muscle_id, Pageable pageable) {

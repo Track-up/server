@@ -34,13 +34,15 @@ public class WorkoutRestController {
     @PutMapping("/start")
     public ResponseEntity<?> startWorkout(
             @RequestBody WorkoutDTO workoutDTO){
-        return ResponseEntity.ok(this.workoutService.startWorkout(workoutDTO));
+        this.workoutService.startWorkout(workoutDTO);
+        return ResponseEntity.ok("started");
     }
 
     @PutMapping("/end")
     public ResponseEntity<?> endWorkout(
             @RequestBody WorkoutDTO workoutDTO){
-        return ResponseEntity.ok(this.workoutService.endWorkout(workoutDTO));
+        this.workoutService.endWorkout(workoutDTO);
+        return ResponseEntity.ok("Ended");
     }
 
 }

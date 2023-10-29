@@ -41,14 +41,13 @@ public class SerieServiceImpl implements SerieService{
 
     @Override
     public List<SerieEntity> getSeriesOfLastWorkoutFromExerciseAndUser(long exerciseId, long userId) {
-//        workoutRepository.
         return serieRepository.findLastByExerciseAndUser(exerciseId,userId);
     }
 
-    @Override
-    public List<SerieEntity> getSeriesOfExerciseForWorkout(ExerciseForWorkoutEntity exerciseForWorkout) {
-        return serieRepository.findByExerciseForWorkout(exerciseForWorkout);
-    }
+//    @Override
+//    public List<SerieEntity> getSeriesOfExerciseForWorkout(ExerciseForWorkoutEntity exerciseForWorkout) {
+//        return serieRepository.findByExerciseForWorkout(exerciseForWorkout);
+//    }
 
 
 }

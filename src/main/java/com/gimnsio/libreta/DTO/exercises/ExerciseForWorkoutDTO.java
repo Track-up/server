@@ -12,5 +12,7 @@ public class ExerciseForWorkoutDTO {
 
     private String name;
     private String image;
+
+    private Long exerciseId;
     private List<SerieForExerciseDTO> series;
 }

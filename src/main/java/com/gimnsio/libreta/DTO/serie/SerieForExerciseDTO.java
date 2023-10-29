@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class SerieForExerciseDTO {
-    private long id;
+    private Long id;
     private long reps;
     private double kg;
 }

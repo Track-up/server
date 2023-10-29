@@ -33,5 +33,5 @@ public interface ExerciseService {
 
 
     //FOR WORKOUT
-    public ExerciseForWorkoutDTO getExerciseForWorkout(ExerciseForWorkoutEntity exerciseForWorkoutEntity);
+//    public ExerciseForWorkoutDTO getExerciseForWorkout(ExerciseForWorkoutEntity exerciseForWorkoutEntity);
 }
