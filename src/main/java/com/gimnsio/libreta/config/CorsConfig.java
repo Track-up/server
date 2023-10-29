@@ -15,9 +15,4 @@ public class CorsConfig implements WebMvcConfigurer {
                 .allowedOrigins("https://trackupweb.vercel.app");
     }
 
-    @Bean
-    SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
-        http.cors(cors -> cors.disable());
-        return http.build();
-    }
 }
