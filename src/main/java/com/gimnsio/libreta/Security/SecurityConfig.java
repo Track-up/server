@@ -83,6 +83,16 @@ public class SecurityConfig {
     // return new SessionRegistryImpl();
     // }
 
+
+    protected void configure(HttpSecurity httpSecurity)throws Exception{
+        httpSecurity.csrf().disable()
+                .cors().and()
+                .authorizeHttpRequests()
+                .anyRequest().authenticated().and()
+                .httpBasic();
+    }
+
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity, AuthenticationManager authenticationManager)
             throws Exception {
