@@ -16,8 +16,6 @@ public class UserDTO {
     private Long id;
     private String username;
     private String email;
-    private String password;
-//    private Set<RoutineEntity> routines;
     private Set<RoleEntity> roles;
     private Set<WorkoutEntity> workouts_done;
     private Date dateOfCreation;
