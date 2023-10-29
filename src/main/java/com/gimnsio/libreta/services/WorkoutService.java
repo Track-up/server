@@ -12,7 +12,7 @@ public interface WorkoutService {
 
     public WorkoutDTO createWorkout (Long routineId, Long userId, Long difficulty);
 
-    public WorkoutDTO startWorkout(WorkoutDTO workoutDTO);
+    public void startWorkout(WorkoutDTO workoutDTO);
 
-    public WorkoutDTO endWorkout(WorkoutDTO workoutDTO);
+    public void endWorkout(WorkoutDTO workoutDTO);
 }

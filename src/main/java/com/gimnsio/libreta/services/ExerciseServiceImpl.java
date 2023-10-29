@@ -6,7 +6,6 @@ import com.gimnsio.libreta.DTO.exercises.ExerciseToImportDTO;
 import com.gimnsio.libreta.Mapper.ExerciseMapper;
 import com.gimnsio.libreta.domain.Exercise;
 import com.gimnsio.libreta.persistence.entities.ExerciseEntity;
-import com.gimnsio.libreta.persistence.entities.ExerciseForWorkoutEntity;
 import com.gimnsio.libreta.persistence.repositories.BodyPartRepository;
 import com.gimnsio.libreta.persistence.repositories.EquipmentRepository;
 import com.gimnsio.libreta.persistence.repositories.ExerciseRepository;
@@ -146,10 +145,10 @@ public class ExerciseServiceImpl implements ExerciseService {
         }).collect(Collectors.toSet());
     }
 
-    @Override
-    public ExerciseForWorkoutDTO getExerciseForWorkout(ExerciseForWorkoutEntity exerciseForWorkoutEntity) {
-        return exerciseMapper.forWorkoutEntityToDTO(exerciseForWorkoutEntity);
-    }
+//    @Override
+//    public ExerciseForWorkoutDTO getExerciseForWorkout(ExerciseForWorkoutEntity exerciseForWorkoutEntity) {
+//        return exerciseMapper.forWorkoutEntityToDTO(exerciseForWorkoutEntity);
+//    }
 
 //    @Override
 //    public List<Exercise> getExercisesByMuscle(Long muscle_id, Pageable pageable) {
