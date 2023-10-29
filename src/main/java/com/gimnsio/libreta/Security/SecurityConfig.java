@@ -103,7 +103,7 @@ public class SecurityConfig {
         jwtAuthenticationFilter.setFilterProcessesUrl("/login");
 
         return httpSecurity
-                .cors(cors -> cors.disable())
+                .csrf().disable()
                 .authorizeHttpRequests(auth -> {
                     // auth.requestMatchers("/doc/swagger-ui.html").permitAll();
                     auth.anyRequest().permitAll();// .authenticated();
