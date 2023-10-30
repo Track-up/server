@@ -37,60 +37,13 @@ public class SecurityConfig {
         this.authorizationFilter = authorizationFilter;
     }
 
-    // no esta mal pero dice que mejor otra
-    // @Bean
-    // public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws
-    // Exception {
-    // return httpSecurity
-    // //.csrf().disable() // Cross-Site Request Forgery TODO minuto 25
-    // https://www.youtube.com/watch?v=pmSJTrOWi7w&ab_channel=UnProgramadorNace sino
-    // buscar + info. hace falta?
-    // .authorizeHttpRequests()
-    // .requestMatchers("/exercises").permitAll()
-    // .anyRequest().authenticated()
-    // .and()
-    // .formLogin().permitAll()
-    // .and()
-    // .build();
-    // }
-
-    // //El numero 2 del mismo video de arriba
-    // @Bean
-    // public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws
-    // Exception {
-    // return httpSecurity
-    // .authorizeHttpRequests(auth -> {
-    // auth.requestMatchers("/exercises").permitAll();
-    // auth.anyRequest().authenticated();
-    // })
-    // .formLogin().permitAll()
-    // .and()
-    // .sessionManagement()
-    // .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
-    // .invalidSessionUrl("/login")
-    // .maximumSessions(1)
-    // .expiredUrl("/login")
-    // .sessionRegistry(sessionRegistry())
-    // .and()
-    // .sessionFixation()
-    // .migrateSession()
-    // .and()
-    // .build();
-    // }
-    //
-    // @Bean
-    // public SessionRegistry sessionRegistry(){
-    // return new SessionRegistryImpl();
-    // }
-
-
-    protected void configure(HttpSecurity httpSecurity)throws Exception{
-        httpSecurity.csrf().disable()
-                .cors().and()
-                .authorizeHttpRequests()
-                .anyRequest().authenticated().and()
-                .httpBasic();
-    }
+//    protected void configure(HttpSecurity httpSecurity)throws Exception{
+//        httpSecurity.csrf().disable()
+//                .cors().and()
+//                .authorizeHttpRequests()
+//                .anyRequest().authenticated().and()
+//                .httpBasic();
+//    }
 
 
     @Bean
