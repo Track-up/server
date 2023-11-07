@@ -1,21 +1,30 @@
 package com.gimnsio.libreta.services;
 
+import com.gimnsio.libreta.DTO.exercises.ExerciseForRoutineDTO;
 import com.gimnsio.libreta.DTO.routines.*;
 import com.gimnsio.libreta.DTO.users.UserDTO;
 import com.gimnsio.libreta.Mapper.ExerciseMapper;
 import com.gimnsio.libreta.Mapper.RoutineMapper;
+import com.gimnsio.libreta.persistence.entities.ExerciseEntity;
 import com.gimnsio.libreta.persistence.entities.RoutineEntity;
+import com.gimnsio.libreta.persistence.entities.SerieExampleEntity;
 import com.gimnsio.libreta.persistence.repositories.RoutineRepository;
+import com.gimnsio.libreta.persistence.repositories.SerieExampleRepository;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class RoutineServiceImpl implements RoutineService {
 
     final private RoutineRepository routineRepository;
+
+    final private SerieExampleRepository serieExampleRepository;
 
     final private RoutineMapper routineMapper;
 
@@ -25,7 +34,8 @@ public class RoutineServiceImpl implements RoutineService {
 
     final private UserService userService;
 
-    public RoutineServiceImpl(RoutineRepository routineRepository, RoutineMapper routineMapper, ExerciseMapper exerciseMapper, ExerciseService exerciseService, UserService userService) {
+    public RoutineServiceImpl(RoutineRepository routineRepository, SerieExampleRepository serieExampleRepository, RoutineMapper routineMapper, ExerciseMapper exerciseMapper, ExerciseService exerciseService, UserService userService) {
+        this.serieExampleRepository = serieExampleRepository;
         this.routineMapper = routineMapper;
         this.routineRepository = routineRepository;
         this.exerciseMapper = exerciseMapper;
@@ -34,12 +44,18 @@ public class RoutineServiceImpl implements RoutineService {
     }
 
     @Override
-    public List<RoutineBasicsDTO> getAllRoutines(Pageable pageable) {
-        return routineRepository.findAll(pageable).stream().map(routineEntity -> {
+    public List<RoutineDTO> getAllRoutines(Pageable pageable) {
+        List<RoutineEntity> routineEntities = routineRepository.findAll(pageable).stream().collect(Collectors.toList());
+        List<RoutineDTO> routines = routineEntities.stream().map(routineEntity -> {
 
-            return routineMapper.entityToBasics(routineEntity);
+            return routineMapper.entityToDTO(routineEntity);
 
         }).collect(Collectors.toList());
+
+        for (int i = 0; i < routines.size(); i++) {
+            routines.set(i,setExercises(routineEntities.get(i),routines.get(i)));
+        }
+        return  routines;
     }
 
     @Override
@@ -48,10 +64,31 @@ public class RoutineServiceImpl implements RoutineService {
         Optional<RoutineEntity> routineEntityOptional = routineRepository.findById(id);
 
         if (routineEntityOptional.isPresent()) {
-            return routineMapper.mapRoutine(routineEntityOptional.get());
+            RoutineDTO routineDTO = routineMapper.entityToDTO(routineEntityOptional.get());
+            return setExercises(routineEntityOptional.get(), routineDTO);
         } else {
             throw new NoSuchElementException("No se encontró la rutina con ID: " + id);
         }
+    }
+
+    private RoutineDTO setExercises(RoutineEntity routineEntity, RoutineDTO routineDTO) {
+        List<ExerciseForRoutineDTO> exercises = new ArrayList<>();
+        List<SerieExampleEntity> series = serieExampleRepository.findByRoutine(routineEntity);
+        for (SerieExampleEntity serie:series) {
+            boolean isExercise= false;
+            for (ExerciseForRoutineDTO exercise:exercises) {
+                if (exercise.getId().equals(serie.getExercise().getId())){
+                    isExercise = true;
+                    break;
+                }
+            }
+            if (!isExercise){
+                exercises.add(new ExerciseForRoutineDTO(serie.getExercise().getId(),serie.getExercise().getName(),serie.getExercise().getGifUrl(),serie.getExercise().getDescription(),series.stream().filter(serieStream-> serie.getExercise().getId().equals(serieStream.getExercise().getId())).count()));
+            }
+
+        }
+        routineDTO.setExercises(exercises);
+        return routineDTO;
     }
 
     @Override
@@ -61,33 +98,37 @@ public class RoutineServiceImpl implements RoutineService {
 
     @Override
     public RoutineIdDTO createRoutine(RoutineNewDTO routineNewDTO) {
+
         checkUser(routineNewDTO.getCreatorId());
         if (routineNewDTO.getImage().isEmpty()) {
-            routineNewDTO.setImage(exerciseService.getExerciseById(routineNewDTO.getExercisesId().get(0)).getGifUrl());//para un futuro en el mapper directamente
+            routineNewDTO.setImage(exerciseService.getExerciseById(routineNewDTO.getExercises().get(0).getId()).getGifUrl());//para un futuro en el mapper directamente
         }
         RoutineEntity routineEntity = routineMapper.newToEntity(routineNewDTO);
-        routineEntity.setDateOfCreation(new Date());
-        routineEntity.setDateOfLastEdition(new Date());
-        ;
-
-        return routineMapper.entityToIdDTO(routineRepository.save(routineEntity));
+        routineEntity = routineRepository.save(routineEntity);
+        for (ExerciseForRoutineDTO exercise:routineNewDTO.getExercises()) {
+            ExerciseEntity exerciseEntity = exerciseService.getExerciseById(exercise.getId());
+            for (int i = 0; i < exercise.getNumSeries(); i++) {
+                serieExampleRepository.save(new SerieExampleEntity(exerciseEntity,routineEntity));
+            }
+        }
+        return routineMapper.entityToIdDTO(routineEntity);
     }
 
     @Override
     public RoutineDTO updateRoutine(RoutineEditDTO routineEditDTO) {
-
-        checkRoutine(routineEditDTO.getId());
-        checkUser(routineEditDTO.getCreatorId());
-        Optional<RoutineEntity> routineEntityOptional = routineRepository.findById(routineEditDTO.getId());
-        if (routineEntityOptional.isEmpty()) {
-            throw new NoSuchElementException("No se encontró la rutina con ID: " + routineEditDTO.getId());
-        }
-        RoutineEntity routineEntity = routineEntityOptional.get();
-        routineMapper.UpdateRoutineFromEditDTO(routineEditDTO, routineEntity);
-//        RoutineEntity routineEntity = routineMapper.editToEntity(routineEditDTO);
-//        routineEntity.setDateOfCreation(routineEntityOptional.get().getDateOfCreation());
-
-        return routineMapper.mapRoutine(routineRepository.save(routineEntity));
+        return null;
+//        checkRoutine(routineEditDTO.getId());
+//        checkUser(routineEditDTO.getCreatorId());
+//        Optional<RoutineEntity> routineEntityOptional = routineRepository.findById(routineEditDTO.getId());
+//        if (routineEntityOptional.isEmpty()) {
+//            throw new NoSuchElementException("No se encontró la rutina con ID: " + routineEditDTO.getId());
+//        }
+//        RoutineEntity routineEntity = routineEntityOptional.get();
+//        routineMapper.UpdateRoutineFromEditDTO(routineEditDTO, routineEntity);
+////        RoutineEntity routineEntity = routineMapper.editToEntity(routineEditDTO);
+////        routineEntity.setDateOfCreation(routineEntityOptional.get().getDateOfCreation());
+//
+//        return routineMapper.entityToDTO(routineRepository.save(routineEntity));
     }
 
     private void checkUser(Long id) {
@@ -121,6 +162,7 @@ public class RoutineServiceImpl implements RoutineService {
 
     @Override
     public List<RoutineBasicsDTO> getRoutinesByUsername(String username, Pageable pageable) {
+
         return routineRepository.findByUsername(username, pageable)
                 .stream()
                 .map(routineMapper::entityToBasics)
@@ -128,31 +170,36 @@ public class RoutineServiceImpl implements RoutineService {
     }
 
     @Override
-    public List<RoutineBasicsDTO> getRoutinesByName(String name, Pageable pageable) {
+    public List<RoutineDTO> getRoutinesByName(String name, Pageable pageable) {
+        List<RoutineEntity> routineEntities = routineRepository.findByName(name, pageable);
 
-        return routineRepository.findByName(name, pageable)
-                .stream()
-                .map(routineMapper::entityToBasics)
+        List<RoutineDTO> routines = routineEntities.stream()
+                .map(routineMapper::entityToDTO)
                 .collect(Collectors.toList());
+
+        for (int i = 0; i < routines.size(); i++) {
+            routines.set(i,setExercises(routineEntities.get(i),routines.get(i)));
+        }
+        return  routines;
     }
 
-    @Override
-    public List<List<RoutineBasicsDTO>> getRoutinesByString(String name, Pageable pageable) {
-        List<List<RoutineBasicsDTO>> pageList = new ArrayList<>();
-        pageList.add(getRoutinesByName(name, pageable));
-        pageList.add(getRoutinesByUsername(name, pageable));
-        return pageList;
-
-    }
+//    @Override
+//    public List<List<RoutineBasicsDTO>> getRoutinesByString(String name, Pageable pageable) {
+//        List<List<?>> pageList = new ArrayList<>();
+//        pageList.add(getRoutinesByName(name, pageable));
+//        pageList.add(getRoutinesByUsername(name, pageable));
+//        return pageList;
+//    }
 
     @Override
     public RoutineForWorkoutDTO getRoutineForWorkout(long id) {
-        Optional<RoutineEntity> routineEntityOptional = routineRepository.findById(id);
-
-        if (routineEntityOptional.isPresent()) {
-            return routineMapper.entityToWorkout(routineEntityOptional.get());
-        } else {
-            throw new NoSuchElementException("No se encontró la rutina con ID: " + id);
-        }
+        return null;
+//        Optional<RoutineEntity> routineEntityOptional = routineRepository.findById(id);
+//
+//        if (routineEntityOptional.isPresent()) {
+//            return routineMapper.entityToWorkout(routineEntityOptional.get());
+//        } else {
+//            throw new NoSuchElementException("No se encontró la rutina con ID: " + id);
+//        }
     }
 }

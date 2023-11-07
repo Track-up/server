@@ -28,7 +28,7 @@ public class RoutineRestController {
             @RequestParam(name = "name", required = false) String name,
             @PageableDefault(size = 20) Pageable pageable) {
         if (name!= null && !name.isEmpty()){
-            return ResponseEntity.ok(this.routineService.getRoutinesByString(name,pageable));
+            return ResponseEntity.ok(this.routineService.getRoutinesByName(name,pageable));
         }else {
             return ResponseEntity.ok(this.routineService.getAllRoutines(pageable));
         }
