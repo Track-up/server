@@ -2,13 +2,10 @@ package com.gimnsio.libreta.Mapper;
 
 import com.gimnsio.libreta.DTO.exercises.ExerciseDTO;
 import com.gimnsio.libreta.DTO.exercises.ExerciseForRoutineDTO;
-import com.gimnsio.libreta.DTO.exercises.ExerciseForWorkoutDTO;
 import com.gimnsio.libreta.DTO.exercises.ExerciseMinimalDTO;
 import com.gimnsio.libreta.domain.Exercise;
 import com.gimnsio.libreta.persistence.entities.ExerciseEntity;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.Mappings;
 
 @Mapper(componentModel = "spring", uses = {MuscleMapper.class, EquipmentMapper.class, BodyPartMapper.class})
 public interface ExerciseMapper {
@@ -24,6 +21,8 @@ public interface ExerciseMapper {
     public ExerciseForRoutineDTO entityToForRoutine(ExerciseEntity exerciseEntity);
 
     public ExerciseDTO entityToDTO(ExerciseEntity exerciseEntity);
+
+    public ExerciseForRoutineDTO seriesToForRoutine(ExerciseEntity exerciseEntity);
 //    @Mappings(value = {
 //            @Mapping(target = "name", expression = "java(exerciseForWorkoutEntity.getExercise().getName())"),
 //            @Mapping(target = "image", expression = "java(exerciseForWorkoutEntity.getExercise().getGifUrl())"),

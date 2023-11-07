@@ -11,7 +11,6 @@ public class ExerciseForRoutineDTO {
     private String name;
     private String gifUrl;
     private String description;
-//    private BodyPartEntity bodyPart; //hace falta realmente?
-//    private EquipmentEntity equipment;
-//    private MuscleEntity target;
+    private Long numSeries;
+
 }

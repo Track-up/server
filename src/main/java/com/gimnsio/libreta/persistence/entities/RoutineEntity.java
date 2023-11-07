@@ -18,13 +18,6 @@ public class RoutineEntity {
     private String name;
     private String image;
 
-    @ManyToMany
-    @JoinTable(
-            name = "routines_exercises",
-            joinColumns = @JoinColumn(name = "routine_id"),
-            inverseJoinColumns = @JoinColumn(name = "exercise_id")
-    )
-    private List<ExerciseEntity> exercises;
 
     // Relación muchos a uno con la clase User
     @ManyToOne

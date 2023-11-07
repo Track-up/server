@@ -1,5 +1,6 @@
 package com.gimnsio.libreta.DTO.routines;
 
+import com.gimnsio.libreta.DTO.exercises.ExerciseForRoutineDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -11,7 +12,7 @@ public class RoutineNewDTO {
 
     private String name;
     private String image;
-    private List<Long> exercisesId;
+    private List<ExerciseForRoutineDTO> exercises;
     private Long creatorId;
     private boolean isPublic;
 
