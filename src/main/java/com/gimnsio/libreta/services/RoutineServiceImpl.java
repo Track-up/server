@@ -171,7 +171,7 @@ public class RoutineServiceImpl implements RoutineService {
 
     @Override
     public List<RoutineDTO> getRoutinesByName(String name, Pageable pageable) {
-        List<RoutineEntity> routineEntities = routineRepository.findByName(name, pageable);
+        List<RoutineEntity> routineEntities = routineRepository.findByName(name.toLowerCase(), pageable);
 
         List<RoutineDTO> routines = routineEntities.stream()
                 .map(routineMapper::entityToDTO)

@@ -1,7 +1,6 @@
 package com.gimnsio.libreta.persistence.repositories;
 
 import com.gimnsio.libreta.persistence.entities.RoutineEntity;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -22,6 +21,6 @@ public interface RoutineRepository extends JpaRepository<RoutineEntity,Long> {
     @Query(value = "select r from routines r where r.creator.username like %:username%")
     List<RoutineEntity> findByUsername(@Param("username") String username, Pageable pageable);
 
-    @Query(value = "select r from routines r where r.name like %:name%")
+    @Query(value = "select r from routines r where lower(r.name) like %:name%")
     List<RoutineEntity> findByName(@Param("name") String name, Pageable pageable);
 }
