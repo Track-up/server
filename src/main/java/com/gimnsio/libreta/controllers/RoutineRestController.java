@@ -4,7 +4,9 @@ import com.gimnsio.libreta.DTO.routines.RoutineEditDTO;
 import com.gimnsio.libreta.DTO.routines.RoutineNewDTO;
 import com.gimnsio.libreta.services.RoutineService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +29,7 @@ public class RoutineRestController {
     public ResponseEntity<?> getRoutines(
             @RequestParam(name = "name", required = false) String name,
             @PageableDefault(size = 20) Pageable pageable) {
+        pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("id").descending());
         if (name!= null && !name.isEmpty()){
             return ResponseEntity.ok(this.routineService.getRoutinesByName(name,pageable));
         }else {
