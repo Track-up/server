@@ -1,9 +1,6 @@
 package com.gimnsio.libreta.Mapper;
 
-import com.gimnsio.libreta.DTO.routines.RoutineBasicsDTO;
-import com.gimnsio.libreta.DTO.routines.RoutineDTO;
-import com.gimnsio.libreta.DTO.routines.RoutineIdDTO;
-import com.gimnsio.libreta.DTO.routines.RoutineNewDTO;
+import com.gimnsio.libreta.DTO.routines.*;
 import com.gimnsio.libreta.persistence.entities.RoutineEntity;
 import com.gimnsio.libreta.persistence.entities.UserEntity;
 import org.mapstruct.Mapper;
@@ -30,10 +27,10 @@ public interface RoutineMapper {
 //            //@Mapping(target = "isPublic", ignore = true) // Assuming you don't need isPublic in RoutineBasicsDTO
 //    })
     public RoutineBasicsDTO entityToBasics(RoutineEntity routineEntity);
-//
-//    public RoutineForWorkoutDTO entityToWorkout(RoutineEntity routineEntity);
-//
-//
+
+    public RoutineForWorkoutDTO entityToWorkout(RoutineEntity routineEntity);//EPA EPA SIGUE AQUI
+
+
     @Mappings({
             @Mapping(target = "creator", expression = "java(new UserEntity(routineNewDTO.getCreatorId()))"),
             @Mapping(target = "dateOfCreation", expression = "java(new Date())"),
