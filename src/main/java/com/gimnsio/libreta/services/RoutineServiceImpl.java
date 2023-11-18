@@ -1,5 +1,6 @@
 package com.gimnsio.libreta.services;
 
+import com.gimnsio.libreta.DTO.exercises.ExerciseForNewRoutineDTO;
 import com.gimnsio.libreta.DTO.exercises.ExerciseForRoutineDTO;
 import com.gimnsio.libreta.DTO.routines.*;
 import com.gimnsio.libreta.DTO.users.UserDTO;
@@ -67,7 +68,7 @@ public class RoutineServiceImpl implements RoutineService {
             RoutineDTO routineDTO = routineMapper.entityToDTO(routineEntityOptional.get());
             return setExercises(routineEntityOptional.get(), routineDTO);
         } else {
-            throw new NoSuchElementException("No se encontró la rutina con ID: " + id);
+            throw new NoSuchElementException("No se encontró la rutina con ID: " + id);//NO SUBE AL FRONT
         }
     }
 
@@ -105,7 +106,7 @@ public class RoutineServiceImpl implements RoutineService {
         }
         RoutineEntity routineEntity = routineMapper.newToEntity(routineNewDTO);
         routineEntity = routineRepository.save(routineEntity);
-        for (ExerciseForRoutineDTO exercise:routineNewDTO.getExercises()) {
+        for (ExerciseForNewRoutineDTO exercise:routineNewDTO.getExercises()) {
             ExerciseEntity exerciseEntity = exerciseService.getExerciseById(exercise.getId());
             for (int i = 0; i < exercise.getNumSeries(); i++) {
                 serieExampleRepository.save(new SerieExampleEntity(exerciseEntity,routineEntity));
