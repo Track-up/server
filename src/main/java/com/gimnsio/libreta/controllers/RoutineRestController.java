@@ -45,8 +45,12 @@ public class RoutineRestController {
 
     @PostMapping
     public ResponseEntity<?> createRoutine(@RequestBody RoutineNewDTO routineNewDTO) {
-
         Map<String, Object> httpResponse = new HashMap<>();
+        if (routineNewDTO.getExercises().isEmpty()){
+            httpResponse.put("message", "La rutina no tiene ejercicios :(");
+            return ResponseEntity.badRequest().body(httpResponse);
+        }
+        
         try {
             httpResponse.put("id", this.routineService.createRoutine(routineNewDTO).getId());
             httpResponse.put("message", "Rutina creada con exito :)");
