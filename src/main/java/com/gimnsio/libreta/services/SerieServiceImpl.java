@@ -3,7 +3,9 @@ package com.gimnsio.libreta.services;
 import com.gimnsio.libreta.DTO.serie.SerieForExerciseDTO;
 import com.gimnsio.libreta.Mapper.SerieMapper;
 import com.gimnsio.libreta.exception.ApiRequestException;
+import com.gimnsio.libreta.persistence.entities.ExerciseEntity;
 import com.gimnsio.libreta.persistence.entities.SerieEntity;
+import com.gimnsio.libreta.persistence.entities.WorkoutEntity;
 import com.gimnsio.libreta.persistence.repositories.SerieRepository;
 import com.gimnsio.libreta.persistence.repositories.WorkoutRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +40,27 @@ public class SerieServiceImpl implements SerieService{
     public SerieForExerciseDTO saveSerie(SerieEntity serie) {
         return serieMapper.entityToForExerciseDTO(serieRepository.save(serie));
     }
+
+    @Override
+    public SerieForExerciseDTO createSerie(ExerciseEntity exercise, long difficulty, SerieEntity serie, WorkoutEntity workout) {
+        if (difficulty==2){
+            if (serie.getReps()>12){
+                serie.setReps(serie.getReps()+1);
+            }else{
+                serie.setReps(6L);
+                serie.setKg(serie.getKg()+1);
+            }
+        } else if (difficulty==3){
+            if (serie.getReps()>12){
+                serie.setReps(serie.getReps()+2);
+            }else{
+                serie.setReps(6L);
+                serie.setKg(serie.getKg()+2);
+            }
+        }
+        return saveSerie(new SerieEntity(exercise, serie.getReps(), serie.getKg(), workout));
+    }
+
 
     @Override
     public List<SerieEntity> getSeriesOfLastWorkoutFromExerciseAndUser(long exerciseId, long userId) {
