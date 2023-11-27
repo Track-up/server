@@ -1,8 +1,8 @@
 package com.gimnsio.libreta.services;
 
+import com.gimnsio.libreta.DTO.exercises.ExerciseForRoutineDTO;
 import com.gimnsio.libreta.DTO.exercises.ExerciseForWorkoutDTO;
-import com.gimnsio.libreta.DTO.exercises.ExerciseMinimalDTO;
-import com.gimnsio.libreta.DTO.routines.RoutineForWorkoutDTO;
+import com.gimnsio.libreta.DTO.routines.RoutineDTO;
 import com.gimnsio.libreta.DTO.serie.SerieForExerciseDTO;
 import com.gimnsio.libreta.DTO.workout.WorkoutDTO;
 import com.gimnsio.libreta.Mapper.WorkoutMapper;
@@ -46,84 +46,120 @@ public class WorkoutServiceImpl implements WorkoutService {
 
     @Override
     public WorkoutDTO createWorkout(Long routineId, Long userId, Long difficulty) {
+        //Busqueda de rutina
+        RoutineDTO routineDTO = routineService.getRoutineById(routineId);
 
-        RoutineForWorkoutDTO routine = routineService.getRoutineForWorkout(routineId);
-
-        List<Long> exercisesIds = new ArrayList<>();
-        for (ExerciseMinimalDTO exercise : routine.getExercises()) {
-            exercisesIds.add(exercise.getId());
-        }
-
+        //Creación de workout
         WorkoutEntity workout = new WorkoutEntity();
         workout.setCreationDate(new Date());
         workout.setWorker(userService.getUserEntityById(userId));
         workout = workoutRepository.save(workout);
         WorkoutDTO workoutDTO = workoutMapper.entityToDTO(workout);
-        List<ExerciseForWorkoutDTO> exerciseForWorkoutDTOs = new ArrayList<>();
 
-        for (Long exerciseId : exercisesIds) {
-            ExerciseEntity exercise = exerciseService.getExerciseById(exerciseId);
-            List<SerieForExerciseDTO> series = new ArrayList<>();
-            List<SerieEntity> seriesEntity = serieService.getSeriesOfLastWorkoutFromExerciseAndUser(exerciseId, workout.getWorker().getId());
 
-            if (seriesEntity.isEmpty()) {//TODO aqui le paso un ex4wo con series null y me devolverá un kg para modificar :) MUY MEJORABLE
-                for (int i = 0; i < 3; i++) {
-                    SerieEntity serieEntity = new SerieEntity();
-                    serieEntity.setKg(50);
-                    serieEntity.setReps(10);
-                    serieEntity.setExercise(exercise);
-                    serieEntity.setWorkout(workout);
-                    series.add(serieService.saveSerie(serieEntity));
+        //Logica de series :)=)( y creación del DTO
+        List<ExerciseForWorkoutDTO> exerciseForWorkoutDTOS = new ArrayList<>();
+        for (ExerciseForRoutineDTO exerciseForRoutineDTO : routineDTO.getExercises()) {
+            List<SerieForExerciseDTO> seriesForExerciseDTO = new ArrayList<>();
+            ExerciseEntity exercise = exerciseService.getExerciseById(exerciseForRoutineDTO.getId());
+            List<SerieEntity> series = serieService.getSeriesOfLastWorkoutFromExerciseAndUser(exercise.getId(), userId);//trae todas las series
+            if (!series.isEmpty()) {
+                for (int i = 0; i < exerciseForRoutineDTO.getNumSeries(); i++) {
+                    if (i < series.size() && series.get(i) != null) {
+                        seriesForExerciseDTO.add(serieService.createSerie(exercise,difficulty,series.get(i),workout));
+                    } else {
+                        seriesForExerciseDTO.add(serieService.saveSerie(new SerieEntity(exercise, seriesForExerciseDTO.get(seriesForExerciseDTO.size() - 1).getReps(), seriesForExerciseDTO.get(seriesForExerciseDTO.size() - 1).getKg(), workout)));
+                    }
                 }
-
             } else {
-                if (difficulty == 1) {
-                    for (SerieEntity serie : seriesEntity) {
-                        SerieEntity serieEntity = new SerieEntity();
-                        serieEntity.setKg(serie.getKg());
-                        serieEntity.setReps(serie.getReps());
-                        serieEntity.setExercise(exercise);
-                        serieEntity.setWorkout(workout);
-                        series.add(serieService.saveSerie(serieEntity));
-                    }
-                } else if (difficulty == 2) {
-                    for (SerieEntity serie : seriesEntity) {
-                        SerieEntity serieEntity = new SerieEntity();
-                        if (serie.getReps() > 9) {
-                            serieEntity.setKg(serie.getKg() + 1);
-                            serieEntity.setReps(6);
-                        } else {
-                            serieEntity.setKg(serie.getKg());
-                            serieEntity.setReps(serie.getReps() + 1);
-                        }
-                        serieEntity.setExercise(exercise);
-                        serieEntity.setWorkout(workout);
-                        series.add(serieService.saveSerie(serieEntity));
-                    }
-                } else if (difficulty == 3) {
-                    for (SerieEntity serie : seriesEntity) {
-                        SerieEntity serieEntity = new SerieEntity();
-                        if (serie.getReps() > 8) {
-                            serieEntity.setKg(serie.getKg() + 2.5);
-                            serieEntity.setReps(6);
-                        } else {
-                            serieEntity.setKg(serie.getKg());
-                            serieEntity.setReps(serie.getReps() + 2);
-                        }
-                        serieEntity.setExercise(exercise);
-                        serieEntity.setWorkout(workout);
-                        series.add(serieService.saveSerie(serieEntity));
-                    }
+                for (int i = 0; i < 3; i++) {
+                    seriesForExerciseDTO.add(serieService.saveSerie(new SerieEntity(exercise, 0L, (double) 0, workout)));
                 }
-
             }
-            exerciseForWorkoutDTOs.add(new ExerciseForWorkoutDTO(exercise.getName(),exercise.getGifUrl(),exerciseId,series));
+            exerciseForWorkoutDTOS.add(new ExerciseForWorkoutDTO(exercise.getName(), exercise.getGifUrl(), exercise.getId(), seriesForExerciseDTO));
         }
-
-        workoutDTO.setExercisesOfWorkout(exerciseForWorkoutDTOs);
+        workoutDTO.setExercisesOfWorkout(exerciseForWorkoutDTOS);
         return workoutDTO;
 
+
+//        List<Long> exercisesIds = new ArrayList<>();
+//        for (ExerciseForRoutineDTO exercise : routine.getExercises()) {
+//            exercisesIds.add(exercise.getId());
+//        }
+//
+//        WorkoutEntity workout = new WorkoutEntity();
+//        workout.setCreationDate(new Date());
+//        workout.setWorker(userService.getUserEntityById(userId));
+//        workout = workoutRepository.save(workout);
+//        WorkoutDTO workoutDTO = workoutMapper.entityToDTO(workout);
+//        List<ExerciseForWorkoutDTO> exerciseForWorkoutDTOs = new ArrayList<>();
+//
+//
+//
+//
+//        for (Long exerciseId : exercisesIds) {
+//            ExerciseEntity exercise = exerciseService.getExerciseById(exerciseId);
+//            List<SerieForExerciseDTO> series = new ArrayList<>();
+//            List<SerieEntity> seriesEntity = serieService.getSeriesOfLastWorkoutFromExerciseAndUser(exerciseId, workout.getWorker().getId());
+//
+//            if (seriesEntity.isEmpty()) {//TODO aqui le paso un ex4wo con series null y me devolverá un kg para modificar :) MUY MEJORABLE
+//                for (int i = 0; i < 3; i++) {
+//                    SerieEntity serieEntity = new SerieEntity();
+//                    serieEntity.setKg(50);
+//                    serieEntity.setReps(10);
+//                    serieEntity.setExercise(exercise);
+//                    serieEntity.setWorkout(workout);
+//                    series.add(serieService.saveSerie(serieEntity));
+//                }
+//
+//            } else {
+//                if (difficulty == 1) {
+//                    for (SerieEntity serie : seriesEntity) {
+//                        SerieEntity serieEntity = new SerieEntity();
+//                        serieEntity.setKg(serie.getKg());
+//                        serieEntity.setReps(serie.getReps());
+//                        serieEntity.setExercise(exercise);
+//                        serieEntity.setWorkout(workout);
+//                        series.add(serieService.saveSerie(serieEntity));
+//                    }
+//                } else if (difficulty == 2) {
+//                    for (SerieEntity serie : seriesEntity) {
+//                        SerieEntity serieEntity = new SerieEntity();
+//                        if (serie.getReps() > 9) {
+//                            serieEntity.setKg(serie.getKg() + 1);
+//                            serieEntity.setReps(6);
+//                        } else {
+//                            serieEntity.setKg(serie.getKg());
+//                            serieEntity.setReps(serie.getReps() + 1);
+//                        }
+//                        serieEntity.setExercise(exercise);
+//                        serieEntity.setWorkout(workout);
+//                        series.add(serieService.saveSerie(serieEntity));
+//                    }
+//                } else if (difficulty == 3) {
+//                    for (SerieEntity serie : seriesEntity) {
+//                        SerieEntity serieEntity = new SerieEntity();
+//                        if (serie.getReps() > 8) {
+//                            serieEntity.setKg(serie.getKg() + 2.5);
+//                            serieEntity.setReps(6);
+//                        } else {
+//                            serieEntity.setKg(serie.getKg());
+//                            serieEntity.setReps(serie.getReps() + 2);
+//                        }
+//                        serieEntity.setExercise(exercise);
+//                        serieEntity.setWorkout(workout);
+//                        series.add(serieService.saveSerie(serieEntity));
+//                    }
+//                }
+//
+//            }
+//            exerciseForWorkoutDTOs.add(new ExerciseForWorkoutDTO(exercise.getName(),exercise.getGifUrl(),exerciseId,series));
+//        }
+//
+//        workoutDTO.setExercisesOfWorkout(exerciseForWorkoutDTOs);
+//        return workoutDTO;
     }
+
 
     @Override
     public void startWorkout(WorkoutDTO workoutDTO) {
@@ -175,4 +211,7 @@ public class WorkoutServiceImpl implements WorkoutService {
         workoutRepository.save(existingWorkout);
         workoutDTO.setEndDate(new Date());
     }
+
+
+
 }

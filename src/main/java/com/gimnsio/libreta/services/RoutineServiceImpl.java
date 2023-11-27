@@ -194,13 +194,15 @@ public class RoutineServiceImpl implements RoutineService {
 
     @Override
     public RoutineForWorkoutDTO getRoutineForWorkout(long id) {
-        return null;
-//        Optional<RoutineEntity> routineEntityOptional = routineRepository.findById(id);
-//
-//        if (routineEntityOptional.isPresent()) {
-//            return routineMapper.entityToWorkout(routineEntityOptional.get());
-//        } else {
-//            throw new NoSuchElementException("No se encontró la rutina con ID: " + id);
-//        }
+
+        Optional<RoutineEntity> routineEntityOptional = routineRepository.findById(id);
+
+        if (routineEntityOptional.isPresent()) {
+            RoutineForWorkoutDTO routineForWorkoutDTO = routineMapper.entityToWorkout(routineEntityOptional.get());
+
+            return routineForWorkoutDTO;
+        } else {
+            throw new NoSuchElementException("No se encontró la rutina con ID: " + id);
+        }
     }
 }

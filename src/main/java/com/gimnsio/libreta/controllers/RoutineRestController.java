@@ -50,7 +50,7 @@ public class RoutineRestController {
             httpResponse.put("message", "La rutina no tiene ejercicios :(");
             return ResponseEntity.badRequest().body(httpResponse);
         }
-        
+
         try {
             httpResponse.put("id", this.routineService.createRoutine(routineNewDTO).getId());
             httpResponse.put("message", "Rutina creada con exito :)");
