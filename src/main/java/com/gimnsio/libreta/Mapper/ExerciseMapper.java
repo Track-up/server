@@ -3,6 +3,7 @@ package com.gimnsio.libreta.Mapper;
 import com.gimnsio.libreta.DTO.exercises.ExerciseDTO;
 import com.gimnsio.libreta.DTO.exercises.ExerciseForRoutineDTO;
 import com.gimnsio.libreta.DTO.exercises.ExerciseMinimalDTO;
+import com.gimnsio.libreta.DTO.exercises.ExerciseNewDTO;
 import com.gimnsio.libreta.domain.Exercise;
 import com.gimnsio.libreta.persistence.entities.ExerciseEntity;
 import org.mapstruct.Mapper;
@@ -23,6 +24,8 @@ public interface ExerciseMapper {
     public ExerciseDTO entityToDTO(ExerciseEntity exerciseEntity);
 
     public ExerciseForRoutineDTO seriesToForRoutine(ExerciseEntity exerciseEntity);
+
+    ExerciseEntity newToEntity(ExerciseNewDTO exerciseNewDTO);
 //    @Mappings(value = {
 //            @Mapping(target = "name", expression = "java(exerciseForWorkoutEntity.getExercise().getName())"),
 //            @Mapping(target = "image", expression = "java(exerciseForWorkoutEntity.getExercise().getGifUrl())"),

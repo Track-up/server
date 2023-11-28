@@ -1,6 +1,7 @@
 package com.gimnsio.libreta.persistence.repositories;
 
 
+import com.gimnsio.libreta.DTO.muscles.MusclePercentDTO;
 import com.gimnsio.libreta.persistence.entities.MuscleEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -9,5 +10,8 @@ import org.springframework.stereotype.Repository;
 public interface MuscleRepository extends JpaRepository<MuscleEntity, Long> {
 
     MuscleEntity findByName(String name);
+
+
+
 
 }

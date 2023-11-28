@@ -5,10 +5,8 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class MuscleForExerciseDTO {
+public class MusclePercentDTO {
 
-    private Long id;
     private String name;
     private Double percent;
-
 }

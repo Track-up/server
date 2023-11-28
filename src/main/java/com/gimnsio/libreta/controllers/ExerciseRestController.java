@@ -1,7 +1,9 @@
 package com.gimnsio.libreta.controllers;
 
+import com.gimnsio.libreta.DTO.exercises.ExerciseNewDTO;
 import com.gimnsio.libreta.DTO.exercises.ExerciseToImportDTO;
 import com.gimnsio.libreta.domain.Exercise;
+import com.gimnsio.libreta.persistence.entities.ExerciseEntity;
 import com.gimnsio.libreta.services.ExerciseService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Pageable;
@@ -72,7 +74,7 @@ public class ExerciseRestController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createExercise(@RequestBody Exercise exercise) {
+    public ResponseEntity<?> createExercise(@RequestBody ExerciseNewDTO exercise) {
         return ResponseEntity.ok(exerciseService.createExercise(exercise));
     }
 

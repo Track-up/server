@@ -1,20 +1,24 @@
 package com.gimnsio.libreta.services;
 
 import com.gimnsio.libreta.DTO.exercises.ExerciseDTO;
-import com.gimnsio.libreta.DTO.exercises.ExerciseForWorkoutDTO;
+import com.gimnsio.libreta.DTO.exercises.ExerciseNewDTO;
 import com.gimnsio.libreta.DTO.exercises.ExerciseToImportDTO;
+import com.gimnsio.libreta.DTO.muscles.MusclePercentIdDTO;
 import com.gimnsio.libreta.Mapper.ExerciseMapper;
+import com.gimnsio.libreta.Mapper.MuscleMapper;
 import com.gimnsio.libreta.domain.Exercise;
 import com.gimnsio.libreta.persistence.entities.ExerciseEntity;
-import com.gimnsio.libreta.persistence.repositories.BodyPartRepository;
-import com.gimnsio.libreta.persistence.repositories.EquipmentRepository;
-import com.gimnsio.libreta.persistence.repositories.ExerciseRepository;
-import com.gimnsio.libreta.persistence.repositories.MuscleRepository;
+import com.gimnsio.libreta.persistence.entities.MuscleEntity;
+import com.gimnsio.libreta.persistence.entities.MuscleForExerciseEntity;
+import com.gimnsio.libreta.persistence.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,6 +35,10 @@ public class ExerciseServiceImpl implements ExerciseService {
     EquipmentRepository equipmentRepository;
     @Autowired
     MuscleRepository muscleRepository;
+    @Autowired
+    MuscleMapper muscleMapper;
+    @Autowired
+    MuscleForExerciseRepository muscleForExerciseRepository;
 
 
     //AQUÍ ACABA
@@ -43,9 +51,14 @@ public class ExerciseServiceImpl implements ExerciseService {
     @Override
     public List<ExerciseDTO> getAllExercises(Pageable pageable) {
 
-        return this.exerciseRepository.findAll(pageable).stream().map(exerciseEntity -> {
+        List<ExerciseDTO> exercises = this.exerciseRepository.findAll(pageable).stream().map(exerciseEntity -> {
             return exerciseMapper.entityToDTO(exerciseEntity);
         }).collect(Collectors.toList());
+        for (ExerciseDTO exercise: exercises) {
+            List<MuscleForExerciseEntity> muscleForExerciseEntity = muscleForExerciseRepository.findByExercise_Id(exercise.getId());
+            exercise.setMuscles(muscleMapper.musclePercentEntityToDTO(muscleForExerciseEntity));
+        }
+        return exercises;
     }
 
     @Override
@@ -82,14 +95,22 @@ public class ExerciseServiceImpl implements ExerciseService {
     }
 
     @Override
-    public Exercise createExercise(Exercise exercise) {
-        return exerciseMapper.mapExercise(exerciseRepository.save(exerciseMapper.mapExerciseEntity(exercise)));
+    public ExerciseEntity createExercise(ExerciseNewDTO exercise) {
+
+        ExerciseEntity exerciseEntity = exerciseRepository.save(exerciseMapper.newToEntity(exercise));
+        for (MusclePercentIdDTO muscle : exercise.getMuscles()) {
+            MuscleEntity muscleEntity = new MuscleEntity();
+            muscle.setId(muscle.getId());
+            MuscleForExerciseEntity muscleForExerciseEntity = new MuscleForExerciseEntity(exerciseEntity,muscleEntity, muscle.getPercent() );
+        }
+
+        return exerciseEntity;
     }
 
     @Override
     public void deleteExercise(Long id) {
         Optional<ExerciseEntity> optionalExerciseEntity = exerciseRepository.findById(id);
-        if (optionalExerciseEntity.isPresent()){
+        if (optionalExerciseEntity.isPresent()) {
             exerciseRepository.delete(optionalExerciseEntity.get());
         } else {
             throw new NoSuchElementException("No se encontró el ejercicio con el ID: " + id);
@@ -104,25 +125,24 @@ public class ExerciseServiceImpl implements ExerciseService {
 //        return null;
     }
 
-    public Set<ExerciseEntity> createExercises (Set<ExerciseToImportDTO> exercisesToImportDTO){
-        Set<ExerciseEntity> exercisesSaved = new HashSet<>();
-        for (ExerciseToImportDTO exercise: exercisesToImportDTO) {
-            ExerciseEntity exerciseEntity = new ExerciseEntity();
-            //Mapeamos manualmente
-            exerciseEntity.setId(Long.parseLong(exercise.getId()));
-            exerciseEntity.setName(exercise.getName());
-            exerciseEntity.setTarget(muscleRepository.findByName(exercise.getTarget()));
-            exerciseEntity.setEquipment(equipmentRepository.findByName(exercise.getEquipment()));
-            exerciseEntity.setGifUrl(exercise.getGifUrl());
-            exerciseEntity.setBodyPart(bodyPartRepository.findByName(exercise.getBodyPart()));
+    public Set<ExerciseEntity> createExercises(Set<ExerciseToImportDTO> exercisesToImportDTO) {
+//        Set<ExerciseEntity> exercisesSaved = new HashSet<>();
+//        for (ExerciseToImportDTO exercise: exercisesToImportDTO) {
+//            ExerciseEntity exerciseEntity = new ExerciseEntity();
+//            //Mapeamos manualmente
+//            exerciseEntity.setId(Long.parseLong(exercise.getId()));
+//            exerciseEntity.setName(exercise.getName());
+//            exerciseEntity.setTarget(muscleRepository.findByName(exercise.getTarget()));
+//            exerciseEntity.setEquipment(equipmentRepository.findByName(exercise.getEquipment()));
+//            exerciseEntity.setGifUrl(exercise.getGifUrl());
+//            exerciseEntity.setBodyPart(bodyPartRepository.findByName(exercise.getBodyPart()));
+//
+//
+//
+//            exercisesSaved.add(exerciseRepository.save((exerciseEntity)));
+//        }
 
-
-
-            exercisesSaved.add(exerciseRepository.save((exerciseEntity)));
-        }
-
-        return exercisesSaved;
-
+        return null;
 
 
     }

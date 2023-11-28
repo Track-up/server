@@ -76,7 +76,7 @@ public class WorkoutServiceImpl implements WorkoutService {
                     seriesForExerciseDTO.add(serieService.saveSerie(new SerieEntity(exercise, 0L, (double) 0, workout)));
                 }
             }
-            exerciseForWorkoutDTOS.add(new ExerciseForWorkoutDTO(exercise.getName(), exercise.getGifUrl(), exercise.getId(), seriesForExerciseDTO));
+            exerciseForWorkoutDTOS.add(new ExerciseForWorkoutDTO(exercise.getName(), exercise.getImage(), exercise.getId(), seriesForExerciseDTO));
         }
         workoutDTO.setExercisesOfWorkout(exerciseForWorkoutDTOS);
         return workoutDTO;
