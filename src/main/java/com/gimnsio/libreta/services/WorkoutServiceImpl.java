@@ -162,11 +162,12 @@ public class WorkoutServiceImpl implements WorkoutService {
 
 
     @Override
-    public void startWorkout(WorkoutDTO workoutDTO) {
+    public WorkoutDTO startWorkout(WorkoutDTO workoutDTO) {
         WorkoutEntity existingWorkout = updateWorkout(workoutDTO);
         existingWorkout.setStartDate(new Date());
         workoutDTO.setStartDate(new Date());
         workoutRepository.save(existingWorkout);
+        return workoutDTO;
     }
 
     private WorkoutEntity updateWorkout(WorkoutDTO workoutDTO) {
@@ -180,18 +181,18 @@ public class WorkoutServiceImpl implements WorkoutService {
         for (ExerciseForWorkoutDTO exerciseDTO : workoutDTO.getExercisesOfWorkout()) {
             List<SerieEntity> series = serieService.getSeriesOfLastWorkoutFromExerciseAndUser(exerciseDTO.getExerciseId(),existingWorkout.getWorker().getId());
             ExerciseEntity exercise = exerciseService.getExerciseById(exerciseDTO.getExerciseId());
-            updateSeries(series,exerciseDTO.getSeries(),exercise, existingWorkout);
+            updateSeries(series,exerciseDTO,exercise, existingWorkout);
         }
         return existingWorkout;
     }
 
-    private void updateSeries(List<SerieEntity> seriesEntity, List<SerieForExerciseDTO> seriesDTO, ExerciseEntity exercise, WorkoutEntity workout) {
+    private void updateSeries(List<SerieEntity> seriesEntity, ExerciseForWorkoutDTO exerciseDTO, ExerciseEntity exercise, WorkoutEntity workout) {
         Iterator<SerieEntity> iterator = seriesEntity.iterator();
 
         // Borra y actualiza
         while (iterator.hasNext()) {
             SerieEntity serieEntity = iterator.next();
-            SerieForExerciseDTO serieDTO = seriesDTO.stream().filter(s -> s.getId().equals(serieEntity.getId())).findFirst().orElse(null);
+            SerieForExerciseDTO serieDTO = exerciseDTO.getSeries().stream().filter(s -> s.getId().equals(serieEntity.getId())).findFirst().orElse(null);
 
             if (serieDTO != null) {
                 serieEntity.setReps(serieDTO.getReps());
@@ -203,15 +204,26 @@ public class WorkoutServiceImpl implements WorkoutService {
         }
 
         // Añade nuevos
-        for (SerieForExerciseDTO serieDTO : seriesDTO) {
-            if (seriesEntity.stream().noneMatch(s -> s.getId().equals(serieDTO.getId()))) {
+        for (int i = 0; i < exerciseDTO.getSeries().size(); i++) {
+            SerieForExerciseDTO finalSerieDTO = exerciseDTO.getSeries().get(i);
+            if (seriesEntity.stream().noneMatch(s -> s.getId().equals(finalSerieDTO.getId()))) {
+                SerieEntity newSerie = new SerieEntity(exercise,exerciseDTO.getSeries().get(i).getReps(),exerciseDTO.getSeries().get(i).getKg(),workout);
+                exerciseDTO.getSeries().get(i).setId(serieService.saveSerie(newSerie).getId());
+                newSerie.setId(exerciseDTO.getSeries().get(i).getId());
+                seriesEntity.add(newSerie);
+            }
+        }
+        for (SerieForExerciseDTO serieDTO : exerciseDTO.getSeries()) {
+            SerieForExerciseDTO finalSerieDTO = serieDTO;
+            if (seriesEntity.stream().noneMatch(s -> s.getId().equals(finalSerieDTO.getId()))) {
                 SerieEntity newSerie = new SerieEntity(exercise,serieDTO.getReps(),serieDTO.getKg(),workout);
+                serieDTO = serieService.saveSerie(newSerie);
+                newSerie.setId(serieDTO.getId());
                 seriesEntity.add(newSerie);
             }
         }
 
         serieService.saveAll(seriesEntity);
-
     }
 
     private WorkoutEntity getWorkout(WorkoutDTO workoutDTO) throws Exception {
@@ -226,11 +238,12 @@ public class WorkoutServiceImpl implements WorkoutService {
     }
 
     @Override
-    public void endWorkout(WorkoutDTO workoutDTO) {
+    public WorkoutDTO endWorkout(WorkoutDTO workoutDTO) {
         WorkoutEntity existingWorkout = updateWorkout(workoutDTO);
         existingWorkout.setEndDate(new Date());
         workoutRepository.save(existingWorkout);
         workoutDTO.setEndDate(new Date());
+        return workoutDTO;
     }
 
 
