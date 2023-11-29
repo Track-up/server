@@ -67,6 +67,16 @@ public class SerieServiceImpl implements SerieService{
         return serieRepository.findLastByExerciseAndUser(exerciseId,userId);
     }
 
+    @Override
+    public void saveAll(List<SerieEntity> seriesEntity) {
+        serieRepository.saveAll(seriesEntity);
+    }
+
+    @Override
+    public void deleteSerie(SerieEntity serieEntity) {
+        serieRepository.delete(serieEntity);
+    }
+
 //    @Override
 //    public List<SerieEntity> getSeriesOfExerciseForWorkout(ExerciseForWorkoutEntity exerciseForWorkout) {
 //        return serieRepository.findByExerciseForWorkout(exerciseForWorkout);

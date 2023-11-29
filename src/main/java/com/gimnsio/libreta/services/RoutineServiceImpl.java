@@ -84,7 +84,7 @@ public class RoutineServiceImpl implements RoutineService {
                 }
             }
             if (!isExercise){
-                exercises.add(new ExerciseForRoutineDTO(serie.getExercise().getId(),serie.getExercise().getName(),serie.getExercise().getGifUrl(),serie.getExercise().getDescription(),series.stream().filter(serieStream-> serie.getExercise().getId().equals(serieStream.getExercise().getId())).count()));
+                exercises.add(new ExerciseForRoutineDTO(serie.getExercise().getId(),serie.getExercise().getName(),serie.getExercise().getImage(),serie.getExercise().getDescription(),series.stream().filter(serieStream-> serie.getExercise().getId().equals(serieStream.getExercise().getId())).count()));
             }
 
         }
@@ -102,7 +102,7 @@ public class RoutineServiceImpl implements RoutineService {
 
         checkUser(routineNewDTO.getCreatorId());
         if (routineNewDTO.getImage().isEmpty()) {
-            routineNewDTO.setImage(exerciseService.getExerciseById(routineNewDTO.getExercises().get(0).getId()).getGifUrl());//para un futuro en el mapper directamente
+            routineNewDTO.setImage(exerciseService.getExerciseById(routineNewDTO.getExercises().get(0).getId()).getImage());//para un futuro en el mapper directamente
         }
         RoutineEntity routineEntity = routineMapper.newToEntity(routineNewDTO);
         routineEntity = routineRepository.save(routineEntity);

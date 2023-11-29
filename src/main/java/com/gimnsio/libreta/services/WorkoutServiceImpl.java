@@ -66,7 +66,7 @@ public class WorkoutServiceImpl implements WorkoutService {
             if (!series.isEmpty()) {
                 for (int i = 0; i < exerciseForRoutineDTO.getNumSeries(); i++) {
                     if (i < series.size() && series.get(i) != null) {
-                        seriesForExerciseDTO.add(serieService.createSerie(exercise,difficulty,series.get(i),workout));
+                        seriesForExerciseDTO.add(serieService.createSerie(exercise, difficulty, series.get(i), workout));
                     } else {
                         seriesForExerciseDTO.add(serieService.saveSerie(new SerieEntity(exercise, seriesForExerciseDTO.get(seriesForExerciseDTO.size() - 1).getReps(), seriesForExerciseDTO.get(seriesForExerciseDTO.size() - 1).getKg(), workout)));
                     }
@@ -76,7 +76,7 @@ public class WorkoutServiceImpl implements WorkoutService {
                     seriesForExerciseDTO.add(serieService.saveSerie(new SerieEntity(exercise, 0L, (double) 0, workout)));
                 }
             }
-            exerciseForWorkoutDTOS.add(new ExerciseForWorkoutDTO(exercise.getName(), exercise.getGifUrl(), exercise.getId(), seriesForExerciseDTO));
+            exerciseForWorkoutDTOS.add(new ExerciseForWorkoutDTO(exercise.getName(), exercise.getImage(), exercise.getId(), seriesForExerciseDTO));
         }
         workoutDTO.setExercisesOfWorkout(exerciseForWorkoutDTOS);
         return workoutDTO;
@@ -177,28 +177,49 @@ public class WorkoutServiceImpl implements WorkoutService {
             throw new RuntimeException(e);
         }
 
-        for (ExerciseForWorkoutDTO exerciseDTO:workoutDTO.getExercisesOfWorkout()) {
-            for (SerieForExerciseDTO serieDTO: exerciseDTO.getSeries()) {
-                SerieEntity serieEntity=null;
-                if (serieDTO.getId()!=null){
-                    serieEntity = serieService.getSerieEntityById(serieDTO.getId());
-                    serieEntity.setReps(serieDTO.getReps());
-                    serieEntity.setKg(serieDTO.getKg());
-                }else{
-                    ExerciseEntity exerciseEntity = exerciseService.getExerciseById(exerciseDTO.getExerciseId());
-                    serieEntity = new SerieEntity(exerciseEntity,serieDTO.getReps(),serieDTO.getKg(),existingWorkout);
-                }
-                serieService.saveSerie(serieEntity);
-            }
+        for (ExerciseForWorkoutDTO exerciseDTO : workoutDTO.getExercisesOfWorkout()) {
+            List<SerieEntity> series = serieService.getSeriesOfLastWorkoutFromExerciseAndUser(exerciseDTO.getExerciseId(),existingWorkout.getWorker().getId());
+            ExerciseEntity exercise = exerciseService.getExerciseById(exerciseDTO.getExerciseId());
+            updateSeries(series,exerciseDTO.getSeries(),exercise, existingWorkout);
         }
         return existingWorkout;
+    }
+
+    private void updateSeries(List<SerieEntity> seriesEntity, List<SerieForExerciseDTO> seriesDTO, ExerciseEntity exercise, WorkoutEntity workout) {
+        Iterator<SerieEntity> iterator = seriesEntity.iterator();
+
+        // Borra y actualiza
+        while (iterator.hasNext()) {
+            SerieEntity serieEntity = iterator.next();
+            SerieForExerciseDTO serieDTO = seriesDTO.stream().filter(s -> s.getId().equals(serieEntity.getId())).findFirst().orElse(null);
+
+            if (serieDTO != null) {
+                serieEntity.setReps(serieDTO.getReps());
+                serieEntity.setKg(serieDTO.getKg());
+            } else {
+                iterator.remove();
+                serieService.deleteSerie(serieEntity);
+            }
+        }
+
+        // Añade nuevos
+        for (SerieForExerciseDTO serieDTO : seriesDTO) {
+            if (seriesEntity.stream().noneMatch(s -> s.getId().equals(serieDTO.getId()))) {
+                SerieEntity newSerie = new SerieEntity(exercise,serieDTO.getReps(),serieDTO.getKg(),workout);
+                seriesEntity.add(newSerie);
+            }
+        }
+
+        serieService.saveAll(seriesEntity);
+
     }
 
     private WorkoutEntity getWorkout(WorkoutDTO workoutDTO) throws Exception {
         Optional<WorkoutEntity> optionalWorkout = workoutRepository.findById(workoutDTO.getId());
         if (!optionalWorkout.isEmpty()) {
             return optionalWorkout.get();
-        } throw new Exception();
+        }
+        throw new Exception();
 
 //        WorkoutEntity existingWorkout = workoutRepository.findById(updatedWorkout.getId())
 //                .orElseThrow(() -> new EntityNotFoundException("Workout not found"));
@@ -211,7 +232,6 @@ public class WorkoutServiceImpl implements WorkoutService {
         workoutRepository.save(existingWorkout);
         workoutDTO.setEndDate(new Date());
     }
-
 
 
 }

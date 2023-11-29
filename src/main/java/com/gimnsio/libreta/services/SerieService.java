@@ -17,5 +17,9 @@ public interface SerieService {
 
     public List<SerieEntity> getSeriesOfLastWorkoutFromExerciseAndUser(long exerciseId, long userId);
 
+    void saveAll(List<SerieEntity> seriesEntity);
+
+    void deleteSerie(SerieEntity serieEntity);
+
 //    public List<SerieEntity> getSeriesOfExerciseForWorkout(ExerciseForWorkoutEntity exerciseForWorkout);
 }

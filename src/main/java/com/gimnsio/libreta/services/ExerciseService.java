@@ -1,7 +1,7 @@
 package com.gimnsio.libreta.services;
 
 import com.gimnsio.libreta.DTO.exercises.ExerciseDTO;
-import com.gimnsio.libreta.DTO.exercises.ExerciseForWorkoutDTO;
+import com.gimnsio.libreta.DTO.exercises.ExerciseNewDTO;
 import com.gimnsio.libreta.DTO.exercises.ExerciseToImportDTO;
 import com.gimnsio.libreta.domain.Exercise;
 import com.gimnsio.libreta.persistence.entities.ExerciseEntity;
@@ -19,7 +19,7 @@ public interface ExerciseService {
 
     public Exercise updateExercise(Long exerciseId, Exercise updatedExercise);
 
-    public Exercise createExercise(Exercise exercise);
+    public ExerciseEntity createExercise(ExerciseNewDTO exercise);
 
     public void deleteExercise(Long id);
 
