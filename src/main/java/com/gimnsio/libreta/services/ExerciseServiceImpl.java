@@ -30,8 +30,7 @@ public class ExerciseServiceImpl implements ExerciseService {
     EquipmentRepository equipmentRepository;
     @Autowired
     MuscleRepository muscleRepository;
-//    @Autowired
-//    MuscleMapper muscleMapper;
+
     @Autowired
     MuscleForExerciseRepository muscleForExerciseRepository;
     @Autowired

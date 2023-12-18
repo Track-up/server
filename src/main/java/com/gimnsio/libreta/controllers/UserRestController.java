@@ -29,6 +29,13 @@ public class UserRestController {
         this.userService = userService;
     }
 
+    @GetMapping("/entities")
+    public ResponseEntity<?>getUserEntities(
+            @PageableDefault(size = 20) Pageable pageable) {
+        return ResponseEntity.ok(this.userService.getAllUsersEntities(pageable));
+
+    }
+
     @GetMapping
     public ResponseEntity<?> getAllUsers(
             @PageableDefault(size = 5) Pageable pageable) {

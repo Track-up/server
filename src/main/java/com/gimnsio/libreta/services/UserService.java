@@ -8,6 +8,7 @@ import com.gimnsio.libreta.persistence.entities.UserEntity;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 
+import java.util.List;
 import java.util.Set;
 
 
@@ -19,6 +20,8 @@ public interface UserService {
     public ResponseEntity<?> createUser(UserRegistryDTO userRegistryDTO);
     public UserUpdateDTO updateUser(UserUpdateDTO userDTO);
     public void deleteUser(long id);
+
+    public List<UserEntity> getAllUsersEntities(Pageable pageable);
 
 //    public MeasuresDTO updateUserStats(Long id, MeasuresDTO measuresDTO);
 }

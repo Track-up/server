@@ -15,4 +15,5 @@ public class ConfigurationEntity {
     @OneToOne
     private UserEntity user;
     private String weightUnit;
+    private String language;
 }

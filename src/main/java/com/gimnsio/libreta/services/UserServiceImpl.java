@@ -32,6 +32,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private RestTemplate restTemplate;
 
+    @Autowired
+    private MeasuresService measuresService;
+
 //    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper, RestTemplate restTemplate) {
 //        this.userRepository = userRepository;
 //        this.userMapper = userMapper;
@@ -81,7 +84,8 @@ public class UserServiceImpl implements UserService {
 
         userEntity.setDateOfCreation(new Date());
         try {
-            userRepository.save(userEntity);
+            UserEntity userCreated = userRepository.save(userEntity);
+            measuresService.createMeasures(userCreated);
         } catch (DataIntegrityViolationException e) {
             String errorMessage;
             if (e.getCause().getCause().getMessage().contains("username")) {
@@ -96,6 +100,7 @@ public class UserServiceImpl implements UserService {
             httpResponse.put("message", errorMessage);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(httpResponse);
         }
+
         ResponseEntity<String> response = getLogin(userRegistryDTO);
 
         return response;
@@ -131,6 +136,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteUser(long id) {
         userRepository.delete(findUser(id));
+    }
+
+    @Override
+    public List<UserEntity> getAllUsersEntities(Pageable pageable) {
+        return userRepository.findAll(pageable).stream().collect(Collectors.toList());
     }
 
 //    @Override
