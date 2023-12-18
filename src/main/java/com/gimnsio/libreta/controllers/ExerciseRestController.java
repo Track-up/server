@@ -1,8 +1,6 @@
 package com.gimnsio.libreta.controllers;
 
 import com.gimnsio.libreta.DTO.exercises.ExerciseNewDTO;
-import com.gimnsio.libreta.DTO.exercises.ExerciseToImportDTO;
-import com.gimnsio.libreta.domain.Exercise;
 import com.gimnsio.libreta.persistence.entities.ExerciseEntity;
 import com.gimnsio.libreta.services.ExerciseService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -11,6 +9,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Locale;
 import java.util.Set;
 
 @RestController
@@ -25,10 +24,35 @@ public class ExerciseRestController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getAllExercises(
-            @PageableDefault(size = 20) Pageable pageable) {
+    public ResponseEntity<?> getExercises(
+            @PageableDefault(size = 20) Pageable pageable,
+            @RequestParam(name = "name", required = false) String name,
+            @RequestParam(name = "muscle", required = false) String muscle,
+            @RequestParam(name = "force", required = false) String force,
+            @RequestParam(name = "level", required = false) String level,
+            @RequestParam(name = "mechanic", required = false) String mechanic,
+            @RequestParam(name = "equipment", required = false) String equipment,
+            @RequestParam(name = "category", required = false) String category,
+            @RequestParam(defaultValue = "en") String locale) {
 
-        return ResponseEntity.ok(this.exerciseService.getAllExercises(pageable));
+
+        Locale userLocale = new Locale(locale);
+        if (name != null && !name.isEmpty()) {
+            return ResponseEntity.ok(this.exerciseService.getExercisesByName(name, pageable, userLocale));
+        } else if (muscle != null && !muscle.isEmpty()) {
+            return ResponseEntity.ok(this.exerciseService.getExercisesByMuscle(muscle,pageable, userLocale));
+        } else if (force != null && !force.isEmpty()) {
+            return ResponseEntity.ok(this.exerciseService.getExercisesByForce(force, pageable, userLocale));
+        } else if (level != null && !level.isEmpty()) {
+            return ResponseEntity.ok(this.exerciseService.getExercisesByLevel(level, pageable, userLocale));
+        } else if (mechanic != null && !mechanic.isEmpty()) {
+            return ResponseEntity.ok(this.exerciseService.getExercisesByMechanic(mechanic, pageable, userLocale));
+        } else if (equipment != null && !equipment.isEmpty()) {
+            return ResponseEntity.ok(this.exerciseService.getExercisesByEquipment(equipment, pageable, userLocale));
+        } else if (category != null && !category.isEmpty()) {
+            return ResponseEntity.ok(this.exerciseService.getExercisesByCategory(category, pageable, userLocale));
+        }
+        return ResponseEntity.ok(this.exerciseService.getAllExercises(pageable, userLocale));
 
     }
 
@@ -37,41 +61,16 @@ public class ExerciseRestController {
         return ResponseEntity.ok(exerciseService.getExerciseById(id));
     }
 
-    @GetMapping("/name/{name}")
-    public ResponseEntity<?> getExercisesByName(@PathVariable String name,
-                                                @PageableDefault(size = 20) Pageable pageable){
-        return ResponseEntity.ok(exerciseService.getExercisesByName(name, pageable));
-    }
-
-    // @GetMapping("/type/{type}")
-    // public ResponseEntity<?> getExercisesByType(@PathVariable String type,
-    // @PageableDefault(size = 5) Pageable pageable){
-    // return ResponseEntity.ok(exerciseService.getExercisesByType(type,pageable));
-    // }
-    //
-    @GetMapping("/muscle/{muscle_id}")
-    public ResponseEntity<?> getExercisesByMuscle(@PathVariable Long muscle_id) {
-        return ResponseEntity.ok(exerciseService.getExercisesByMuscle(muscle_id));
-    }
-
     @GetMapping("/body_part/{id}")
-    public ResponseEntity<?> getExercisesByBodyPart(@PathVariable Long id){
+    public ResponseEntity<?> getExercisesByBodyPart(@PathVariable Long id) {
         return ResponseEntity.ok(exerciseService.getExercisesByBodyPart(id));
     }
 
-    //
-    // @GetMapping("/muscle/{muscleId}/type/{type}")
-    // public ResponseEntity<?> getExercisesByMuscleAndType(@PathVariable Long
-    // muscleId,
-    // @PathVariable String type,
-    // @PageableDefault(size=5) Pageable pageable){
-    // return
-    // ResponseEntity.ok(exerciseService.getExercisesByMuscleAndType(muscleId,type,pageable));
-    // }
-    @PutMapping("/{id}")
-    public ResponseEntity<Exercise> updateExercise(@PathVariable Long id, @RequestBody Exercise exercise) {
-        return ResponseEntity.ok(exerciseService.updateExercise(id, exercise));
-    }
+
+//    @PutMapping("/{id}")
+//    public ResponseEntity<Exercise> updateExercise(@PathVariable Long id, @RequestBody Exercise exercise) {
+//        return ResponseEntity.ok(exerciseService.updateExercise(id, exercise));
+//    }
 
     @PostMapping
     public ResponseEntity<?> createExercise(@RequestBody ExerciseNewDTO exercise) {
@@ -85,7 +84,7 @@ public class ExerciseRestController {
     }
 
     @PostMapping("/insert")
-    public ResponseEntity<?> createExercises(@RequestBody Set<ExerciseToImportDTO> exercises) {
+    public ResponseEntity<?> createExercises(@RequestBody Set<ExerciseEntity> exercises) {
         ;
         return ResponseEntity.ok(exerciseService.createExercises(exercises));
     }

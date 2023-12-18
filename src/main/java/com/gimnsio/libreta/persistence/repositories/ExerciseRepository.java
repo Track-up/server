@@ -10,18 +10,34 @@ import java.util.List;
 import java.util.Set;
 
 @Repository
-public interface ExerciseRepository extends JpaRepository<ExerciseEntity, Long> {
+public interface ExerciseRepository extends JpaRepository<ExerciseEntity, String> {
 
-//    @Query("FROM ExerciseEntity e JOIN e.muscles m WHERE m = :muscle")
-//    public Set<ExerciseEntity> findByMuscle(Muscle muscle);
-    @Query(value = "select * from exercises where id in (select exercise_id from muscles_exercises where muscle_id = :muscle_id)", nativeQuery=true)
-    public Set<ExerciseEntity> findByMuscle(Long muscle_id);
 
     @Query(value = "select * from exercises where body_part = :id", nativeQuery=true)
     public Set<ExerciseEntity> findByBodyPart(Long id);
 
     @Query(value = "select * from exercises where name like %:name%", nativeQuery=true)
     public List<ExerciseEntity> findByName(String name, Pageable pageable);
+
+    @Query(value = "select * from exercises where force = :force", nativeQuery=true)
+    public List<ExerciseEntity> findByForce(int force, Pageable pageable);
+
+    @Query(value = "select * from exercises where level = :level", nativeQuery=true)
+    public List<ExerciseEntity> findByLevel(int level, Pageable pageable);
+
+    @Query(value = "select * from exercises where mechanic = :mechanic", nativeQuery=true)
+    public List<ExerciseEntity> findByMechanic(int mechanic, Pageable pageable);
+
+    @Query(value = "select * from exercises where equipment = :equipment", nativeQuery=true)
+    public List<ExerciseEntity> findByEquipment(int equipment, Pageable pageable);
+
+    @Query(value = "select * from exercises where category = :category", nativeQuery=true)
+    public List<ExerciseEntity> findByCategory(int category, Pageable pageable);
+
+    @Query(value = "select * from exercises where muscle = :muscle", nativeQuery=true)
+    public List<ExerciseEntity> findByMuscle(int muscle, Pageable pageable);
+
+
 
 
 

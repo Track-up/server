@@ -1,5 +1,7 @@
 package com.gimnsio.libreta.persistence.entities;
 
+
+import com.gimnsio.libreta.persistence.enums.*;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,27 +15,26 @@ import java.util.List;
 public class ExerciseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long id;
+    private String id;
     private String name;
-    private String image;
-    private String description;
-
-    @ManyToMany
-    @JoinTable(
-            name = "exercises_body_parts",
-            joinColumns = @JoinColumn(name = "exercise_id"),
-            inverseJoinColumns = @JoinColumn(name = "body_part_id")
-    )
-    private List<BodyPartEntity> bodyParts;
-
-    @ManyToOne
-    @JoinColumn(name = "equipment")
-    private EquipmentEntity equipment;
+    private Force force;
+    private Level level;
+    private Mechanic mechanic;
+    private Equipment equipment;
+    private List<Muscle> primaryMuscles;
+    private List<Muscle> secondaryMuscles;
+    private List<String> instructions;
+    private Category category;
+    private List<String> images;
+    //private String video;
 
 
 
-    public ExerciseEntity(Long id) {
+
+
+    public ExerciseEntity(String id) {
         this.id = id;
     }
 }
+
+

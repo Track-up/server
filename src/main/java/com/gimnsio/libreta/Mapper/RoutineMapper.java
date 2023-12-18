@@ -5,6 +5,7 @@ import com.gimnsio.libreta.persistence.entities.RoutineEntity;
 import com.gimnsio.libreta.persistence.entities.UserEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.Mappings;
 
 import java.util.Date;
@@ -44,13 +45,13 @@ public interface RoutineMapper {
 //            @Mapping(target = "series", expression = "java(routineEditDTO.getExercisesId().stream().map(id -> new ExerciseEntity(id)).collect(Collectors.toList()))"),
 //    })
 //    public RoutineEntity editToEntity(RoutineEditDTO routineEditDTO);
-//    @Mappings({
-//            @Mapping(target = "creator", expression = "java(new UserEntity(routineEditDTO.getCreatorId()))"),
+    @Mappings({
+            @Mapping(target = "creator", expression = "java(new UserEntity(routineEditDTO.getCreatorId()))"),
 //            @Mapping(target = "series", expression = "java(routineEditDTO.getExercisesId().stream().map(id -> new ExerciseEntity(id)).collect(Collectors.toList()))"),
-//            @Mapping(target = "dateOfLastEdition", expression = "java(new Date())")
-//    })
-//    public void UpdateRoutineFromEditDTO(RoutineEditDTO routineEditDTO, @MappingTarget RoutineEntity routineEntity);
-//
-//
+            @Mapping(target = "dateOfLastEdition", expression = "java(new Date())")
+    })
+    public void UpdateRoutineFromEditDTO(RoutineEditDTO routineEditDTO, @MappingTarget RoutineEntity routineEntity);
+
+
     public RoutineIdDTO entityToIdDTO(RoutineEntity routineEntity);
 }

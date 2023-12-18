@@ -7,7 +7,8 @@ import lombok.Data;
 public class UserBasicsDTO {
 
     private Long id;
+    private String image;
     private String username;
-    private String email;
+
 
 }

@@ -22,7 +22,6 @@ import java.util.stream.Collectors;
 
 @Service
 public class RoutineServiceImpl implements RoutineService {
-
     final private RoutineRepository routineRepository;
 
     final private SerieExampleRepository serieExampleRepository;
@@ -54,9 +53,9 @@ public class RoutineServiceImpl implements RoutineService {
         }).collect(Collectors.toList());
 
         for (int i = 0; i < routines.size(); i++) {
-            routines.set(i,setExercises(routineEntities.get(i),routines.get(i)));
+            routines.set(i, setExercises(routineEntities.get(i), routines.get(i)));
         }
-        return  routines;
+        return routines;
     }
 
     @Override
@@ -75,16 +74,16 @@ public class RoutineServiceImpl implements RoutineService {
     private RoutineDTO setExercises(RoutineEntity routineEntity, RoutineDTO routineDTO) {
         List<ExerciseForRoutineDTO> exercises = new ArrayList<>();
         List<SerieExampleEntity> series = serieExampleRepository.findByRoutine(routineEntity);
-        for (SerieExampleEntity serie:series) {
-            boolean isExercise= false;
-            for (ExerciseForRoutineDTO exercise:exercises) {
-                if (exercise.getId().equals(serie.getExercise().getId())){
+        for (SerieExampleEntity serie : series) {
+            boolean isExercise = false;
+            for (ExerciseForRoutineDTO exercise : exercises) {
+                if (exercise.getId().equals(serie.getExercise().getId())) {
                     isExercise = true;
                     break;
                 }
             }
-            if (!isExercise){
-                exercises.add(new ExerciseForRoutineDTO(serie.getExercise().getId(),serie.getExercise().getName(),serie.getExercise().getImage(),serie.getExercise().getDescription(),series.stream().filter(serieStream-> serie.getExercise().getId().equals(serieStream.getExercise().getId())).count()));
+            if (!isExercise) {
+//                exercises.add(new ExerciseForRoutineDTO(serie.getExercise().getId(), serie.getExercise().getName(), serie.getExercise().getImage(), serie.getExercise().getDescription(), series.stream().filter(serieStream -> serie.getExercise().getId().equals(serieStream.getExercise().getId())).count()));
             }
 
         }
@@ -102,14 +101,14 @@ public class RoutineServiceImpl implements RoutineService {
 
         checkUser(routineNewDTO.getCreatorId());
         if (routineNewDTO.getImage().isEmpty()) {
-            routineNewDTO.setImage(exerciseService.getExerciseById(routineNewDTO.getExercises().get(0).getId()).getImage());//para un futuro en el mapper directamente
+//            routineNewDTO.setImage(exerciseService.getExerciseById(routineNewDTO.getExercises().get(0).getId()).getImage());//para un futuro en el mapper directamente
         }
         RoutineEntity routineEntity = routineMapper.newToEntity(routineNewDTO);
         routineEntity = routineRepository.save(routineEntity);
-        for (ExerciseForNewRoutineDTO exercise:routineNewDTO.getExercises()) {
+        for (ExerciseForNewRoutineDTO exercise : routineNewDTO.getExercises()) {
             ExerciseEntity exerciseEntity = exerciseService.getExerciseById(exercise.getId());
             for (int i = 0; i < exercise.getNumSeries(); i++) {
-                serieExampleRepository.save(new SerieExampleEntity(exerciseEntity,routineEntity));
+                serieExampleRepository.save(new SerieExampleEntity(exerciseEntity, routineEntity));
             }
         }
         return routineMapper.entityToIdDTO(routineEntity);
@@ -117,20 +116,46 @@ public class RoutineServiceImpl implements RoutineService {
 
     @Override
     public RoutineDTO updateRoutine(RoutineEditDTO routineEditDTO) {
-        return null;
-//        checkRoutine(routineEditDTO.getId());
-//        checkUser(routineEditDTO.getCreatorId());
-//        Optional<RoutineEntity> routineEntityOptional = routineRepository.findById(routineEditDTO.getId());
-//        if (routineEntityOptional.isEmpty()) {
-//            throw new NoSuchElementException("No se encontró la rutina con ID: " + routineEditDTO.getId());
+        checkRoutine(routineEditDTO.getId());
+        checkUser(routineEditDTO.getCreatorId());
+        Optional<RoutineEntity> routineEntityOptional = routineRepository.findById(routineEditDTO.getId());
+        if (routineEntityOptional.isEmpty()) {
+            throw new NoSuchElementException("No se encontró la rutina con ID: " + routineEditDTO.getId());
+        }
+        RoutineEntity routineEntity = routineEntityOptional.get();
+        routineMapper.UpdateRoutineFromEditDTO(routineEditDTO, routineEntity);
+
+        for (ExerciseForNewRoutineDTO exercise : routineEditDTO.getExercises()) {
+
+            ExerciseEntity exerciseEntity = exerciseService.getExerciseById(exercise.getId());
+            List<SerieExampleEntity> serieExampleEntities = serieExampleRepository.findByRoutineAndExercise(routineEntity, exerciseEntity);
+
+
+            if (exercise.getNumSeries() > serieExampleEntities.size()) {
+                while (serieExampleEntities.size() < exercise.getNumSeries()) {
+                    serieExampleEntities.add(serieExampleRepository.save(new SerieExampleEntity(exerciseEntity, routineEntity)));
+                }
+            } else if (exercise.getNumSeries() < serieExampleEntities.size()) {
+                while (serieExampleEntities.size() > exercise.getNumSeries()) {
+                    serieExampleRepository.delete(serieExampleEntities.get(0));
+                    serieExampleEntities.remove(0);
+                }
+            }
+        }
+        List<SerieExampleEntity> serieExampleEntities = serieExampleRepository.findByRoutine(routineEntity);
+        for (SerieExampleEntity serie : serieExampleEntities) {
+            for (ExerciseForNewRoutineDTO exercise : routineEditDTO.getExercises()) {
+//                if (serie.getExercise().getId() == exercise.getId()) {
+                    break;
+                }
+                serieExampleRepository.delete(serie);
+            }
 //        }
-//        RoutineEntity routineEntity = routineEntityOptional.get();
-//        routineMapper.UpdateRoutineFromEditDTO(routineEditDTO, routineEntity);
-////        RoutineEntity routineEntity = routineMapper.editToEntity(routineEditDTO);
-////        routineEntity.setDateOfCreation(routineEntityOptional.get().getDateOfCreation());
-//
-//        return routineMapper.entityToDTO(routineRepository.save(routineEntity));
+        RoutineDTO routineDTO = routineMapper.entityToDTO(routineRepository.save(routineEntity));
+        setExercises(routineEntity,routineDTO);
+        return routineDTO;
     }
+
 
     private void checkUser(Long id) {
         userService.getUserEntityById(id);
@@ -179,9 +204,9 @@ public class RoutineServiceImpl implements RoutineService {
                 .collect(Collectors.toList());
 
         for (int i = 0; i < routines.size(); i++) {
-            routines.set(i,setExercises(routineEntities.get(i),routines.get(i)));
+            routines.set(i, setExercises(routineEntities.get(i), routines.get(i)));
         }
-        return  routines;
+        return routines;
     }
 
 //    @Override
