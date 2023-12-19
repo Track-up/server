@@ -31,9 +31,6 @@ public interface UserMapper {
     public UserEntity userIdDTOToUserEntity(UserIdDTO userIdDTO);
 
     public UserIdDTO entityToIdDTO(UserEntity userEntity);
-    @Mappings({
-            @Mapping(target = "password", expression = "java(passwordEncoder.encode(userUpdateDTO.getPassword()))")
-    })
     public void updateToEntity(UserUpdateDTO userUpdateDTO, @MappingTarget UserEntity userEntity);
 
 

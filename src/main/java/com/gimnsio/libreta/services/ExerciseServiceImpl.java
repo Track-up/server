@@ -1,11 +1,13 @@
 package com.gimnsio.libreta.services;
 
 import com.gimnsio.libreta.DTO.exercises.ExerciseDTO;
+import com.gimnsio.libreta.DTO.exercises.ExerciseForRoutineDTO;
 import com.gimnsio.libreta.DTO.exercises.ExerciseNewDTO;
 import com.gimnsio.libreta.DTO.muscles.MusclePercentIdDTO;
 import com.gimnsio.libreta.Mapper.ExerciseMapper;
 import com.gimnsio.libreta.persistence.entities.ExerciseEntity;
 import com.gimnsio.libreta.persistence.entities.MuscleEntity;
+import com.gimnsio.libreta.persistence.entities.RoutineEntity;
 import com.gimnsio.libreta.persistence.enums.*;
 import com.gimnsio.libreta.persistence.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,8 +57,8 @@ public class ExerciseServiceImpl implements ExerciseService {
 
 
     @Override
-    public ExerciseEntity getExerciseById(Long id) {
-        Optional<ExerciseEntity> exerciseEntityOptional = exerciseRepository.findById(null);
+    public ExerciseEntity getExerciseById(String id) {
+        Optional<ExerciseEntity> exerciseEntityOptional = exerciseRepository.findById(id);
 
         if (exerciseEntityOptional.isPresent()) {
             ExerciseEntity exerciseEntity = exerciseEntityOptional.get();
@@ -140,6 +142,11 @@ public class ExerciseServiceImpl implements ExerciseService {
             exerciseRepository.save(exercise);
         }
         return exercises;
+    }
+
+    @Override
+    public List<ExerciseForRoutineDTO> getExercisesForRoutine(RoutineEntity routine) {
+        return null;
     }
 
     @Override

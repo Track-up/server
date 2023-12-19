@@ -15,7 +15,7 @@ public interface SerieService {
 
     public SerieForExerciseDTO createSerie(ExerciseEntity exercise, long difficulty, SerieEntity serie, WorkoutEntity workout);
 
-    public List<SerieEntity> getSeriesOfLastWorkoutFromExerciseAndUser(long exerciseId, long userId);
+    public List<SerieEntity> getSeriesOfLastWorkoutFromExerciseAndUser(String exerciseId, long userId);
 
     void saveAll(List<SerieEntity> seriesEntity);
 

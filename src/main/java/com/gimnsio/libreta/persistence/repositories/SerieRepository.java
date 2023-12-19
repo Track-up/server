@@ -24,7 +24,7 @@ public interface SerieRepository extends JpaRepository<SerieEntity, Long> {
 //    public List<SerieEntity> findLastByExerciseAndUser(@Param("exerciseId") Long exerciseId, @Param("userId") Long userId);
 
     @Query(value = "select s from series s where s.workout.id = (select MAX(s2.workout.id) from series s2 where s2.exercise.id = :exerciseId and s2.workout.id in (select id from workouts w where w.worker.id = :userId)) and s.exercise.id = :exerciseId")
-    List<SerieEntity> findLastByExerciseAndUser(@Param("exerciseId") Long exerciseId, @Param("userId") Long userId);
+    List<SerieEntity> findLastByExerciseAndUser(@Param("exerciseId") String exerciseId, @Param("userId") Long userId);
 
 
 //    public List<SerieEntity> findByExerciseForWorkout(ExerciseForWorkoutEntity exerciseForWorkout);

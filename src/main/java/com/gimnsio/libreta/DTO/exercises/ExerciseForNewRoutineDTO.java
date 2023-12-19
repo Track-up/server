@@ -8,6 +8,6 @@ import lombok.Data;
 @AllArgsConstructor
 public class ExerciseForNewRoutineDTO {
 
-    private long id;
+    private String id;
     private long numSeries;
 }

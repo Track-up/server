@@ -62,7 +62,7 @@ public class WorkoutServiceImpl implements WorkoutService {
         for (ExerciseForRoutineDTO exerciseForRoutineDTO : routineDTO.getExercises()) {
             List<SerieForExerciseDTO> seriesForExerciseDTO = new ArrayList<>();
             ExerciseEntity exercise = exerciseService.getExerciseById(exerciseForRoutineDTO.getId());
-            List<SerieEntity> series = serieService.getSeriesOfLastWorkoutFromExerciseAndUser(Long.parseLong(exercise.getId()), userId);//trae todas las series
+            List<SerieEntity> series = serieService.getSeriesOfLastWorkoutFromExerciseAndUser(exercise.getId(), userId);//trae todas las series
             if (!series.isEmpty()) {
                 for (int i = 0; i < exerciseForRoutineDTO.getNumSeries(); i++) {
                     if (i < series.size() && series.get(i) != null) {

@@ -1,5 +1,6 @@
 package com.gimnsio.libreta.persistence.repositories;
 
+import com.gimnsio.libreta.DTO.exercises.ExerciseForRoutineDTO;
 import com.gimnsio.libreta.persistence.entities.ExerciseEntity;
 import com.gimnsio.libreta.persistence.entities.RoutineEntity;
 import com.gimnsio.libreta.persistence.entities.SerieExampleEntity;
@@ -15,4 +16,5 @@ public interface SerieExampleRepository extends JpaRepository<SerieExampleEntity
 
     List<SerieExampleEntity> findByRoutineAndExercise(RoutineEntity routine, ExerciseEntity exercise);
 
+;
 }

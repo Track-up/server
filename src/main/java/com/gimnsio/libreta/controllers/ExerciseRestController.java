@@ -57,7 +57,7 @@ public class ExerciseRestController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<?> getExerciseById(@PathVariable Long id) {
+    public ResponseEntity<?> getExerciseById(@PathVariable String id) {
         return ResponseEntity.ok(exerciseService.getExerciseById(id));
     }
 
