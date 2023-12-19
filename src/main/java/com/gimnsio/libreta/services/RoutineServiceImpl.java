@@ -115,8 +115,8 @@ public class RoutineServiceImpl implements RoutineService {
     }
 
     @Override
-    public RoutineDTO updateRoutine(RoutineEditDTO routineEditDTO) {
-        checkRoutine(routineEditDTO.getId());
+    public RoutineDTO updateRoutine(Long id, RoutineEditDTO routineEditDTO) {
+        checkRoutine(id);
         checkUser(routineEditDTO.getCreatorId());
         Optional<RoutineEntity> routineEntityOptional = routineRepository.findById(routineEditDTO.getId());
         if (routineEntityOptional.isEmpty()) {

@@ -16,17 +16,15 @@ public interface ExerciseService {
 
     public ExerciseEntity getExerciseById(Long id);
 
-//    public Exercise updateExercise(Long exerciseId, Exercise updatedExercise);
+    public ExerciseEntity updateExercise(String exerciseId, ExerciseEntity updatedExercise);
 
     public ExerciseEntity createExercise(ExerciseNewDTO exercise);
 
     public void deleteExercise(Long id);
 
-//    public List<Exercise> getExercisesByMuscle(Long muscle_id);
 
     public Set<ExerciseEntity> createExercises (Set<ExerciseEntity> entities);
 
-    public Set<ExerciseDTO> getExercisesByBodyPart(Long id);
 
     public List<ExerciseEntity> getExercisesByName(String name, Pageable pageable, Locale locale);
 

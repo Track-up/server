@@ -9,16 +9,13 @@ import lombok.Data;
 @AllArgsConstructor
 public class UserUpdateDTO {
 
-    private Long id;
-    @NotBlank
+
     private String username;
 
     private String image;
     @Email
-    @NotBlank
     private String email;
-    @NotBlank
-    private String password;
+
 
 
 }

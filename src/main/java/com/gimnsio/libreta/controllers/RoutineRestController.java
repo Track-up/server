@@ -62,9 +62,9 @@ public class RoutineRestController {
 
     }
 
-    @PutMapping
-    public ResponseEntity<?> updateRoutine(@RequestBody RoutineEditDTO routineEditDTO) {
-        return ResponseEntity.ok(this.routineService.updateRoutine(routineEditDTO));// Mejorable
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateRoutine(@PathVariable Long id,@RequestBody RoutineEditDTO routineEditDTO) {
+        return ResponseEntity.ok(this.routineService.updateRoutine(id,routineEditDTO));// Mejorable
     }
 
     @DeleteMapping("/{id}")

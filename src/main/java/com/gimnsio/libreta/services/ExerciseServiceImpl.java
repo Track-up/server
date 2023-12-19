@@ -46,13 +46,12 @@ public class ExerciseServiceImpl implements ExerciseService {
 
     @Override
     public List<ExerciseEntity> getAllExercises(Pageable pageable, Locale locale) {
-        List<ExerciseEntity>exercises =  this.exerciseRepository.findAll(pageable).stream().collect(Collectors.toList());
+        List<ExerciseEntity> exercises = this.exerciseRepository.findAll(pageable).stream().collect(Collectors.toList());
         if (!locale.getLanguage().equals("en")) {
             translateExercises(locale, exercises);
         }
         return exercises;
     }
-
 
 
     @Override
@@ -67,26 +66,49 @@ public class ExerciseServiceImpl implements ExerciseService {
         }
     }
 
-//    @Override
-//    public List<Exercise> getExercisesByMuscle(Long muscleId, Pageable pageable) {
-//        return this.exerciseRepository.findByMuscle(muscleId,pageable).stream().map(exerciseEntity -> {
-//            return exerciseMapper.mapExercise(exerciseEntity);
-//        }).collect(Collectors.toList());
-//    }
 
+    @Override
+    public ExerciseEntity updateExercise(String id, ExerciseEntity exercise) {
+        Optional<ExerciseEntity> exerciseEntityOptional = exerciseRepository.findById(id);
 
-//    @Override
-//    public Exercise updateExercise(Long id, Exercise exercise) {
-//        Optional<ExerciseEntity> exerciseEntityOptional = exerciseRepository.findById(null);
-//
-//        if (exerciseEntityOptional.isPresent()) {
-//            ExerciseEntity exerciseEntity = exerciseMapper.mapExerciseEntity(exercise);
-////            exerciseEntity.setId(id);
-//            return exerciseMapper.mapExercise(exerciseRepository.save(exerciseEntity));
-//        } else {
-//            throw new NoSuchElementException("No se encontró el ejercicio con el ID: " + id);
-//        }
-//    }
+        if (exerciseEntityOptional.isPresent()) {
+
+            ExerciseEntity exerciseEntity = exerciseEntityOptional.get();
+            if (exercise.getName() != null) {
+                exerciseEntity.setName(exercise.getName());
+            }
+            if (exercise.getLevel() != null) {
+                exerciseEntity.setLevel(exercise.getLevel());
+            }
+            if (exercise.getForce() != null) {
+                exerciseEntity.setForce(exercise.getForce());
+            }
+            if (exercise.getMechanic() != null) {
+                exerciseEntity.setMechanic(exercise.getMechanic());
+            }
+            if (exercise.getEquipment() != null) {
+                exerciseEntity.setEquipment(exercise.getEquipment());
+            }
+            if (exercise.getCategory() != null) {
+                exerciseEntity.setCategory(exercise.getCategory());
+            }
+            if (exercise.getInstructions() != null) {
+                exerciseEntity.setInstructions(exercise.getInstructions());
+            }
+            if (exercise.getPrimaryMuscles() != null) {
+                exerciseEntity.setPrimaryMuscles(exercise.getPrimaryMuscles());
+            }
+            if (exercise.getSecondaryMuscles() != null) {
+                exerciseEntity.setSecondaryMuscles(exercise.getSecondaryMuscles());
+            }
+            if (exercise.getImages() != null) {
+                exerciseEntity.setImages(exercise.getImages());
+            }
+            return exerciseRepository.save(exerciseEntity);
+        } else {
+            throw new NoSuchElementException("No se encontró el ejercicio con el ID: " + id);
+        }
+    }
 
     @Override
     public ExerciseEntity createExercise(ExerciseNewDTO exercise) {
@@ -112,43 +134,12 @@ public class ExerciseServiceImpl implements ExerciseService {
     }
 
 
-
     public Set<ExerciseEntity> createExercises(Set<ExerciseEntity> exercises) {
-        for (ExerciseEntity exercise: exercises) {
+        for (ExerciseEntity exercise : exercises) {
             exercise.setInstructions(null);
             exerciseRepository.save(exercise);
         }
         return exercises;
-
-        //        Set<ExerciseEntity> exercisesSaved = new HashSet<>();
-//        for (ExerciseToImportDTO exercise: exercisesToImportDTO) {
-//            ExerciseEntity exerciseEntity = new ExerciseEntity();
-//            //Mapeamos manualmente
-//            exerciseEntity.setId(Long.parseLong(exercise.getId()));
-//            exerciseEntity.setName(exercise.getName());
-//            exerciseEntity.setTarget(muscleRepository.findByName(exercise.getTarget()));
-//            exerciseEntity.setEquipment(equipmentRepository.findByName(exercise.getEquipment()));
-//            exerciseEntity.setGifUrl(exercise.getGifUrl());
-//            exerciseEntity.setBodyPart(bodyPartRepository.findByName(exercise.getBodyPart()));
-//
-//
-//
-//            exercisesSaved.add(exerciseRepository.save((exerciseEntity)));
-//        }
-
-
-
-    }
-
-//    return this.exerciseRepository.findByMuscle(muscle_id).stream().map(exerciseEntity -> {
-//        return exerciseMapper.mapExercise(exerciseEntity);
-//    }).collect(Collectors.toList());
-
-    @Override
-    public Set<ExerciseDTO> getExercisesByBodyPart(Long id) {
-        return this.exerciseRepository.findByBodyPart(id).stream().map(exerciseEntity -> {
-            return exerciseMapper.entityToDTO(exerciseEntity);
-        }).collect(Collectors.toSet());
     }
 
     @Override
@@ -159,10 +150,6 @@ public class ExerciseServiceImpl implements ExerciseService {
             translateExercises(locale, exercises);
         }
         return exercises;
-
-        //        return this.exerciseRepository.findByName(name, pageable).stream().map(exerciseEntity -> {
-//            return exerciseMapper.entityToDTO(exerciseEntity);
-//        }).collect(Collectors.toSet());
     }
 
     @Override
@@ -221,8 +208,8 @@ public class ExerciseServiceImpl implements ExerciseService {
     }
 
     private void translateExercises(Locale locale, List<ExerciseEntity> exercises) {
-        for (ExerciseEntity exercise: exercises) {
-            exercise.setName(messageSource.getMessage("exercise.name.".concat(exercise.getId()),null, locale));
+        for (ExerciseEntity exercise : exercises) {
+            exercise.setName(messageSource.getMessage("exercise.name.".concat(exercise.getId()), null, locale));
         }
     }
 

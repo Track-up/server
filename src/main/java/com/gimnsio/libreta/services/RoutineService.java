@@ -12,7 +12,7 @@ public interface RoutineService {
     public RoutineDTO getRoutineById(long id);
     public List<RoutineDTO> getRoutinesByUserCreator(UserDTO userDTO);
     public RoutineIdDTO createRoutine(RoutineNewDTO routineNewDTO);
-    public RoutineDTO updateRoutine(RoutineEditDTO routineEditDTO);
+    public RoutineDTO updateRoutine(Long id, RoutineEditDTO routineEditDTO);
     public void deleteRoutine(long id);
 
     public List<RoutineBasicsDTO> getRoutinesByUser (long user_id, Pageable pageable);

@@ -84,9 +84,9 @@ public class UserRestController {
 //        HttpSession session = request.getSession(true);
 //        session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, SecurityContextHolder.getContext());
 //    }
-    @PutMapping
-    public ResponseEntity<?> editUser(@Valid @RequestBody UserUpdateDTO userUpdateDTO) {
-        return ResponseEntity.ok(userService.updateUser(userUpdateDTO));
+    @PutMapping("/{id}")
+    public ResponseEntity<?> editUser(@PathVariable Long id, @Valid @RequestBody UserUpdateDTO userUpdateDTO) {
+        return ResponseEntity.ok(userService.updateUser(id,userUpdateDTO));
     }
 
 //    @PutMapping("/{id}/change_stats")

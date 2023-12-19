@@ -18,7 +18,7 @@ public interface UserService {
     public UserDTO getUserById(long id);
     public UserEntity getUserEntityById(long id);
     public ResponseEntity<?> createUser(UserRegistryDTO userRegistryDTO);
-    public UserUpdateDTO updateUser(UserUpdateDTO userDTO);
+    public UserUpdateDTO updateUser(Long id, UserUpdateDTO userDTO);
     public void deleteUser(long id);
 
     public List<UserEntity> getAllUsersEntities(Pageable pageable);

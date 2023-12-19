@@ -61,16 +61,16 @@ public class ExerciseRestController {
         return ResponseEntity.ok(exerciseService.getExerciseById(id));
     }
 
-    @GetMapping("/body_part/{id}")
-    public ResponseEntity<?> getExercisesByBodyPart(@PathVariable Long id) {
-        return ResponseEntity.ok(exerciseService.getExercisesByBodyPart(id));
-    }
-
-
-//    @PutMapping("/{id}")
-//    public ResponseEntity<Exercise> updateExercise(@PathVariable Long id, @RequestBody Exercise exercise) {
-//        return ResponseEntity.ok(exerciseService.updateExercise(id, exercise));
+//    @GetMapping("/body_part/{id}")
+//    public ResponseEntity<?> getExercisesByBodyPart(@PathVariable Long id) {
+//        return ResponseEntity.ok(exerciseService.getExercisesByBodyPart(id));
 //    }
+
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateExercise(@PathVariable String id, @RequestBody ExerciseEntity exercise) {
+        return ResponseEntity.ok(exerciseService.updateExercise(id, exercise));
+    }
 
     @PostMapping
     public ResponseEntity<?> createExercise(@RequestBody ExerciseNewDTO exercise) {
