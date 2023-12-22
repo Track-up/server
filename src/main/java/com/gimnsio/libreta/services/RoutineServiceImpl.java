@@ -28,17 +28,14 @@ public class RoutineServiceImpl implements RoutineService {
 
     final private RoutineMapper routineMapper;
 
-    final private ExerciseMapper exerciseMapper;
-
     final private ExerciseService exerciseService;
 
     final private UserService userService;
 
-    public RoutineServiceImpl(RoutineRepository routineRepository, SerieExampleService serieExampleService, RoutineMapper routineMapper, ExerciseMapper exerciseMapper, ExerciseService exerciseService, UserService userService) {
+    public RoutineServiceImpl(RoutineRepository routineRepository, SerieExampleService serieExampleService, RoutineMapper routineMapper, ExerciseService exerciseService, UserService userService) {
         this.serieExampleService = serieExampleService;
         this.routineMapper = routineMapper;
         this.routineRepository = routineRepository;
-        this.exerciseMapper = exerciseMapper;
         this.exerciseService = exerciseService;
         this.userService = userService;
     }
