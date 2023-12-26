@@ -15,4 +15,6 @@ public interface WorkoutService {
     public WorkoutDTO startWorkout(WorkoutDTO workoutDTO);
 
     public WorkoutDTO endWorkout(WorkoutDTO workoutDTO);
+
+    WorkoutDTO getWorkoutById(Long id);
 }

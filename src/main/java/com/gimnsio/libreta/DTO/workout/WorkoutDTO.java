@@ -9,10 +9,11 @@ import java.util.List;
 
 @Data
 @AllArgsConstructor
+
 public class WorkoutDTO {
 
     private Long id;
-    private List<ExerciseForWorkoutDTO> exercisesOfWorkout;
+    private List<ExerciseForWorkoutDTO> exercises;
     private Date startDate;
     private Date endDate;
 }

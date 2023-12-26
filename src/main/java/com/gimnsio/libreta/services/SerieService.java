@@ -21,5 +21,7 @@ public interface SerieService {
 
     void deleteSerie(SerieEntity serieEntity);
 
+    List<SerieEntity> getSeriesOfWorkout(WorkoutEntity workoutEntity);
+
 //    public List<SerieEntity> getSeriesOfExerciseForWorkout(ExerciseForWorkoutEntity exerciseForWorkout);
 }

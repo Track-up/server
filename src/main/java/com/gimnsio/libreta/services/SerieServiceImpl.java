@@ -77,6 +77,11 @@ public class SerieServiceImpl implements SerieService{
         serieRepository.delete(serieEntity);
     }
 
+    @Override
+    public List<SerieEntity> getSeriesOfWorkout(WorkoutEntity workoutEntity) {
+        return serieRepository.findByWorkout(workoutEntity);
+    }
+
 //    @Override
 //    public List<SerieEntity> getSeriesOfExerciseForWorkout(ExerciseForWorkoutEntity exerciseForWorkout) {
 //        return serieRepository.findByExerciseForWorkout(exerciseForWorkout);

@@ -2,6 +2,7 @@ package com.gimnsio.libreta.controllers;
 
 import com.gimnsio.libreta.DTO.exercises.ExerciseNewDTO;
 import com.gimnsio.libreta.persistence.entities.ExerciseEntity;
+import com.gimnsio.libreta.persistence.specification.ExerciseSpecification;
 import com.gimnsio.libreta.services.ExerciseService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Pageable;
@@ -37,22 +38,23 @@ public class ExerciseRestController {
 
 
         Locale userLocale = new Locale(locale);
-        if (name != null && !name.isEmpty()) {
-            return ResponseEntity.ok(this.exerciseService.getExercisesByName(name, pageable, userLocale));
-        } else if (muscle != null && !muscle.isEmpty()) {
-            return ResponseEntity.ok(this.exerciseService.getExercisesByMuscle(muscle,pageable, userLocale));
-        } else if (force != null && !force.isEmpty()) {
-            return ResponseEntity.ok(this.exerciseService.getExercisesByForce(force, pageable, userLocale));
-        } else if (level != null && !level.isEmpty()) {
-            return ResponseEntity.ok(this.exerciseService.getExercisesByLevel(level, pageable, userLocale));
-        } else if (mechanic != null && !mechanic.isEmpty()) {
-            return ResponseEntity.ok(this.exerciseService.getExercisesByMechanic(mechanic, pageable, userLocale));
-        } else if (equipment != null && !equipment.isEmpty()) {
-            return ResponseEntity.ok(this.exerciseService.getExercisesByEquipment(equipment, pageable, userLocale));
-        } else if (category != null && !category.isEmpty()) {
-            return ResponseEntity.ok(this.exerciseService.getExercisesByCategory(category, pageable, userLocale));
-        }
-        return ResponseEntity.ok(this.exerciseService.getAllExercises(pageable, userLocale));
+        return ResponseEntity.ok(exerciseService.getExercises(new ExerciseSpecification(name, muscle, force, level, mechanic, equipment, category), pageable, userLocale));
+//        if (name != null && !name.isEmpty()) {
+//            return ResponseEntity.ok(this.exerciseService.getExercisesByName(name, pageable, userLocale));
+//        } else if (muscle != null && !muscle.isEmpty()) {
+//            return ResponseEntity.ok(this.exerciseService.getExercisesByMuscle(muscle,pageable, userLocale));
+//        } else if (force != null && !force.isEmpty()) {
+//            return ResponseEntity.ok(this.exerciseService.getExercisesByForce(force, pageable, userLocale));
+//        } else if (level != null && !level.isEmpty()) {
+//            return ResponseEntity.ok(this.exerciseService.getExercisesByLevel(level, pageable, userLocale));
+//        } else if (mechanic != null && !mechanic.isEmpty()) {
+//            return ResponseEntity.ok(this.exerciseService.getExercisesByMechanic(mechanic, pageable, userLocale));
+//        } else if (equipment != null && !equipment.isEmpty()) {
+//            return ResponseEntity.ok(this.exerciseService.getExercisesByEquipment(equipment, pageable, userLocale));
+//        } else if (category != null && !category.isEmpty()) {
+//            return ResponseEntity.ok(this.exerciseService.getExercisesByCategory(category, pageable, userLocale));
+//        }
+//        return ResponseEntity.ok(this.exerciseService.getAllExercises(pageable, userLocale));
 
     }
 

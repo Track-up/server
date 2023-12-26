@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/workout")
+@RequestMapping("/workouts")
 @Tag(name = "Entrenamientos", description = "CRUD de Entrenamientos")
 public class WorkoutRestController {
 
@@ -21,6 +21,11 @@ public class WorkoutRestController {
     public ResponseEntity<?> getAllWorkouts(
             @PageableDefault(size = 20) Pageable pageable) {
         return ResponseEntity.ok(this.workoutService.getAllWorkouts(pageable));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getWorkoutById(@PathVariable Long id) {
+        return ResponseEntity.ok(this.workoutService.getWorkoutById(id));
     }
 
     @PostMapping("/create")

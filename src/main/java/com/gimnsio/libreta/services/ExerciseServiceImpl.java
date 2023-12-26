@@ -10,6 +10,7 @@ import com.gimnsio.libreta.persistence.entities.MuscleEntity;
 import com.gimnsio.libreta.persistence.entities.RoutineEntity;
 import com.gimnsio.libreta.persistence.enums.*;
 import com.gimnsio.libreta.persistence.repositories.*;
+import com.gimnsio.libreta.persistence.specification.ExerciseSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Pageable;
@@ -49,6 +50,15 @@ public class ExerciseServiceImpl implements ExerciseService {
     @Override
     public List<ExerciseEntity> getAllExercises(Pageable pageable, Locale locale) {
         List<ExerciseEntity> exercises = this.exerciseRepository.findAll(pageable).stream().collect(Collectors.toList());
+        if (!locale.getLanguage().equals("en")) {
+            translateExercises(locale, exercises);
+        }
+        return exercises;
+    }
+
+    @Override
+    public List<ExerciseEntity> getExercises(ExerciseSpecification exerciseSpecification, Pageable pageable, Locale locale) {
+        List<ExerciseEntity> exercises = this.exerciseRepository.findAll(exerciseSpecification,pageable).stream().collect(Collectors.toList());
         if (!locale.getLanguage().equals("en")) {
             translateExercises(locale, exercises);
         }

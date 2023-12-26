@@ -78,7 +78,7 @@ public class WorkoutServiceImpl implements WorkoutService {
             }
             exerciseForWorkoutDTOS.add(new ExerciseForWorkoutDTO(exercise.getName(), exercise.getImages().get(0), exercise.getId(), seriesForExerciseDTO));
         }
-        workoutDTO.setExercisesOfWorkout(exerciseForWorkoutDTOS);
+        workoutDTO.setExercises(exerciseForWorkoutDTOS);
         return workoutDTO;
 
 
@@ -178,10 +178,10 @@ public class WorkoutServiceImpl implements WorkoutService {
             throw new RuntimeException(e);
         }
 
-        for (ExerciseForWorkoutDTO exerciseDTO : workoutDTO.getExercisesOfWorkout()) {
-            List<SerieEntity> series = serieService.getSeriesOfLastWorkoutFromExerciseAndUser(exerciseDTO.getExerciseId(),existingWorkout.getWorker().getId());
+        for (ExerciseForWorkoutDTO exerciseDTO : workoutDTO.getExercises()) {
+            List<SerieEntity> series = serieService.getSeriesOfLastWorkoutFromExerciseAndUser(exerciseDTO.getExerciseId(), existingWorkout.getWorker().getId());
             ExerciseEntity exercise = exerciseService.getExerciseById(exerciseDTO.getExerciseId());
-            updateSeries(series,exerciseDTO,exercise, existingWorkout);
+            updateSeries(series, exerciseDTO, exercise, existingWorkout);
         }
         return existingWorkout;
     }
@@ -207,7 +207,7 @@ public class WorkoutServiceImpl implements WorkoutService {
         for (int i = 0; i < exerciseDTO.getSeries().size(); i++) {
             SerieForExerciseDTO finalSerieDTO = exerciseDTO.getSeries().get(i);
             if (seriesEntity.stream().noneMatch(s -> s.getId().equals(finalSerieDTO.getId()))) {
-                SerieEntity newSerie = new SerieEntity(exercise,exerciseDTO.getSeries().get(i).getReps(),exerciseDTO.getSeries().get(i).getKg(),workout);
+                SerieEntity newSerie = new SerieEntity(exercise, exerciseDTO.getSeries().get(i).getReps(), exerciseDTO.getSeries().get(i).getKg(), workout);
                 exerciseDTO.getSeries().get(i).setId(serieService.saveSerie(newSerie).getId());
                 newSerie.setId(exerciseDTO.getSeries().get(i).getId());
                 seriesEntity.add(newSerie);
@@ -216,7 +216,7 @@ public class WorkoutServiceImpl implements WorkoutService {
         for (SerieForExerciseDTO serieDTO : exerciseDTO.getSeries()) {
             SerieForExerciseDTO finalSerieDTO = serieDTO;
             if (seriesEntity.stream().noneMatch(s -> s.getId().equals(finalSerieDTO.getId()))) {
-                SerieEntity newSerie = new SerieEntity(exercise,serieDTO.getReps(),serieDTO.getKg(),workout);
+                SerieEntity newSerie = new SerieEntity(exercise, serieDTO.getReps(), serieDTO.getKg(), workout);
                 serieDTO = serieService.saveSerie(newSerie);
                 newSerie.setId(serieDTO.getId());
                 seriesEntity.add(newSerie);
@@ -244,6 +244,38 @@ public class WorkoutServiceImpl implements WorkoutService {
         workoutRepository.save(existingWorkout);
         workoutDTO.setEndDate(new Date());
         return workoutDTO;
+    }
+
+    @Override
+    public WorkoutDTO getWorkoutById(Long id) {
+
+        WorkoutEntity workoutEntity = workoutRepository.findById(id).orElse(null);
+        WorkoutDTO workoutDTO = workoutMapper.entityToDTO(workoutEntity);
+        List<SerieEntity> series = serieService.getSeriesOfWorkout(workoutEntity);
+        workoutDTO.setExercises(new ArrayList<>());
+        for (SerieEntity serie : series) {
+            if (!workoutDTO.getExercises().isEmpty() && serie.getExercise().getId() == workoutDTO.getExercises().get(workoutDTO.getExercises().size() - 1).getExerciseId()) {
+                workoutDTO.getExercises().get(workoutDTO.getExercises().size() - 1).getSeries().add(serieEntityToDTO(serie));
+            } else {
+                ExerciseForWorkoutDTO exerciseForWorkoutDTO = new ExerciseForWorkoutDTO();
+                exerciseForWorkoutDTO.setExerciseId(serie.getExercise().getId());
+                exerciseForWorkoutDTO.setName(serie.getExercise().getName());
+                exerciseForWorkoutDTO.setImage(serie.getExercise().getImages().get(0));
+                exerciseForWorkoutDTO.setSeries(new ArrayList<>());
+                exerciseForWorkoutDTO.getSeries().add(serieEntityToDTO(serie));
+                workoutDTO.getExercises().add(exerciseForWorkoutDTO);
+            }
+        }
+
+        return workoutDTO;
+    }
+
+    private SerieForExerciseDTO serieEntityToDTO(SerieEntity serieEntity) {
+        SerieForExerciseDTO serieForExerciseDTO = new SerieForExerciseDTO();
+        serieForExerciseDTO.setId(serieEntity.getId());
+        serieForExerciseDTO.setKg(serieEntity.getKg());
+        serieForExerciseDTO.setReps(serieEntity.getReps());
+        return serieForExerciseDTO;
     }
 
 

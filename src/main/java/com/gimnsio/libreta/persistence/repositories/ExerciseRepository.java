@@ -3,6 +3,7 @@ package com.gimnsio.libreta.persistence.repositories;
 import com.gimnsio.libreta.persistence.entities.ExerciseEntity;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -10,7 +11,7 @@ import java.util.List;
 import java.util.Set;
 
 @Repository
-public interface ExerciseRepository extends JpaRepository<ExerciseEntity, String> {
+public interface ExerciseRepository extends JpaRepository<ExerciseEntity, String>, JpaSpecificationExecutor<ExerciseEntity> {
 
 
     @Query(value = "select * from exercises where body_part = :id", nativeQuery=true)
