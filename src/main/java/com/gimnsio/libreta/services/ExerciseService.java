@@ -29,22 +29,6 @@ public interface ExerciseService {
 
     public Set<ExerciseEntity> createExercises (Set<ExerciseEntity> entities);
 
-    public List<ExerciseForRoutineDTO> getExercisesForRoutine(RoutineEntity routine);
-
-    public List<ExerciseEntity> getExercisesByName(String name, Pageable pageable, Locale locale);
-
-    public List<ExerciseEntity> getExercisesByForce(String force, Pageable pageable, Locale userLocale);
-
-    public List<ExerciseEntity> getExercisesByLevel(String level, Pageable pageable, Locale userLocale);
-
-    public List<ExerciseEntity> getExercisesByMechanic(String mechanic, Pageable pageable, Locale userLocale);
-
-    public List<ExerciseEntity> getExercisesByEquipment(String equipment, Pageable pageable, Locale userLocale);
-
-    public List<ExerciseEntity> getExercisesByCategory(String category, Pageable pageable, Locale userLocale);
-
-    public List<ExerciseEntity> getExercisesByMuscle(String muscle, Pageable pageable, Locale userLocale);
-
 
     //FOR WORKOUT
 //    public ExerciseForWorkoutDTO getExerciseForWorkout(ExerciseForWorkoutEntity exerciseForWorkoutEntity);

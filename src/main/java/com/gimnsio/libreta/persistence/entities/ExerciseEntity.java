@@ -17,6 +17,8 @@ public class ExerciseEntity {
     @Id
     private String id;
     private String name;
+    @Column(name="name_es")
+    private String nameEs;
     private Force force;
     private Level level;
     private Mechanic mechanic;

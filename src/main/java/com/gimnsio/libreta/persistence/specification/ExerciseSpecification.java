@@ -2,10 +2,7 @@ package com.gimnsio.libreta.persistence.specification;
 
 import com.gimnsio.libreta.persistence.entities.ExerciseEntity;
 import com.gimnsio.libreta.persistence.enums.*;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Root;
-import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.*;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.ArrayList;
@@ -14,6 +11,8 @@ import java.util.List;
 public class ExerciseSpecification implements Specification<ExerciseEntity> {
 
     private String name;
+
+    private String nameEs;
     private Muscle muscle;
     private Force force;
     private Level level;
@@ -21,8 +20,9 @@ public class ExerciseSpecification implements Specification<ExerciseEntity> {
     private Equipment equipment;
     private Category category;
 
-    public ExerciseSpecification(String name, String muscle, String force, String level, String mechanic, String equipment, String category) {
+    public ExerciseSpecification(String name, String nameEs, String muscle, String force, String level, String mechanic, String equipment, String category) {
         this.name = (name!= null) ? "%" + name + "%" : null;
+        this.nameEs = (nameEs!= null) ? "%" + nameEs + "%" : null;
         this.muscle = (muscle != null) ? Muscle.valueOf(muscle) : null;
         this.force = (force != null) ? Force.valueOf(force) : null;
         this.level = (level != null) ? Level.valueOf(level) : null;
@@ -36,7 +36,12 @@ public class ExerciseSpecification implements Specification<ExerciseEntity> {
         List<Predicate> predicates = new ArrayList<>();
 
         if (name != null) {
-            predicates.add(cb.like(root.get("name"), name));
+            Expression<String> upperName = cb.upper(root.get("name"));
+            predicates.add(cb.like (upperName, name.toUpperCase()));
+        }
+        if (nameEs != null) {
+            Expression<String> upperName = cb.upper(root.get("name_es"));
+            predicates.add(cb.like (upperName, nameEs.toUpperCase()));
         }
         if (muscle != null) {
             predicates.add(cb.equal(root.get("muscle"), muscle));

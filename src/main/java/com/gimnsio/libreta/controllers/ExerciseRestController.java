@@ -38,7 +38,12 @@ public class ExerciseRestController {
 
 
         Locale userLocale = new Locale(locale);
-        return ResponseEntity.ok(exerciseService.getExercises(new ExerciseSpecification(name, muscle, force, level, mechanic, equipment, category), pageable, userLocale));
+        String nameEs = null;
+        if (locale.equals("es")) {//falta poner ejercicios en la base de datos :)
+            nameEs = name;
+            name = null;
+        }
+        return ResponseEntity.ok(exerciseService.getExercises(new ExerciseSpecification(name, nameEs, muscle, force, level, mechanic, equipment, category), pageable, userLocale));
 //        if (name != null && !name.isEmpty()) {
 //            return ResponseEntity.ok(this.exerciseService.getExercisesByName(name, pageable, userLocale));
 //        } else if (muscle != null && !muscle.isEmpty()) {
