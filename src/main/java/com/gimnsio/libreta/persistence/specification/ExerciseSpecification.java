@@ -40,7 +40,7 @@ public class ExerciseSpecification implements Specification<ExerciseEntity> {
             predicates.add(cb.like (upperName, name.toUpperCase()));
         }
         if (nameEs != null) {
-            Expression<String> upperName = cb.upper(root.get("name_es"));
+            Expression<String> upperName = cb.upper(root.get("nameEs"));
             predicates.add(cb.like (upperName, nameEs.toUpperCase()));
         }
         if (muscle != null) {

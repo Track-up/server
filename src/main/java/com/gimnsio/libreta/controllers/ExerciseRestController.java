@@ -44,22 +44,6 @@ public class ExerciseRestController {
             name = null;
         }
         return ResponseEntity.ok(exerciseService.getExercises(new ExerciseSpecification(name, nameEs, muscle, force, level, mechanic, equipment, category), pageable, userLocale));
-//        if (name != null && !name.isEmpty()) {
-//            return ResponseEntity.ok(this.exerciseService.getExercisesByName(name, pageable, userLocale));
-//        } else if (muscle != null && !muscle.isEmpty()) {
-//            return ResponseEntity.ok(this.exerciseService.getExercisesByMuscle(muscle,pageable, userLocale));
-//        } else if (force != null && !force.isEmpty()) {
-//            return ResponseEntity.ok(this.exerciseService.getExercisesByForce(force, pageable, userLocale));
-//        } else if (level != null && !level.isEmpty()) {
-//            return ResponseEntity.ok(this.exerciseService.getExercisesByLevel(level, pageable, userLocale));
-//        } else if (mechanic != null && !mechanic.isEmpty()) {
-//            return ResponseEntity.ok(this.exerciseService.getExercisesByMechanic(mechanic, pageable, userLocale));
-//        } else if (equipment != null && !equipment.isEmpty()) {
-//            return ResponseEntity.ok(this.exerciseService.getExercisesByEquipment(equipment, pageable, userLocale));
-//        } else if (category != null && !category.isEmpty()) {
-//            return ResponseEntity.ok(this.exerciseService.getExercisesByCategory(category, pageable, userLocale));
-//        }
-//        return ResponseEntity.ok(this.exerciseService.getAllExercises(pageable, userLocale));
 
     }
 
@@ -67,11 +51,6 @@ public class ExerciseRestController {
     public ResponseEntity<?> getExerciseById(@PathVariable String id) {
         return ResponseEntity.ok(exerciseService.getExerciseById(id));
     }
-
-//    @GetMapping("/body_part/{id}")
-//    public ResponseEntity<?> getExercisesByBodyPart(@PathVariable Long id) {
-//        return ResponseEntity.ok(exerciseService.getExercisesByBodyPart(id));
-//    }
 
 
     @PutMapping("/{id}")
@@ -92,7 +71,6 @@ public class ExerciseRestController {
 
     @PostMapping("/insert")
     public ResponseEntity<?> createExercises(@RequestBody Set<ExerciseEntity> exercises) {
-        ;
         return ResponseEntity.ok(exerciseService.createExercises(exercises));
     }
 
