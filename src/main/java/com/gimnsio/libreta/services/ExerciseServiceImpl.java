@@ -65,7 +65,6 @@ public class ExerciseServiceImpl implements ExerciseService {
         return exercises;
     }
 
-
     @Override
     public ExerciseEntity getExerciseById(String id) {
         Optional<ExerciseEntity> exerciseEntityOptional = exerciseRepository.findById(id);

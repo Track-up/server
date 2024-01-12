@@ -44,7 +44,9 @@ public class ExerciseSpecification implements Specification<ExerciseEntity> {
             predicates.add(cb.like (upperName, nameEs.toUpperCase()));
         }
         if (muscle != null) {
-            predicates.add(cb.equal(root.get("muscle"), muscle));
+            List<Muscle> muscles = new ArrayList<>();
+            muscles.add(muscle);
+            predicates.add(cb.equal(root.get("primaryMuscles"), muscles));
         }
         if (force != null) {
             predicates.add(cb.equal(root.get("force"), force));

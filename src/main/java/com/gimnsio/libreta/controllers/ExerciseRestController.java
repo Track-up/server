@@ -39,7 +39,7 @@ public class ExerciseRestController {
 
         Locale userLocale = new Locale(locale);
         String nameEs = null;
-        if (locale.equals("es")) {//falta poner ejercicios en la base de datos :)
+        if (locale.equals("es")) {
             nameEs = name;
             name = null;
         }
