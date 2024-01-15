@@ -1,9 +1,11 @@
 package com.gimnsio.libreta.services;
 
+import com.dropbox.core.DbxException;
 import com.gimnsio.libreta.DTO.exercises.ExerciseDTO;
 import com.gimnsio.libreta.DTO.exercises.ExerciseForRoutineDTO;
 import com.gimnsio.libreta.DTO.exercises.ExerciseNewDTO;
 import com.gimnsio.libreta.DTO.muscles.MusclePercentIdDTO;
+import com.gimnsio.libreta.Dropbox.DropBoxAPI;
 import com.gimnsio.libreta.Mapper.ExerciseMapper;
 import com.gimnsio.libreta.persistence.entities.ExerciseEntity;
 import com.gimnsio.libreta.persistence.entities.MuscleEntity;
@@ -38,6 +40,8 @@ public class ExerciseServiceImpl implements ExerciseService {
     MuscleForExerciseRepository muscleForExerciseRepository;
     @Autowired
     private MessageSource messageSource;
+    @Autowired
+    private DropBoxAPI dropBoxAPI;
 
 
     //AQUÍ ACABA
@@ -59,10 +63,24 @@ public class ExerciseServiceImpl implements ExerciseService {
     @Override
     public List<ExerciseEntity> getExercises(ExerciseSpecification exerciseSpecification, Pageable pageable, Locale locale) {
         List<ExerciseEntity> exercises = this.exerciseRepository.findAll(exerciseSpecification,pageable).stream().collect(Collectors.toList());
+        getImages(exercises);
         if (!locale.getLanguage().equals("en")) {
             translateExercises(locale, exercises);
         }
         return exercises;
+    }
+
+    private void getImages(List<ExerciseEntity> exercises) {
+        for (ExerciseEntity exercise : exercises) {
+            for (int i = 0; i < exercise.getImages().size(); i++) {
+                try {
+                    String image = dropBoxAPI.getImage(exercise.getImages().get(i));
+                    exercise.getImages().set(i, image);
+                } catch (DbxException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
     }
 
     @Override
