@@ -38,6 +38,6 @@ public class CloudinaryAPI {
             throw new RuntimeException(e);
         }
     }
-    
+
 
 }

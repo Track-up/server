@@ -1,11 +1,18 @@
 package com.gimnsio.libreta.persistence.repositories;
 
 import com.gimnsio.libreta.persistence.entities.WorkoutEntity;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+
+import java.util.Collection;
+import java.util.List;
 
 @Repository
 public interface WorkoutRepository extends JpaRepository<WorkoutEntity,Long> {
+    @Query(value = "select * from workouts where worker_id = :userId and end_date is not null order by end_date desc limit :until", nativeQuery=true)
+    List<WorkoutEntity> findLastWorkouts(Long userId, Integer until);
 
 //    @Query(value = "select w from workout w where w.worker = :userId and w.exercisesOfWorkout.exercise.id")
 //    public WorkoutEntity findByExerciseAndUser(Long exerciseId, Long userId);

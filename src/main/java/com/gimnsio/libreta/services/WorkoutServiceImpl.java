@@ -45,6 +45,14 @@ public class WorkoutServiceImpl implements WorkoutService {
     }
 
     @Override
+    public List<WorkoutDTO> getLastWorkouts(Long userId, Integer until) {
+        List<WorkoutEntity> workouts = workoutRepository.findLastWorkouts(userId,until);
+        List<WorkoutDTO> workoutDTOS = workouts.stream().map(workoutMapper::entityToDTO).collect(Collectors.toList());
+        workoutDTOS.forEach(workoutDTO -> workoutDTO.setExercises(serieService.getSeriesOfExerciseForWorkout(workoutRepository.findById(workoutDTO.getId()).orElse(null))));
+        return workoutDTOS;
+    }
+
+    @Override
     public WorkoutDTO createWorkout(Long routineId, Long userId, Long difficulty) {
         //Busqueda de rutina
         RoutineDTO routineDTO = routineService.getRoutineById(routineId);
@@ -248,35 +256,15 @@ public class WorkoutServiceImpl implements WorkoutService {
 
     @Override
     public WorkoutDTO getWorkoutById(Long id) {
-
         WorkoutEntity workoutEntity = workoutRepository.findById(id).orElse(null);
         WorkoutDTO workoutDTO = workoutMapper.entityToDTO(workoutEntity);
-        List<SerieEntity> series = serieService.getSeriesOfWorkout(workoutEntity);
-        workoutDTO.setExercises(new ArrayList<>());
-        for (SerieEntity serie : series) {
-            if (!workoutDTO.getExercises().isEmpty() && serie.getExercise().getId() == workoutDTO.getExercises().get(workoutDTO.getExercises().size() - 1).getExerciseId()) {
-                workoutDTO.getExercises().get(workoutDTO.getExercises().size() - 1).getSeries().add(serieEntityToDTO(serie));
-            } else {
-                ExerciseForWorkoutDTO exerciseForWorkoutDTO = new ExerciseForWorkoutDTO();
-                exerciseForWorkoutDTO.setExerciseId(serie.getExercise().getId());
-                exerciseForWorkoutDTO.setName(serie.getExercise().getName());
-                exerciseForWorkoutDTO.setImage(serie.getExercise().getImages().get(0));
-                exerciseForWorkoutDTO.setSeries(new ArrayList<>());
-                exerciseForWorkoutDTO.getSeries().add(serieEntityToDTO(serie));
-                workoutDTO.getExercises().add(exerciseForWorkoutDTO);
-            }
-        }
-
+        workoutDTO.setExercises(serieService.getSeriesOfExerciseForWorkout(workoutEntity));
         return workoutDTO;
     }
 
-    private SerieForExerciseDTO serieEntityToDTO(SerieEntity serieEntity) {
-        SerieForExerciseDTO serieForExerciseDTO = new SerieForExerciseDTO();
-        serieForExerciseDTO.setId(serieEntity.getId());
-        serieForExerciseDTO.setKg(serieEntity.getKg());
-        serieForExerciseDTO.setReps(serieEntity.getReps());
-        return serieForExerciseDTO;
-    }
+
+
+
 
 
 }

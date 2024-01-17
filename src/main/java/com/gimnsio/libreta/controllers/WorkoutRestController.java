@@ -23,6 +23,14 @@ public class WorkoutRestController {
         return ResponseEntity.ok(this.workoutService.getAllWorkouts(pageable));
     }
 
+    @GetMapping("/last/{userId}")
+    public ResponseEntity<?> getLastWorkouts(
+            @PathVariable Long userId,
+            @RequestParam() Integer until) {
+        return ResponseEntity.ok(this.workoutService.getLastWorkouts(userId,until));
+    }
+
+
     @GetMapping("/{id}")
     public ResponseEntity<?> getWorkoutById(@PathVariable Long id) {
         return ResponseEntity.ok(this.workoutService.getWorkoutById(id));
