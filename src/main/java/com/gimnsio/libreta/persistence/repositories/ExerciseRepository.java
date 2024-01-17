@@ -38,6 +38,8 @@ public interface ExerciseRepository extends JpaRepository<ExerciseEntity, String
     @Query(value = "select * from exercises where muscle = :muscle", nativeQuery=true)
     public List<ExerciseEntity> findByMuscle(int muscle, Pageable pageable);
 
+    @Query(value = "select * from exercises where images[1] not like '%cloudinary%'", nativeQuery = true)
+    public List<ExerciseEntity> findExercisesWithoutCloudinary();
 
 
 

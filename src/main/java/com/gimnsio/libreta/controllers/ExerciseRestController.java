@@ -74,4 +74,10 @@ public class ExerciseRestController {
         return ResponseEntity.ok(exerciseService.createExercises(exercises));
     }
 
+    @GetMapping("/list")
+    public ResponseEntity<?> listResources() {
+        exerciseService.changeNameOfImages();
+        return ResponseEntity.ok("OK");
+    }
+
 }

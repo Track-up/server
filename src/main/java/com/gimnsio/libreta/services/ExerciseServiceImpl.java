@@ -7,6 +7,7 @@ import com.gimnsio.libreta.DTO.exercises.ExerciseNewDTO;
 import com.gimnsio.libreta.DTO.muscles.MusclePercentIdDTO;
 import com.gimnsio.libreta.Dropbox.DropBoxAPI;
 import com.gimnsio.libreta.Mapper.ExerciseMapper;
+import com.gimnsio.libreta.images.CloudinaryAPI;
 import com.gimnsio.libreta.persistence.entities.ExerciseEntity;
 import com.gimnsio.libreta.persistence.entities.MuscleEntity;
 import com.gimnsio.libreta.persistence.entities.RoutineEntity;
@@ -41,7 +42,7 @@ public class ExerciseServiceImpl implements ExerciseService {
     @Autowired
     private MessageSource messageSource;
     @Autowired
-    private DropBoxAPI dropBoxAPI;
+    private CloudinaryAPI cloudinaryAPI;
 
 
     //AQUÍ ACABA
@@ -63,24 +64,10 @@ public class ExerciseServiceImpl implements ExerciseService {
     @Override
     public List<ExerciseEntity> getExercises(ExerciseSpecification exerciseSpecification, Pageable pageable, Locale locale) {
         List<ExerciseEntity> exercises = this.exerciseRepository.findAll(exerciseSpecification,pageable).stream().collect(Collectors.toList());
-        getImages(exercises);
         if (!locale.getLanguage().equals("en")) {
             translateExercises(locale, exercises);
         }
         return exercises;
-    }
-
-    private void getImages(List<ExerciseEntity> exercises) {
-        for (ExerciseEntity exercise : exercises) {
-            for (int i = 0; i < exercise.getImages().size(); i++) {
-                try {
-                    String image = dropBoxAPI.getImage(exercise.getImages().get(i));
-                    exercise.getImages().set(i, image);
-                } catch (DbxException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        }
     }
 
     @Override
@@ -177,15 +164,14 @@ public class ExerciseServiceImpl implements ExerciseService {
         }
     }
 
-//    @Override
-//    public ExerciseForWorkoutDTO getExerciseForWorkout(ExerciseForWorkoutEntity exerciseForWorkoutEntity) {
-//        return exerciseMapper.forWorkoutEntityToDTO(exerciseForWorkoutEntity);
-//    }
 
-//    @Override
-//    public List<Exercise> getExercisesByMuscle(Long muscle_id, Pageable pageable) {
-//        return exerciseRepository.findByMuscle(muscle_id,pageable);
-//    }
+    public void changeNameOfImages(){
+        List<ExerciseEntity> exercises = exerciseRepository.findExercisesWithoutCloudinary();
+        for (ExerciseEntity exercise : exercises) {
+            exercise.setImages(cloudinaryAPI.listResourcesByExercises(exercise.getId()));
+            exerciseRepository.save(exercise);
+        }
+    }
 
 
 }

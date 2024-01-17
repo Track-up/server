@@ -29,6 +29,8 @@ public interface ExerciseService {
 
     public Set<ExerciseEntity> createExercises (Set<ExerciseEntity> entities);
 
+    public void changeNameOfImages();
+
 
     //FOR WORKOUT
 //    public ExerciseForWorkoutDTO getExerciseForWorkout(ExerciseForWorkoutEntity exerciseForWorkoutEntity);
