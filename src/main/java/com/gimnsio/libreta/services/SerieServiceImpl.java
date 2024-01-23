@@ -96,7 +96,7 @@ public class SerieServiceImpl implements SerieService {
                 ExerciseForWorkoutDTO exerciseForWorkoutDTO = new ExerciseForWorkoutDTO();
                 exerciseForWorkoutDTO.setExerciseId(serie.getExercise().getId());
                 exerciseForWorkoutDTO.setName(serie.getExercise().getName());
-                exerciseForWorkoutDTO.setImage(serie.getExercise().getImages().get(0));
+                exerciseForWorkoutDTO.setImages(serie.getExercise().getImages());
                 exerciseForWorkoutDTO.setSeries(new ArrayList<>());
                 exerciseForWorkoutDTO.getSeries().add(serieEntityToDTO(serie));
                 exercises.add(exerciseForWorkoutDTO);

@@ -130,7 +130,7 @@ public class UserServiceImpl implements UserService {
         if (userUpdateDTO.getUsername() != null) {
             userEntity.setUsername(userUpdateDTO.getUsername());
         }
-        if (userUpdateDTO.getEmail() != null) {
+        if (userUpdateDTO.getEmail() != null && !userUpdateDTO.getEmail().isEmpty()) {
             userEntity.setEmail(userUpdateDTO.getEmail());
         }
         if (userUpdateDTO.getImage() != null) {

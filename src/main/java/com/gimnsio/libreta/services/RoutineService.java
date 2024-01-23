@@ -21,5 +21,6 @@ public interface RoutineService {
 //    public List<List<RoutineBasicsDTO>> getRoutinesByString (String name, Pageable pageable);
     public RoutineForWorkoutDTO getRoutineForWorkout(long id);
 
+    RoutineDTO getRoutineByWorkout(Long id);
 
 }

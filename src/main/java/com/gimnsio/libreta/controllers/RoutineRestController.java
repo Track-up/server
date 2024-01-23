@@ -91,6 +91,11 @@ public class RoutineRestController {
         return ResponseEntity.ok(this.routineService.getRoutinesByName(name,pageable));
     }
 
+    @PostMapping("/workout/{id}")
+    public ResponseEntity<?> getRoutineByWorkout(@PathVariable Long id) {
+        return ResponseEntity.ok(this.routineService.getRoutineByWorkout(id));
+    }
+
 
 
 

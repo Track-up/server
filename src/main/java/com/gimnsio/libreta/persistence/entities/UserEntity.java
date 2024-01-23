@@ -33,6 +33,8 @@ public class UserEntity {
     @Column(name = "username", unique = true, nullable = false)
     private String username;
 
+
+
     private String image;
 
     @Email
@@ -52,22 +54,11 @@ public class UserEntity {
     )
     private Set<RoleEntity> roles;
 
-    @ManyToMany(fetch = FetchType.EAGER, targetEntity = RoleEntity.class, cascade = CascadeType.PERSIST)
-    @JoinTable(
-            name = "workouts_done",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "workout_id")
-    )
-    private Set<WorkoutEntity> workouts_done;
 
     private Date dateOfCreation;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    @JsonManagedReference
-    private MeasuresEntity measures;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    private ConfigurationEntity configuration;
+
 
     public UserEntity(Long id){
         this.id = id;

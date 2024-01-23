@@ -4,6 +4,7 @@ import com.gimnsio.libreta.DTO.exercises.ExerciseForNewRoutineDTO;
 import com.gimnsio.libreta.DTO.exercises.ExerciseForRoutineDTO;
 import com.gimnsio.libreta.DTO.routines.*;
 import com.gimnsio.libreta.DTO.users.UserDTO;
+import com.gimnsio.libreta.DTO.workout.WorkoutDTO;
 import com.gimnsio.libreta.Mapper.ExerciseMapper;
 import com.gimnsio.libreta.Mapper.RoutineMapper;
 import com.gimnsio.libreta.persistence.entities.ExerciseEntity;
@@ -11,6 +12,7 @@ import com.gimnsio.libreta.persistence.entities.RoutineEntity;
 import com.gimnsio.libreta.persistence.entities.SerieExampleEntity;
 import com.gimnsio.libreta.persistence.repositories.RoutineRepository;
 import com.gimnsio.libreta.persistence.repositories.SerieExampleRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -32,12 +34,16 @@ public class RoutineServiceImpl implements RoutineService {
 
     final private UserService userService;
 
+//    @Autowired
+//    final private WorkoutService workoutService;
+
     public RoutineServiceImpl(RoutineRepository routineRepository, SerieExampleService serieExampleService, RoutineMapper routineMapper, ExerciseService exerciseService, UserService userService) {
         this.serieExampleService = serieExampleService;
         this.routineMapper = routineMapper;
         this.routineRepository = routineRepository;
         this.exerciseService = exerciseService;
         this.userService = userService;
+//        this.workoutService = workoutService;
     }
 
     @Override
@@ -236,5 +242,18 @@ public class RoutineServiceImpl implements RoutineService {
         } else {
             throw new NoSuchElementException("No se encontró la rutina con ID: " + id);
         }
+    }
+
+    @Override
+    public RoutineDTO getRoutineByWorkout(Long id) {
+
+        WorkoutDTO workoutDTO = null;//workoutService.getWorkoutById(id);
+        RoutineDTO routineDTO = new RoutineDTO();
+
+        workoutDTO.getExercises().forEach(exercise -> {
+            routineDTO.getExercises().add(new ExerciseForRoutineDTO(exercise.getExerciseId(), exercise.getName(), exercise.getImages(), null, exercise.getSeries().stream().count()));
+        });
+
+        return routineDTO;
     }
 }
