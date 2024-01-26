@@ -116,6 +116,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         httpResponse.put("token", token);
         httpResponse.put("message","Autentificación correcta");
         httpResponse.put("username", user.getUsername());
+        httpResponse.put("image", userIdDTO.getImage());
         httpResponse.put("lenguage","es");
 
         response.getWriter().write(new ObjectMapper().writeValueAsString(httpResponse));

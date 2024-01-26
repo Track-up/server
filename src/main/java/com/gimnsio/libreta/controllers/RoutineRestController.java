@@ -4,6 +4,7 @@ import com.gimnsio.libreta.DTO.routines.RoutineEditDTO;
 import com.gimnsio.libreta.DTO.routines.RoutineNewDTO;
 import com.gimnsio.libreta.services.RoutineService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -44,7 +45,7 @@ public class RoutineRestController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createRoutine(@RequestBody RoutineNewDTO routineNewDTO) {
+    public ResponseEntity<?> createRoutine(@RequestBody @Valid RoutineNewDTO routineNewDTO) {
         Map<String, Object> httpResponse = new HashMap<>();
         if (routineNewDTO.getExercises().isEmpty()){
             httpResponse.put("message", "La rutina no tiene ejercicios :(");

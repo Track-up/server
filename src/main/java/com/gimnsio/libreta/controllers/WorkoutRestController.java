@@ -3,6 +3,7 @@ package com.gimnsio.libreta.controllers;
 import com.gimnsio.libreta.DTO.workout.WorkoutDTO;
 import com.gimnsio.libreta.services.WorkoutService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -46,13 +47,13 @@ public class WorkoutRestController {
 
     @PutMapping("/start")
     public ResponseEntity<?> startWorkout(
-            @RequestBody WorkoutDTO workoutDTO){
+            @RequestBody @Valid WorkoutDTO workoutDTO){
         return ResponseEntity.ok(this.workoutService.startWorkout(workoutDTO));
     }
 
     @PutMapping("/end")
     public ResponseEntity<?> endWorkout(
-            @RequestBody WorkoutDTO workoutDTO){
+            @RequestBody @Valid WorkoutDTO workoutDTO){
         return ResponseEntity.ok(this.workoutService.endWorkout(workoutDTO));
     }
 

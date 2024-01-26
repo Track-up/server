@@ -7,4 +7,5 @@ import lombok.Data;
 @AllArgsConstructor
 public class UserIdDTO {
     private Long id;
+    private String image;
 }
