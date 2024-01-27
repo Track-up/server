@@ -1,6 +1,6 @@
 package com.gimnsio.libreta.DTO.exercises;
 
-import com.gimnsio.libreta.DTO.serie.SerieForExerciseDTO;
+import com.gimnsio.libreta.serie.dto.SerieForExerciseDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

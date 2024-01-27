@@ -1,9 +1,7 @@
 package com.gimnsio.libreta.services;
 
-import com.gimnsio.libreta.DTO.exercises.ExerciseForRoutineDTO;
 import com.gimnsio.libreta.DTO.exercises.ExerciseNewDTO;
 import com.gimnsio.libreta.persistence.entities.ExerciseEntity;
-import com.gimnsio.libreta.persistence.entities.RoutineEntity;
 import com.gimnsio.libreta.persistence.specification.ExerciseSpecification;
 import org.springframework.data.domain.Pageable;
 
