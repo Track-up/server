@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 public interface RoutineMapper {
     @Mappings({
 //            @Mapping(target = "numExercises", expression = "java(routineEntity.getExercises().size())"),
+//             @Mapping(target = "exercises", expression = "java(routineEntity.getSeries().stream().map(serie -> serie.getExercise()).collect(Collectors.toList()))"),
 //            @Mapping(source = "creator.username", target = "creator"),
             //@Mapping(target = "isPublic", ignore = true) // Assuming you don't need isPublic in RoutineBasicsDTO
     })

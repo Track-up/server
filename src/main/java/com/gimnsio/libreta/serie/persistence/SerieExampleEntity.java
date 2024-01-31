@@ -5,6 +5,7 @@ import com.gimnsio.libreta.routine.persistence.RoutineEntity;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Data
 @NoArgsConstructor
@@ -22,10 +23,13 @@ public class SerieExampleEntity {
 
     @ManyToOne
     @JoinColumn(name = "routine_id")
+    @ToString.Exclude
     private RoutineEntity routine;
 
     public SerieExampleEntity(ExerciseEntity exercise, RoutineEntity routine) {
         this.exercise = exercise;
         this.routine = routine;
     }
+
+
 }

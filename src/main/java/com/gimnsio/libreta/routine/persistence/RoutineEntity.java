@@ -1,6 +1,7 @@
 package com.gimnsio.libreta.routine.persistence;
 
 import com.gimnsio.libreta.persistence.entities.BodyPartEntity;
+import com.gimnsio.libreta.serie.persistence.SerieExampleEntity;
 import com.gimnsio.libreta.user.persistence.UserEntity;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -32,6 +33,9 @@ public class RoutineEntity {
             inverseJoinColumns = @JoinColumn(name = "body_part_id")
     )
     private List<BodyPartEntity> bodyParts;
+
+    @OneToMany(mappedBy = "routine", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<SerieExampleEntity> series;
     private Date dateOfCreation;
     private Date dateOfLastEdition;
     private boolean isPublic;

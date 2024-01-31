@@ -78,8 +78,8 @@ public class RoutineServiceImpl implements RoutineService {
     }
 
     private void setExercisesForRoutineDTO(RoutineEntity routineEntity, RoutineDTO routineDTO) {
-        List<SerieExampleEntity> series = serieExampleService.getSeriesOfRoutine(routineEntity);
-        for (SerieExampleEntity serie : series) {
+
+        for (SerieExampleEntity serie : routineEntity.getSeries()) {
             if (!routineDTO.getExercises().isEmpty() && serie.getExercise().getId().equals(routineDTO.getExercises().get(routineDTO.getExercises().size() - 1).getId())) {
                 routineDTO.getExercises().get(routineDTO.getExercises().size() - 1).setNumSeries(routineDTO.getExercises().get(routineDTO.getExercises().size() - 1).getNumSeries() + 1);
             } else {
