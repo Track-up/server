@@ -1,14 +1,13 @@
 package com.gimnsio.libreta.serie.service;
 
-import com.gimnsio.libreta.DTO.exercises.ExerciseForWorkoutDTO;
+import com.gimnsio.libreta.exercise.dto.ExerciseForWorkoutDTO;
 import com.gimnsio.libreta.serie.dto.SerieForExerciseDTO;
 import com.gimnsio.libreta.serie.mapper.SerieMapper;
 import com.gimnsio.libreta.exception.ApiRequestException;
-import com.gimnsio.libreta.persistence.entities.ExerciseEntity;
+import com.gimnsio.libreta.exercise.persistence.ExerciseEntity;
 import com.gimnsio.libreta.serie.persistence.SerieEntity;
 import com.gimnsio.libreta.workout.persistence.WorkoutEntity;
 import com.gimnsio.libreta.serie.persistence.SerieRepository;
-import com.gimnsio.libreta.workout.persistence.WorkoutRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

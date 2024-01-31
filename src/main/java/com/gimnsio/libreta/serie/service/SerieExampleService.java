@@ -1,6 +1,6 @@
 package com.gimnsio.libreta.serie.service;
 
-import com.gimnsio.libreta.persistence.entities.ExerciseEntity;
+import com.gimnsio.libreta.exercise.persistence.ExerciseEntity;
 import com.gimnsio.libreta.routine.persistence.RoutineEntity;
 import com.gimnsio.libreta.serie.persistence.SerieExampleEntity;
 

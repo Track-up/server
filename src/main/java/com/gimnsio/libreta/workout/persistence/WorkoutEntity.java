@@ -1,8 +1,9 @@
 package com.gimnsio.libreta.workout.persistence;
 
 import com.gimnsio.libreta.serie.persistence.SerieEntity;
-import com.gimnsio.libreta.persistence.entities.UserEntity;
+import com.gimnsio.libreta.user.persistence.UserEntity;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,6 +12,7 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity(name = "workouts")
 public class WorkoutEntity {
 

@@ -1,7 +1,7 @@
 package com.gimnsio.libreta.routine.persistence;
 
 import com.gimnsio.libreta.persistence.entities.BodyPartEntity;
-import com.gimnsio.libreta.persistence.entities.UserEntity;
+import com.gimnsio.libreta.user.persistence.UserEntity;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;

@@ -53,7 +53,7 @@ public class RoutineRestController {
         }
 
         try {
-            httpResponse.put("id", this.routineService.createRoutine(routineNewDTO).getId());
+            httpResponse.put("id", this.routineService.createRoutine(routineNewDTO));
             httpResponse.put("message", "Rutina creada con exito :)");
             return ResponseEntity.ok(httpResponse);
         }catch (Exception e){

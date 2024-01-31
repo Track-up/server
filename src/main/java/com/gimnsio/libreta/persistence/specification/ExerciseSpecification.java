@@ -1,6 +1,6 @@
 package com.gimnsio.libreta.persistence.specification;
 
-import com.gimnsio.libreta.persistence.entities.ExerciseEntity;
+import com.gimnsio.libreta.exercise.persistence.ExerciseEntity;
 import com.gimnsio.libreta.persistence.enums.*;
 import jakarta.persistence.criteria.*;
 import org.springframework.data.jpa.domain.Specification;

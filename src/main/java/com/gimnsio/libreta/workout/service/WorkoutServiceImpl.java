@@ -1,16 +1,16 @@
 package com.gimnsio.libreta.workout.service;
 
-import com.gimnsio.libreta.DTO.exercises.ExerciseForRoutineDTO;
-import com.gimnsio.libreta.DTO.exercises.ExerciseForWorkoutDTO;
+import com.gimnsio.libreta.exercise.dto.ExerciseForRoutineDTO;
+import com.gimnsio.libreta.exercise.dto.ExerciseForWorkoutDTO;
 import com.gimnsio.libreta.routine.dto.RoutineDTO;
 import com.gimnsio.libreta.serie.dto.SerieForExerciseDTO;
-import com.gimnsio.libreta.services.ExerciseService;
+import com.gimnsio.libreta.exercise.service.ExerciseService;
 import com.gimnsio.libreta.routine.service.RoutineService;
 import com.gimnsio.libreta.serie.service.SerieService;
-import com.gimnsio.libreta.services.UserService;
+import com.gimnsio.libreta.user.service.UserService;
 import com.gimnsio.libreta.workout.dto.WorkoutDTO;
 import com.gimnsio.libreta.workout.mapper.WorkoutMapper;
-import com.gimnsio.libreta.persistence.entities.ExerciseEntity;
+import com.gimnsio.libreta.exercise.persistence.ExerciseEntity;
 import com.gimnsio.libreta.serie.persistence.SerieEntity;
 import com.gimnsio.libreta.workout.persistence.WorkoutEntity;
 import com.gimnsio.libreta.workout.persistence.WorkoutRepository;
@@ -25,16 +25,16 @@ import java.util.stream.Collectors;
 public class WorkoutServiceImpl implements WorkoutService {
 
     @Autowired
-    private UserService userService;
+    private WorkoutRepository workoutRepository;
 
     @Autowired
-    private WorkoutRepository workoutRepository;
+    private WorkoutMapper workoutMapper;
 
     @Autowired
     private RoutineService routineService;
 
     @Autowired
-    private WorkoutMapper workoutMapper;
+    private UserService userService;
 
     @Autowired
     private ExerciseService exerciseService;
@@ -191,7 +191,7 @@ public class WorkoutServiceImpl implements WorkoutService {
         }
 
         for (ExerciseForWorkoutDTO exerciseDTO : workoutDTO.getExercises()) {
-            List<SerieEntity> series = serieService.getSeriesOfLastWorkoutFromExerciseAndUser(exerciseDTO.getExerciseId(), existingWorkout.getWorker().getId());
+            List<SerieEntity> series = existingWorkout.getSeries();//serieService.getSeriesOfLastWorkoutFromExerciseAndUser(exerciseDTO.getExerciseId(), existingWorkout.getWorker().getId());
             ExerciseEntity exercise = exerciseService.getExerciseById(exerciseDTO.getExerciseId());
             updateSeries(series, exerciseDTO, exercise, existingWorkout);
         }

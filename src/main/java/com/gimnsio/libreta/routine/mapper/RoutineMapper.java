@@ -1,9 +1,9 @@
 package com.gimnsio.libreta.routine.mapper;
 
-import com.gimnsio.libreta.Mapper.ExerciseMapper;
-import com.gimnsio.libreta.Mapper.UserMapper;
+import com.gimnsio.libreta.exercise.mapper.ExerciseMapper;
+import com.gimnsio.libreta.user.mapper.UserMapper;
 import com.gimnsio.libreta.routine.persistence.RoutineEntity;
-import com.gimnsio.libreta.persistence.entities.UserEntity;
+import com.gimnsio.libreta.user.persistence.UserEntity;
 import com.gimnsio.libreta.routine.dto.*;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -54,6 +54,4 @@ public interface RoutineMapper {
     })
     public void UpdateRoutineFromEditDTO(RoutineEditDTO routineEditDTO, @MappingTarget RoutineEntity routineEntity);
 
-
-    public RoutineIdDTO entityToIdDTO(RoutineEntity routineEntity);
 }

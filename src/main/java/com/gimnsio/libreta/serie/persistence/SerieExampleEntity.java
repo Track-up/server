@@ -1,6 +1,6 @@
 package com.gimnsio.libreta.serie.persistence;
 
-import com.gimnsio.libreta.persistence.entities.ExerciseEntity;
+import com.gimnsio.libreta.exercise.persistence.ExerciseEntity;
 import com.gimnsio.libreta.routine.persistence.RoutineEntity;
 import jakarta.persistence.*;
 import lombok.Data;

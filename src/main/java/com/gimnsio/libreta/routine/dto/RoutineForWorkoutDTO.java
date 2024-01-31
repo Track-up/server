@@ -1,6 +1,6 @@
 package com.gimnsio.libreta.routine.dto;
 
-import com.gimnsio.libreta.DTO.exercises.ExerciseMinimalDTO;
+import com.gimnsio.libreta.exercise.dto.ExerciseMinimalDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

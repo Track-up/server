@@ -1,15 +1,15 @@
 package com.gimnsio.libreta.routine.service;
 
-import com.gimnsio.libreta.DTO.exercises.ExerciseForNewRoutineDTO;
-import com.gimnsio.libreta.DTO.exercises.ExerciseForRoutineDTO;
-import com.gimnsio.libreta.DTO.users.UserDTO;
+import com.gimnsio.libreta.exercise.dto.ExerciseForNewRoutineDTO;
+import com.gimnsio.libreta.exercise.dto.ExerciseForRoutineDTO;
+import com.gimnsio.libreta.user.dto.UserDTO;
 import com.gimnsio.libreta.routine.dto.*;
 import com.gimnsio.libreta.serie.service.SerieExampleService;
-import com.gimnsio.libreta.services.ExerciseService;
-import com.gimnsio.libreta.services.UserService;
+import com.gimnsio.libreta.exercise.service.ExerciseService;
+import com.gimnsio.libreta.user.service.UserService;
 import com.gimnsio.libreta.workout.dto.WorkoutDTO;
 import com.gimnsio.libreta.routine.mapper.RoutineMapper;
-import com.gimnsio.libreta.persistence.entities.ExerciseEntity;
+import com.gimnsio.libreta.exercise.persistence.ExerciseEntity;
 import com.gimnsio.libreta.routine.persistence.RoutineEntity;
 import com.gimnsio.libreta.serie.persistence.SerieExampleEntity;
 import com.gimnsio.libreta.routine.persistence.RoutineRepository;
@@ -26,16 +26,14 @@ import java.util.stream.Collectors;
 public class RoutineServiceImpl implements RoutineService {
     final private RoutineRepository routineRepository;
 
-    final private SerieExampleService serieExampleService;
-
     final private RoutineMapper routineMapper;
+
+    final private SerieExampleService serieExampleService;
 
     final private ExerciseService exerciseService;
 
     final private UserService userService;
 
-//    @Autowired
-//    final private WorkoutService workoutService;
 
     public RoutineServiceImpl(RoutineRepository routineRepository, SerieExampleService serieExampleService, RoutineMapper routineMapper, ExerciseService exerciseService, UserService userService) {
         this.serieExampleService = serieExampleService;
@@ -118,7 +116,7 @@ public class RoutineServiceImpl implements RoutineService {
     }
 
     @Override
-    public RoutineIdDTO createRoutine(RoutineNewDTO routineNewDTO) {
+    public Long createRoutine(RoutineNewDTO routineNewDTO) {
 
         checkUser(routineNewDTO.getCreatorId());
         if (routineNewDTO.getImage().isEmpty()) {
@@ -132,7 +130,7 @@ public class RoutineServiceImpl implements RoutineService {
                 serieExampleService.save(new SerieExampleEntity(exerciseEntity, routineEntity));
             }
         }
-        return routineMapper.entityToIdDTO(routineEntity);
+        return routineEntity.getId();
     }
 
     @Override

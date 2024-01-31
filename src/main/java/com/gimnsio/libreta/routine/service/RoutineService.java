@@ -1,6 +1,6 @@
 package com.gimnsio.libreta.routine.service;
 
-import com.gimnsio.libreta.DTO.users.UserDTO;
+import com.gimnsio.libreta.user.dto.UserDTO;
 import com.gimnsio.libreta.routine.dto.*;
 import org.springframework.data.domain.Pageable;
 
@@ -11,7 +11,7 @@ public interface RoutineService {
     public List<RoutineDTO> getAllRoutines(Pageable pageable);
     public RoutineDTO getRoutineById(long id);
     public List<RoutineDTO> getRoutinesByUserCreator(UserDTO userDTO);
-    public RoutineIdDTO createRoutine(RoutineNewDTO routineNewDTO);
+    public Long createRoutine(RoutineNewDTO routineNewDTO);
     public RoutineDTO updateRoutine(Long id, RoutineEditDTO routineEditDTO);
     public void deleteRoutine(long id);
 

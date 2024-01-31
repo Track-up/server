@@ -1,7 +1,7 @@
 package com.gimnsio.libreta.services;
 
 import com.gimnsio.libreta.persistence.entities.MeasuresEntity;
-import com.gimnsio.libreta.persistence.entities.UserEntity;
+import com.gimnsio.libreta.user.persistence.UserEntity;
 import com.gimnsio.libreta.persistence.repositories.MeasuresRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

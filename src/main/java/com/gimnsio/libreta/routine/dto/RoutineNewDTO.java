@@ -1,6 +1,6 @@
 package com.gimnsio.libreta.routine.dto;
 
-import com.gimnsio.libreta.DTO.exercises.ExerciseForNewRoutineDTO;
+import com.gimnsio.libreta.exercise.dto.ExerciseForNewRoutineDTO;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;

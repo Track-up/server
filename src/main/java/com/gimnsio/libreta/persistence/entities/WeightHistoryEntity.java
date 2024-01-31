@@ -1,5 +1,6 @@
 package com.gimnsio.libreta.persistence.entities;
 
+import com.gimnsio.libreta.user.persistence.UserEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;

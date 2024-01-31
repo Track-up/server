@@ -1,7 +1,7 @@
 package com.gimnsio.libreta.Security.filters;
 
 import com.gimnsio.libreta.Security.jwt.JwtUtils;
-import com.gimnsio.libreta.services.UserDetailsServiceImpl;
+import com.gimnsio.libreta.user.service.UserDetailsServiceImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

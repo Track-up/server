@@ -1,6 +1,7 @@
 package com.gimnsio.libreta.persistence.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.gimnsio.libreta.user.persistence.UserEntity;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;

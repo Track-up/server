@@ -4,7 +4,7 @@ import com.gimnsio.libreta.Security.filters.JwtAuthenticationFilter;
 import com.gimnsio.libreta.Security.filters.JwtAuthorizationFilter;
 import com.gimnsio.libreta.Security.jwt.JwtUtils;
 import com.gimnsio.libreta.exception.CustomAuthenticationFailureHandler;
-import com.gimnsio.libreta.services.UserDetailsServiceImpl;
+import com.gimnsio.libreta.user.service.UserDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;

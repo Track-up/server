@@ -1,13 +1,16 @@
 package com.gimnsio.libreta.serie.persistence;
 
-import com.gimnsio.libreta.persistence.entities.ExerciseEntity;
+import com.gimnsio.libreta.exercise.persistence.ExerciseEntity;
 import com.gimnsio.libreta.workout.persistence.WorkoutEntity;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity(name="series")
 public class SerieEntity {
     @Id
@@ -30,5 +33,15 @@ public class SerieEntity {
         this.reps = reps;
         this.kg = kg;
         this.workout = workout;
+    }
+
+    @Override
+    public String toString() {
+        return "SerieEntity{" +
+                "id=" + id +
+                ", exercise=" + exercise +
+                ", reps=" + reps +
+                ", kg=" + kg +
+                '}';
     }
 }

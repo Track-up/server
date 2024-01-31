@@ -1,8 +1,8 @@
 package com.gimnsio.libreta.routine.dto;
 
 import com.gimnsio.libreta.persistence.entities.BodyPartEntity;
-import com.gimnsio.libreta.persistence.entities.ExerciseEntity;
-import com.gimnsio.libreta.persistence.entities.UserEntity;
+import com.gimnsio.libreta.exercise.persistence.ExerciseEntity;
+import com.gimnsio.libreta.user.persistence.UserEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
