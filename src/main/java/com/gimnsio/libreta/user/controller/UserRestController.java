@@ -100,4 +100,10 @@ public class UserRestController {
         return ResponseEntity.noContent().build();
     }
 
+    @DeleteMapping
+    public ResponseEntity<?> deleteUsers() {
+        userService.deleteUsers();
+        return ResponseEntity.noContent().build();
+    }
+
 }

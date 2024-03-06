@@ -1,5 +1,6 @@
 package com.gimnsio.libreta.workout.persistence;
 
+import com.gimnsio.libreta.routine.persistence.RoutineEntity;
 import com.gimnsio.libreta.serie.persistence.SerieEntity;
 import com.gimnsio.libreta.user.persistence.UserEntity;
 import jakarta.persistence.*;
@@ -23,6 +24,8 @@ public class WorkoutEntity {
 
     @OneToMany(mappedBy = "workout", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SerieEntity> series;
+
+    private RoutineEntity routineDeDondeViene;//TODO
 
     @ManyToOne
     private UserEntity worker;

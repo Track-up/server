@@ -33,7 +33,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         Collection<? extends GrantedAuthority> authorities = userEntity.getRoles()
                 .stream()
-                .map(roleEntity -> new SimpleGrantedAuthority("ROLE_".concat(roleEntity.getName().name())))
+                .map(role -> new SimpleGrantedAuthority("ROLE_".concat(role.name())))
                 .collect(Collectors.toSet());
 
         return new User(userEntity.getUsername(),

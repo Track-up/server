@@ -1,7 +1,6 @@
 package com.gimnsio.libreta.user.persistence;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.gimnsio.libreta.persistence.entities.RoleEntity;
+import com.gimnsio.libreta.persistence.entities.UserRole;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -9,17 +8,18 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Set;
 
 
 @Data
 @Entity(name = "users")
-@NoArgsConstructor
 @Table(name = "users", uniqueConstraints = {
         @UniqueConstraint(columnNames = "username"),
         @UniqueConstraint(columnNames = "email")
 })
+@NoArgsConstructor
 public class UserEntity {
 
     @Id
@@ -29,12 +29,12 @@ public class UserEntity {
 
     private int level;
 
-    @NotBlank
+
     @Size(max = 30)
     @Column(name = "username", unique = true, nullable = false)
     private String username;
 
-
+    private String name;
 
     private String image;
 
@@ -43,20 +43,19 @@ public class UserEntity {
     @Column(name = "email", unique = true, nullable = false)
     private String email;
 
-    @NotBlank
+
     private String password;
 
 
-    @ManyToMany(fetch = FetchType.EAGER, targetEntity = RoleEntity.class, cascade = CascadeType.PERSIST)
-    @JoinTable(
-            name = "user_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id")
-    )
-    private Set<RoleEntity> roles;
 
+    @Enumerated(EnumType.STRING)
+    private Set<UserRole> roles;
 
-    private Date dateOfCreation;
+    @Enumerated(EnumType.STRING)
+    private Provider provider;
+
+    @Column(name = "created_at")
+    LocalDateTime createdAt;
 
 
 
@@ -64,5 +63,7 @@ public class UserEntity {
     public UserEntity(Long id){
         this.id = id;
     }
+
+
 
 }

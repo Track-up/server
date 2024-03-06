@@ -6,6 +6,7 @@ import com.gimnsio.libreta.user.dto.UserRegistryDTO;
 import com.gimnsio.libreta.user.dto.UserUpdateDTO;
 import com.gimnsio.libreta.user.mapper.UserMapper;
 import com.gimnsio.libreta.exception.ApiRequestException;
+import com.gimnsio.libreta.user.persistence.Provider;
 import com.gimnsio.libreta.user.persistence.UserEntity;
 import com.gimnsio.libreta.user.persistence.UserRepository;
 import com.gimnsio.libreta.services.MeasuresService;
@@ -23,7 +24,8 @@ import java.util.stream.Collectors;
 @Service
 public class UserServiceImpl implements UserService {
 
-    @Value("${url.backend}")
+//    @Value("${url.backend}")
+    @Value("${url.local}")
     private String urlBase;
 
     @Autowired
@@ -35,8 +37,6 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private MeasuresService measuresService;
-
-
 
 
     @Override
@@ -79,7 +79,9 @@ public class UserServiceImpl implements UserService {
     public ResponseEntity<?> createUser(UserRegistryDTO userRegistryDTO) {
         UserEntity userEntity = userMapper.userRegistryDTOToUserEntity(userRegistryDTO);
 
-        userEntity.setDateOfCreation(new Date());
+//        userEntity.setDateOfCreation(new Date());
+        userEntity.setCreatedAt(java.time.LocalDateTime.now());
+        userEntity.setProvider(Provider.LOCAL);
         try {
             UserEntity userCreated = userRepository.save(userEntity);
             measuresService.createMeasures(userCreated);
@@ -146,6 +148,21 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserEntity> getAllUsersEntities(Pageable pageable) {
         return userRepository.findAll(pageable).stream().collect(Collectors.toList());
+    }
+
+    @Override
+    public Optional<UserEntity> findByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
+    @Override
+    public void save(UserEntity user) {
+        userRepository.save(user);
+    }
+
+    @Override
+    public void deleteUsers() {
+        userRepository.deleteAll();
     }
 
 //    @Override

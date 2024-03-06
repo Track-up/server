@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 
@@ -22,6 +23,11 @@ public interface UserService {
     public void deleteUser(long id);
 
     public List<UserEntity> getAllUsersEntities(Pageable pageable);
+
+    Optional<UserEntity> findByEmail(String email);
+    void save(UserEntity user);
+
+    void deleteUsers();
 
 //    public MeasuresDTO updateUserStats(Long id, MeasuresDTO measuresDTO);
 }
