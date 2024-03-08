@@ -14,6 +14,7 @@ import com.gimnsio.libreta.exercise.persistence.ExerciseEntity;
 import com.gimnsio.libreta.serie.persistence.SerieEntity;
 import com.gimnsio.libreta.workout.persistence.WorkoutEntity;
 import com.gimnsio.libreta.workout.persistence.WorkoutRepository;
+import com.sun.tools.javac.Main;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -91,6 +92,7 @@ public class WorkoutServiceImpl implements WorkoutService {
             exerciseForWorkoutDTOS.add(new ExerciseForWorkoutDTO(exercise.getName(), exercise.getImages(), exercise.getId(), seriesForExerciseDTO));
         }
         workoutDTO.setExercises(exerciseForWorkoutDTOS);
+
         return workoutDTO;
 
 

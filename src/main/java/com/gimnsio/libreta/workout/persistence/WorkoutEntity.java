@@ -25,7 +25,7 @@ public class WorkoutEntity {
     @OneToMany(mappedBy = "workout", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SerieEntity> series;
 
-    private RoutineEntity routineDeDondeViene;//TODO
+//    private RoutineEntity routineDeDondeViene;//TODO
 
     @ManyToOne
     private UserEntity worker;

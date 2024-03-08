@@ -24,8 +24,8 @@ import java.util.stream.Collectors;
 @Service
 public class UserServiceImpl implements UserService {
 
-//    @Value("${url.backend}")
-    @Value("${url.local}")
+    @Value("${url.backend}")
+//    @Value("${url.local}")
     private String urlBase;
 
     @Autowired
