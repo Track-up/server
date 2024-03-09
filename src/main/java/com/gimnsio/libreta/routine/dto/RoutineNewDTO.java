@@ -19,6 +19,7 @@ public class RoutineNewDTO {
     private List<ExerciseForNewRoutineDTO> exercises;
 
     private Long creatorId;
+    private Long routineCopedId;
     private boolean isPublic;
 
 }

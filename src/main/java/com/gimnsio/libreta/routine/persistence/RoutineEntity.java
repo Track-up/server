@@ -39,7 +39,13 @@ public class RoutineEntity {
     private List<SerieExampleEntity> series;
     private Date dateOfCreation;
     private Date dateOfLastEdition;
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    private RoutineEntity routineCoped;
     private boolean isPublic;
+
+    public RoutineEntity(Long id) {
+        this.id = id;
+    }
 
 
 

@@ -37,6 +37,7 @@ public interface RoutineMapper {
 
     @Mappings({
             @Mapping(target = "creator", expression = "java(new UserEntity(routineNewDTO.getCreatorId()))"),
+//            @Mapping(target = "routineCoped", expression = "java(new RoutineEntity(routineNewDTO.getRoutineCopedId()))"),
             @Mapping(target = "dateOfCreation", expression = "java(new Date())"),
             @Mapping(target = "dateOfLastEdition", expression = "java(new Date())")
 //            @Mapping(target = "series", expression = "java(routineNewDTO.exercises.stream().map(id -> new ExerciseEntity(id)).collect(Collectors.toList()))"),

@@ -22,4 +22,6 @@ public interface RoutineRepository extends JpaRepository<RoutineEntity,Long> {
 
     @Query(value = "select r from routines r where lower(r.name) like %:name%")
     List<RoutineEntity> findByName(@Param("name") String name, Pageable pageable);
+
+    List<RoutineEntity> findByRoutineCoped(RoutineEntity routineEntity);
 }

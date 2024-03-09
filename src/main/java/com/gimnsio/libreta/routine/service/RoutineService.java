@@ -12,6 +12,8 @@ public interface RoutineService {
     public RoutineDTO getRoutineById(long id);
     public List<RoutineDTO> getRoutinesByUserCreator(UserDTO userDTO);
     public Long createRoutine(RoutineNewDTO routineNewDTO);
+
+    public Long createRoutineCopy(Long id, RoutineNewDTO routineNewDTO);
     public RoutineDTO updateRoutine(Long id, RoutineEditDTO routineEditDTO);
     public void deleteRoutine(long id);
 

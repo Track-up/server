@@ -63,6 +63,25 @@ public class RoutineRestController {
 
     }
 
+    @PostMapping("/copy/{id}")
+    public ResponseEntity<?> createRoutineCopy(@RequestBody @Valid RoutineNewDTO routineNewDTO, @RequestParam Long id) {
+        Map<String, Object> httpResponse = new HashMap<>();
+        if (routineNewDTO.getExercises().isEmpty()){
+            httpResponse.put("message", "La rutina no tiene ejercicios :(");
+            return ResponseEntity.badRequest().body(httpResponse);
+        }
+
+        try {
+            httpResponse.put("id", this.routineService.createRoutineCopy(id,routineNewDTO));
+            httpResponse.put("message", "Rutina creada con exito :)");
+            return ResponseEntity.ok(httpResponse);
+        }catch (Exception e){
+            httpResponse.put("message", e.getMessage());
+            return ResponseEntity.badRequest().body(httpResponse);
+        }
+
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<?> updateRoutine(@PathVariable Long id,@RequestBody RoutineEditDTO routineEditDTO) {
         return ResponseEntity.ok(this.routineService.updateRoutine(id,routineEditDTO));// Mejorable

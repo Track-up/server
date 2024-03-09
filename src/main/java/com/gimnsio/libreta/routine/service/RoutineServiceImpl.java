@@ -123,6 +123,27 @@ public class RoutineServiceImpl implements RoutineService {
 //            routineNewDTO.setImage(exerciseService.getExerciseById(routineNewDTO.getExercises().get(0).getId()).getImage());//para un futuro en el mapper directamente
         }
         RoutineEntity routineEntity = routineMapper.newToEntity(routineNewDTO);
+
+
+        routineEntity = routineRepository.save(routineEntity);
+        for (ExerciseForNewRoutineDTO exercise : routineNewDTO.getExercises()) {
+            ExerciseEntity exerciseEntity = exerciseService.getExerciseById(exercise.getId());
+            for (int i = 0; i < exercise.getNumSeries(); i++) {
+                serieExampleService.save(new SerieExampleEntity(exerciseEntity, routineEntity));
+            }
+        }
+        return routineEntity.getId();
+    }
+    @Override
+    public Long createRoutineCopy(Long id, RoutineNewDTO routineNewDTO) {
+
+        checkUser(routineNewDTO.getCreatorId());
+        if (routineNewDTO.getImage().isEmpty()) {
+//            routineNewDTO.setImage(exerciseService.getExerciseById(routineNewDTO.getExercises().get(0).getId()).getImage());//para un futuro en el mapper directamente
+        }
+        RoutineEntity routineEntity = routineMapper.newToEntity(routineNewDTO);
+
+        routineEntity.setRoutineCoped(routineRepository.findById(routineNewDTO.getRoutineCopedId()).orElse(null));
         routineEntity = routineRepository.save(routineEntity);
         for (ExerciseForNewRoutineDTO exercise : routineNewDTO.getExercises()) {
             ExerciseEntity exerciseEntity = exerciseService.getExerciseById(exercise.getId());
@@ -189,7 +210,11 @@ public class RoutineServiceImpl implements RoutineService {
         Optional<RoutineEntity> routineEntityOptional = routineRepository.findById(id);
 
         if (routineEntityOptional.isPresent()) {
-            routineRepository.deleteById(id);//TODO FALLA org.postgresql.util.PSQLException: ERROR: update or delete on table "exercises" violates foreign key constraint "fk58bhggitkrg5uyg7s7qwtevsu" on table "routine_exercise"
+            routineRepository.deleteById(id);
+            routineRepository.findByRoutineCoped(routineEntityOptional.get()).forEach(routineEntity -> {
+                routineEntity.setRoutineCoped(null);
+                routineRepository.save(routineEntity);
+            });
         } else {
             throw new NoSuchElementException("No se encontró la rutina con ID: " + id);
         }
