@@ -64,17 +64,12 @@ public class RoutineServiceImpl implements RoutineService {
 
     @Override
     public RoutineDTO getRoutineById(long id) {
+        RoutineEntity routineEntity = findRoutineById(id);
+        RoutineDTO routineDTO = routineMapper.entityToDTO(routineEntity);
+        routineDTO.setExercises(new ArrayList<>());
+        setExercisesForRoutineDTO(routineEntity, routineDTO);
+        return routineDTO;
 
-        Optional<RoutineEntity> routineEntityOptional = routineRepository.findById(id);
-
-        if (routineEntityOptional.isPresent()) {
-            RoutineDTO routineDTO = routineMapper.entityToDTO(routineEntityOptional.get());
-            routineDTO.setExercises(new ArrayList<>());
-            setExercisesForRoutineDTO(routineEntityOptional.get(), routineDTO);
-            return routineDTO;
-        } else {
-            throw new NoSuchElementException("No se encontró la rutina con ID: " + id);//NO SUBE AL FRONT
-        }
     }
 
     private void setExercisesForRoutineDTO(RoutineEntity routineEntity, RoutineDTO routineDTO) {
@@ -134,6 +129,7 @@ public class RoutineServiceImpl implements RoutineService {
         }
         return routineEntity.getId();
     }
+
     @Override
     public Long createRoutineCopy(Long id, RoutineNewDTO routineNewDTO) {
 
@@ -143,7 +139,7 @@ public class RoutineServiceImpl implements RoutineService {
         }
         RoutineEntity routineEntity = routineMapper.newToEntity(routineNewDTO);
 
-        routineEntity.setRoutineCoped(routineRepository.findById(routineNewDTO.getRoutineCopedId()).orElse(null));
+        routineEntity.setRoutineCoped(findRoutineById(id));
         routineEntity = routineRepository.save(routineEntity);
         for (ExerciseForNewRoutineDTO exercise : routineNewDTO.getExercises()) {
             ExerciseEntity exerciseEntity = exerciseService.getExerciseById(exercise.getId());
@@ -155,7 +151,7 @@ public class RoutineServiceImpl implements RoutineService {
     }
 
     @Override
-    public RoutineDTO updateRoutine(Long id, RoutineEditDTO routineEditDTO) {
+    public RoutineDTO updateRoutine(Long id, RoutineEditDTO routineEditDTO) {//deprecated
         checkRoutine(id);
         checkUser(routineEditDTO.getCreatorId());
         Optional<RoutineEntity> routineEntityOptional = routineRepository.findById(routineEditDTO.getId());
@@ -207,17 +203,14 @@ public class RoutineServiceImpl implements RoutineService {
 
     @Override
     public void deleteRoutine(long id) {
-        Optional<RoutineEntity> routineEntityOptional = routineRepository.findById(id);
 
-        if (routineEntityOptional.isPresent()) {
-            routineRepository.deleteById(id);
-            routineRepository.findByRoutineCoped(routineEntityOptional.get()).forEach(routineEntity -> {
+            RoutineEntity routine = findRoutineById(id);
+            routineRepository.findByRoutineCoped(routine).forEach(routineEntity -> {
                 routineEntity.setRoutineCoped(null);
                 routineRepository.save(routineEntity);
             });
-        } else {
-            throw new NoSuchElementException("No se encontró la rutina con ID: " + id);
-        }
+        routineRepository.deleteById(id);
+
 
     }
 
@@ -278,5 +271,9 @@ public class RoutineServiceImpl implements RoutineService {
         });
 
         return routineDTO;
+    }
+
+    private RoutineEntity findRoutineById(Long id) {
+        return routineRepository.findById(id).orElse(null);
     }
 }
