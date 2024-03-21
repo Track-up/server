@@ -2,8 +2,8 @@ package com.gimnsio.libreta.exercise.controller;
 
 import com.gimnsio.libreta.exercise.dto.ExerciseNewDTO;
 import com.gimnsio.libreta.exercise.persistence.ExerciseEntity;
-import com.gimnsio.libreta.persistence.specification.ExerciseSpecification;
 import com.gimnsio.libreta.exercise.service.ExerciseService;
+import com.gimnsio.libreta.exercise.specification.ExerciseSpecification;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;

@@ -1,5 +1,6 @@
 package com.gimnsio.libreta.user.service;
 
+import com.gimnsio.libreta.persistence.entities.UserRole;
 import com.gimnsio.libreta.user.dto.UserBasicsDTO;
 import com.gimnsio.libreta.user.dto.UserDTO;
 import com.gimnsio.libreta.user.dto.UserRegistryDTO;
@@ -82,6 +83,7 @@ public class UserServiceImpl implements UserService {
 //        userEntity.setDateOfCreation(new Date());
         userEntity.setCreatedAt(java.time.LocalDateTime.now());
         userEntity.setProvider(Provider.LOCAL);
+        userEntity.setRoles(new HashSet<>(Collections.singletonList(UserRole.USER)));
         try {
             UserEntity userCreated = userRepository.save(userEntity);
             measuresService.createMeasures(userCreated);

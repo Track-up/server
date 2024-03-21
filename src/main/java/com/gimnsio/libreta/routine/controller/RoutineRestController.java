@@ -29,8 +29,12 @@ public class RoutineRestController {
     @GetMapping
     public ResponseEntity<?> getRoutines(
             @RequestParam(name = "name", required = false) String name,
+            @RequestParam(name = "username", required = false) String username,
+            @RequestParam(name = "user_id", required = false) Long user_id,//si???
             @PageableDefault(size = 20) Pageable pageable) {
         pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("id").descending());
+
+
         if (name!= null && !name.isEmpty()){
             return ResponseEntity.ok(this.routineService.getRoutinesByName(name,pageable));
         }else {

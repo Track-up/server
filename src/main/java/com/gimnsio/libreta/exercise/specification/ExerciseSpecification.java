@@ -1,4 +1,4 @@
-package com.gimnsio.libreta.persistence.specification;
+package com.gimnsio.libreta.exercise.specification;
 
 import com.gimnsio.libreta.exercise.persistence.ExerciseEntity;
 import com.gimnsio.libreta.persistence.enums.*;
