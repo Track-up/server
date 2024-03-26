@@ -1,7 +1,7 @@
 package com.gimnsio.libreta.routine.service;
 
-import com.gimnsio.libreta.user.dto.UserDTO;
 import com.gimnsio.libreta.routine.dto.*;
+import com.gimnsio.libreta.user.dto.UserDTO;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;

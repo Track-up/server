@@ -1,10 +1,10 @@
 package com.gimnsio.libreta.routine.mapper;
 
 import com.gimnsio.libreta.exercise.mapper.ExerciseMapper;
-import com.gimnsio.libreta.user.mapper.UserMapper;
-import com.gimnsio.libreta.routine.persistence.RoutineEntity;
-import com.gimnsio.libreta.user.persistence.UserEntity;
 import com.gimnsio.libreta.routine.dto.*;
+import com.gimnsio.libreta.routine.persistence.RoutineEntity;
+import com.gimnsio.libreta.user.mapper.UserMapper;
+import com.gimnsio.libreta.user.persistence.UserEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;

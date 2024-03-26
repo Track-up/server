@@ -1,15 +1,14 @@
 package com.gimnsio.libreta.user.persistence;
 
-import com.gimnsio.libreta.persistence.entities.UserRole;
+import com.gimnsio.libreta.authority.persistence.RoleEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 
@@ -47,16 +46,27 @@ public class UserEntity {
     private String password;
 
 
-
-    @Enumerated(EnumType.STRING)
-    private Set<UserRole> roles;
-
     @Enumerated(EnumType.STRING)
     private Provider provider;
 
     @Column(name = "created_at")
     LocalDateTime createdAt;
 
+    @Column(name = "is_enabled")
+    private boolean isEnabled;
+
+    @Column(name = "account_No_Expired")
+    private boolean accountNoExpired;
+
+    @Column(name = "account_No_Locked")
+    private boolean accountNoLocked;
+
+    @Column(name = "credential_No_Expired")
+    private boolean credentialNoExpired;
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<RoleEntity> roles = new HashSet<>();
 
 
 

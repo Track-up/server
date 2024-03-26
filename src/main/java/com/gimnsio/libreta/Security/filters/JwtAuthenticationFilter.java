@@ -3,8 +3,8 @@ package com.gimnsio.libreta.Security.filters;
 import com.fasterxml.jackson.core.exc.StreamReadException;
 import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gimnsio.libreta.user.dto.UserIdDTO;
 import com.gimnsio.libreta.Security.jwt.JwtUtils;
+import com.gimnsio.libreta.user.dto.UserIdDTO;
 import com.gimnsio.libreta.user.persistence.UserEntity;
 import com.gimnsio.libreta.user.service.UserDetailsServiceImpl;
 import jakarta.servlet.FilterChain;
@@ -110,7 +110,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         String token = jwtUtils.generateAccessToken(user.getUsername());
         UserIdDTO userIdDTO = userDetailsService.getUserIdDTOByUsername(user.getUsername());
 
-        response.addHeader("Authorization", token);
+        response.addHeader("authorization", token);
 
         Map<String, Object> httpResponse = new HashMap<>();
         httpResponse.put("id",userIdDTO.getId());

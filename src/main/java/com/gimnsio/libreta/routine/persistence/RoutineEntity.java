@@ -3,7 +3,6 @@ package com.gimnsio.libreta.routine.persistence;
 import com.gimnsio.libreta.persistence.entities.BodyPartEntity;
 import com.gimnsio.libreta.serie.persistence.SerieExampleEntity;
 import com.gimnsio.libreta.user.persistence.UserEntity;
-import com.gimnsio.libreta.workout.persistence.WorkoutEntity;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;

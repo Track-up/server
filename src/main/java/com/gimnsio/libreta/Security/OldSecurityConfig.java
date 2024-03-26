@@ -11,7 +11,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -65,14 +64,7 @@ public class OldSecurityConfig {
                 .addFilterBefore(authorizationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
-//     @Bean
-//     UserDetailsService userDetailsService() {
-//     InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
-//     manager.createUser(User.withUsername("admin")
-//     .roles()
-//     .password("1234").build());
-//     return manager;
-//     }
+
     @Bean
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

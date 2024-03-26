@@ -1,10 +1,10 @@
 package com.gimnsio.libreta.exercise.mapper;
 
+import com.gimnsio.libreta.Mapper.BodyPartMapper;
+import com.gimnsio.libreta.Mapper.EquipmentMapper;
 import com.gimnsio.libreta.exercise.dto.ExerciseDTO;
 import com.gimnsio.libreta.exercise.dto.ExerciseForRoutineDTO;
 import com.gimnsio.libreta.exercise.dto.ExerciseMinimalDTO;
-import com.gimnsio.libreta.Mapper.BodyPartMapper;
-import com.gimnsio.libreta.Mapper.EquipmentMapper;
 import com.gimnsio.libreta.exercise.persistence.ExerciseEntity;
 import org.mapstruct.Mapper;
 

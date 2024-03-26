@@ -1,8 +1,5 @@
 package com.gimnsio.libreta.exercise.dto;
 
-import com.gimnsio.libreta.DTO.bodyPart.BodyPartForExerciseDTO;
-import com.gimnsio.libreta.DTO.equipment.EquipmentForExerciseDTO;
-import com.gimnsio.libreta.DTO.muscles.MusclePercentDTO;
 import com.gimnsio.libreta.persistence.enums.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

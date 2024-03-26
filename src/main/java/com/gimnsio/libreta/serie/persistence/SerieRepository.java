@@ -1,6 +1,5 @@
 package com.gimnsio.libreta.serie.persistence;
 
-import com.gimnsio.libreta.serie.persistence.SerieEntity;
 import com.gimnsio.libreta.workout.persistence.WorkoutEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

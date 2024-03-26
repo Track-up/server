@@ -2,17 +2,17 @@ package com.gimnsio.libreta.routine.service;
 
 import com.gimnsio.libreta.exercise.dto.ExerciseForNewRoutineDTO;
 import com.gimnsio.libreta.exercise.dto.ExerciseForRoutineDTO;
-import com.gimnsio.libreta.user.dto.UserDTO;
-import com.gimnsio.libreta.routine.dto.*;
-import com.gimnsio.libreta.serie.service.SerieExampleService;
+import com.gimnsio.libreta.exercise.persistence.ExerciseEntity;
 import com.gimnsio.libreta.exercise.service.ExerciseService;
+import com.gimnsio.libreta.routine.dto.*;
+import com.gimnsio.libreta.routine.mapper.RoutineMapper;
+import com.gimnsio.libreta.routine.persistence.RoutineEntity;
+import com.gimnsio.libreta.routine.persistence.RoutineRepository;
+import com.gimnsio.libreta.serie.persistence.SerieExampleEntity;
+import com.gimnsio.libreta.serie.service.SerieExampleService;
+import com.gimnsio.libreta.user.dto.UserDTO;
 import com.gimnsio.libreta.user.service.UserService;
 import com.gimnsio.libreta.workout.dto.WorkoutDTO;
-import com.gimnsio.libreta.routine.mapper.RoutineMapper;
-import com.gimnsio.libreta.exercise.persistence.ExerciseEntity;
-import com.gimnsio.libreta.routine.persistence.RoutineEntity;
-import com.gimnsio.libreta.serie.persistence.SerieExampleEntity;
-import com.gimnsio.libreta.routine.persistence.RoutineRepository;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 

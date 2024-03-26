@@ -1,6 +1,5 @@
 package com.gimnsio.libreta.workout.persistence;
 
-import com.gimnsio.libreta.routine.persistence.RoutineEntity;
 import com.gimnsio.libreta.serie.persistence.SerieEntity;
 import com.gimnsio.libreta.user.persistence.UserEntity;
 import jakarta.persistence.*;

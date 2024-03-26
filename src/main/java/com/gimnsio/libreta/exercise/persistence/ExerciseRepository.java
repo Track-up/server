@@ -1,6 +1,5 @@
 package com.gimnsio.libreta.exercise.persistence;
 
-import com.gimnsio.libreta.exercise.persistence.ExerciseEntity;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -12,7 +11,10 @@ import java.util.Set;
 
 @Repository
 public interface ExerciseRepository extends JpaRepository<ExerciseEntity, String>, JpaSpecificationExecutor<ExerciseEntity> {
-
+//SELECT name_es, similarity(name_es, 'press banca') AS sml
+//FROM exercises
+//WHERE similarity(name_es, 'press banca') > 0
+//ORDER BY sml DESC;
 
     @Query(value = "select * from exercises where body_part = :id", nativeQuery=true)
     public Set<ExerciseEntity> findByBodyPart(Long id);

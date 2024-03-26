@@ -1,8 +1,8 @@
 package com.gimnsio.libreta.serie.service;
 
 import com.gimnsio.libreta.exercise.dto.ExerciseForWorkoutDTO;
-import com.gimnsio.libreta.serie.dto.SerieForExerciseDTO;
 import com.gimnsio.libreta.exercise.persistence.ExerciseEntity;
+import com.gimnsio.libreta.serie.dto.SerieForExerciseDTO;
 import com.gimnsio.libreta.serie.persistence.SerieEntity;
 import com.gimnsio.libreta.workout.persistence.WorkoutEntity;
 

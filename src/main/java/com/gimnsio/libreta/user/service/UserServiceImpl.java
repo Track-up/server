@@ -1,16 +1,16 @@
 package com.gimnsio.libreta.user.service;
 
-import com.gimnsio.libreta.persistence.entities.UserRole;
+import com.gimnsio.libreta.authority.persistence.RoleEntity;
+import com.gimnsio.libreta.exception.ApiRequestException;
+import com.gimnsio.libreta.services.MeasuresService;
 import com.gimnsio.libreta.user.dto.UserBasicsDTO;
 import com.gimnsio.libreta.user.dto.UserDTO;
 import com.gimnsio.libreta.user.dto.UserRegistryDTO;
 import com.gimnsio.libreta.user.dto.UserUpdateDTO;
 import com.gimnsio.libreta.user.mapper.UserMapper;
-import com.gimnsio.libreta.exception.ApiRequestException;
 import com.gimnsio.libreta.user.persistence.Provider;
 import com.gimnsio.libreta.user.persistence.UserEntity;
 import com.gimnsio.libreta.user.persistence.UserRepository;
-import com.gimnsio.libreta.services.MeasuresService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -83,7 +83,7 @@ public class UserServiceImpl implements UserService {
 //        userEntity.setDateOfCreation(new Date());
         userEntity.setCreatedAt(java.time.LocalDateTime.now());
         userEntity.setProvider(Provider.LOCAL);
-        userEntity.setRoles(new HashSet<>(Collections.singletonList(UserRole.USER)));
+        userEntity.setRoles(new HashSet<>(Collections.singletonList(new RoleEntity(1L))));
         try {
             UserEntity userCreated = userRepository.save(userEntity);
             measuresService.createMeasures(userCreated);

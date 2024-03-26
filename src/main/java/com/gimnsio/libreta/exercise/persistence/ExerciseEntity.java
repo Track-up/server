@@ -2,7 +2,9 @@ package com.gimnsio.libreta.exercise.persistence;
 
 
 import com.gimnsio.libreta.persistence.enums.*;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
