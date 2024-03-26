@@ -29,7 +29,7 @@ public class UserEntity {
     private int level;
 
 
-    @Size(max = 30)
+    @Size(min = 3, max = 20, message = "Username must be between 3 and 20 characters")
     @Column(name = "username", unique = true, nullable = false)
     private String username;
 
@@ -42,7 +42,7 @@ public class UserEntity {
     @Column(name = "email", unique = true, nullable = false)
     private String email;
 
-
+    @Size(min = 8, max = 100, message = "Password must be between 8 and 100 characters")
     private String password;
 
 
