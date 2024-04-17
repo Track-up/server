@@ -10,7 +10,10 @@ import java.util.List;
 
 public class ExerciseSpecification implements Specification<ExerciseEntity> {
 
+
     private String name;
+
+    private String query;
 
     private String nameEs;
     private Muscle muscle;
@@ -20,9 +23,10 @@ public class ExerciseSpecification implements Specification<ExerciseEntity> {
     private Equipment equipment;
     private Category category;
 
-    public ExerciseSpecification(String name, String nameEs, String muscle, String force, String level, String mechanic, String equipment, String category) {
-        this.name = (name!= null) ? "%" + name + "%" : null;
-        this.nameEs = (nameEs!= null) ? "%" + nameEs + "%" : null;
+    public ExerciseSpecification(String query, String name, String nameEs, String muscle, String force, String level, String mechanic, String equipment, String category) {
+        this.query = (query != null) ? query : null;
+        this.name = (name != null) ? "%" + name + "%" : null;
+        this.nameEs = (nameEs != null) ? "%" + nameEs + "%" : null;
         this.muscle = (muscle != null) ? Muscle.valueOf(muscle) : null;
         this.force = (force != null) ? Force.valueOf(force) : null;
         this.level = (level != null) ? Level.valueOf(level) : null;
@@ -35,13 +39,26 @@ public class ExerciseSpecification implements Specification<ExerciseEntity> {
     public Predicate toPredicate(Root<ExerciseEntity> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
         List<Predicate> predicates = new ArrayList<>();
 
+        if (this.query != null) {
+            // Construir la expresión para la función similarity
+            Expression<Float> similarityFunction = cb.function(
+                    "similarity",
+                    Float.class,
+                    root.get("nameEs"),
+                    cb.literal(this.query)
+            );
+
+            // Agregar la condición para que la similitud sea mayor que 0.5
+            predicates.add(cb.greaterThan(similarityFunction, 0f));
+        }
+
         if (name != null) {
             Expression<String> upperName = cb.upper(root.get("name"));
-            predicates.add(cb.like (upperName, name.toUpperCase()));
+            predicates.add(cb.like(upperName, name.toUpperCase()));
         }
         if (nameEs != null) {
             Expression<String> upperName = cb.upper(root.get("nameEs"));
-            predicates.add(cb.like (upperName, nameEs.toUpperCase()));
+            predicates.add(cb.like(upperName, nameEs.toUpperCase()));
         }
         if (muscle != null) {
             List<Muscle> muscles = new ArrayList<>();

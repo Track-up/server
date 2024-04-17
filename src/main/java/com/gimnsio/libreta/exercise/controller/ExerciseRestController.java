@@ -27,6 +27,7 @@ public class ExerciseRestController {
     @GetMapping
     public ResponseEntity<?> getExercises(
             @PageableDefault(size = 20) Pageable pageable,
+            @RequestParam(name = "query", required = false) String query,
             @RequestParam(name = "name", required = false) String name,
             @RequestParam(name = "muscle", required = false) String muscle,
             @RequestParam(name = "force", required = false) String force,
@@ -43,7 +44,7 @@ public class ExerciseRestController {
             nameEs = name;
             name = null;
         }
-        return ResponseEntity.ok(exerciseService.getExercises(new ExerciseSpecification(name, nameEs, muscle, force, level, mechanic, equipment, category), pageable, userLocale));
+        return ResponseEntity.ok(exerciseService.getExercises(new ExerciseSpecification(query,name, nameEs, muscle, force, level, mechanic, equipment, category), pageable, userLocale));
 
     }
 
