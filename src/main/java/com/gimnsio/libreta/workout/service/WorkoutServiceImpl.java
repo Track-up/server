@@ -50,7 +50,15 @@ public class WorkoutServiceImpl implements WorkoutService {
 
     @Override
     public List<WorkoutDTO> getLastWorkouts(Long userId, Integer until) {
-        List<WorkoutEntity> workouts = workoutRepository.findLastWorkouts(userId,until);
+        List<WorkoutEntity> workouts = workoutRepository.findLastWorkouts(userId, until);
+        List<WorkoutDTO> workoutDTOS = workouts.stream().map(workoutMapper::entityToDTO).collect(Collectors.toList());
+        workoutDTOS.forEach(workoutDTO -> workoutDTO.setExercises(serieService.getSeriesOfExerciseForWorkout(workoutRepository.findById(workoutDTO.getId()).orElse(null))));
+        return workoutDTOS;
+    }
+
+    @Override
+    public List<WorkoutDTO> getLastWorkoutsOfUserByExercise(Long userId, Date until, String exerciseId) {
+        List<WorkoutEntity> workouts = workoutRepository.findLastWorkoutsOfUserByExercise(userId, until, exerciseId);
         List<WorkoutDTO> workoutDTOS = workouts.stream().map(workoutMapper::entityToDTO).collect(Collectors.toList());
         workoutDTOS.forEach(workoutDTO -> workoutDTO.setExercises(serieService.getSeriesOfExerciseForWorkout(workoutRepository.findById(workoutDTO.getId()).orElse(null))));
         return workoutDTOS;
@@ -266,8 +274,6 @@ public class WorkoutServiceImpl implements WorkoutService {
         workoutDTO.setExercises(serieService.getSeriesOfExerciseForWorkout(workoutEntity));
         return workoutDTO;
     }
-
-
 
 
 

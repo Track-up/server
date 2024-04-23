@@ -15,6 +15,7 @@ public class WorkoutDTO {
     private Long id;
     @NotEmpty
     private List<ExerciseForWorkoutDTO> exercises;
+    private Date creationDate;
     private Date startDate;
     private Date endDate;
 }
