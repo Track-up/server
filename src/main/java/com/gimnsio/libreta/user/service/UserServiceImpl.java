@@ -87,6 +87,7 @@ public class UserServiceImpl implements UserService {
         try {
             UserEntity userCreated = userRepository.save(userEntity);
             measuresService.createMeasures(userCreated);
+            return ResponseEntity.ok(userCreated);
         } catch (DataIntegrityViolationException e) {
             String errorMessage;
             if (e.getCause().getCause().getMessage().contains("username")) {
@@ -101,10 +102,6 @@ public class UserServiceImpl implements UserService {
             httpResponse.put("message", errorMessage);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(httpResponse);
         }
-
-        ResponseEntity<String> response = getLogin(userRegistryDTO);
-
-        return response;
     }
 
     private ResponseEntity<String> getLogin(UserRegistryDTO userRegistryDTO) {

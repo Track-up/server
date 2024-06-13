@@ -76,6 +76,12 @@ public class ExerciseServiceImpl implements ExerciseService {
             if (exercise.getName() != null) {
                 exerciseEntity.setName(exercise.getName());
             }
+            if (exercise.getNameEs()!= null) {
+                exerciseEntity.setNameEs(exercise.getNameEs());
+            }
+            if (exercise.getInstructions()!=null){
+                exerciseEntity.setInstructions(exercise.getInstructions());
+            }
             if (exercise.getLevel() != null) {
                 exerciseEntity.setLevel(exercise.getLevel());
             }
@@ -143,7 +149,10 @@ public class ExerciseServiceImpl implements ExerciseService {
 
     private void translateExercises(Locale locale, List<ExerciseEntity> exercises) {
         for (ExerciseEntity exercise : exercises) {
-            exercise.setName(messageSource.getMessage("exercise.name.".concat(exercise.getId()), null, locale));
+            if (locale.getLanguage().equals("es")){
+                exercise.setName(exercise.getNameEs());
+            }
+//            exercise.setName(messageSource.getMessage("exercise.name.".concat(exercise.getId()), null, locale));
         }
     }
 
