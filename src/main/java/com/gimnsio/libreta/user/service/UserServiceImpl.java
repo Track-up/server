@@ -1,6 +1,7 @@
 package com.gimnsio.libreta.user.service;
 
 import com.gimnsio.libreta.authority.persistence.RoleEntity;
+import com.gimnsio.libreta.authority.service.RoleService;
 import com.gimnsio.libreta.exception.ApiRequestException;
 import com.gimnsio.libreta.services.MeasuresService;
 import com.gimnsio.libreta.user.dto.UserBasicsDTO;
@@ -35,6 +36,9 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
     @Autowired
     private RestTemplate restTemplate;
+
+    @Autowired
+    private RoleService roleService;
 
     @Autowired
     private MeasuresService measuresService;
@@ -83,7 +87,13 @@ public class UserServiceImpl implements UserService {
 //        userEntity.setDateOfCreation(new Date());
         userEntity.setCreatedAt(java.time.LocalDateTime.now());
         userEntity.setProvider(Provider.LOCAL);
-        userEntity.setRoles(new HashSet<>(Collections.singletonList(new RoleEntity(1L))));
+        userEntity.setRoles(new HashSet<>(Collections.singletonList(roleService.findByID(1L))));
+        userEntity.setEnabled(true);
+        userEntity.setAccountNoExpired(true);
+        userEntity.setAccountNoLocked(true);
+        userEntity.setCredentialNoExpired(true);
+
+
         try {
             UserEntity userCreated = userRepository.save(userEntity);
             measuresService.createMeasures(userCreated);
