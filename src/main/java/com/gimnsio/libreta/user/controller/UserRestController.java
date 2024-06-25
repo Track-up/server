@@ -1,11 +1,13 @@
 package com.gimnsio.libreta.user.controller;
 
 
+import com.gimnsio.libreta.mail.service.EmailService;
 import com.gimnsio.libreta.user.dto.UserRegistryDTO;
 import com.gimnsio.libreta.user.dto.UserUpdateDTO;
 import com.gimnsio.libreta.user.service.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
@@ -23,14 +26,14 @@ import java.util.stream.Collectors;
 @Tag(name = "Usuarios", description = "CRUD de usurarios")
 public class UserRestController {
 
+    @Autowired
     private UserService userService;
 
-    public UserRestController(UserService userService) {
-        this.userService = userService;
-    }
+    @Autowired
+    private EmailService emailService;
 
     @GetMapping("/entities")
-    public ResponseEntity<?>getUserEntities(
+    public ResponseEntity<?> getUserEntities(
             @PageableDefault(size = 20) Pageable pageable) {
         return ResponseEntity.ok(this.userService.getAllUsersEntities(pageable));
 
@@ -86,7 +89,7 @@ public class UserRestController {
 //    }
     @PutMapping("/{id}")
     public ResponseEntity<?> editUser(@PathVariable Long id, @Valid @RequestBody UserUpdateDTO userUpdateDTO) {
-        return ResponseEntity.ok(userService.updateUser(id,userUpdateDTO));
+        return ResponseEntity.ok(userService.updateUser(id, userUpdateDTO));
     }
 
 //    @PutMapping("/{id}/change_stats")
@@ -104,6 +107,20 @@ public class UserRestController {
     public ResponseEntity<?> deleteUsers() {
         userService.deleteUsers();
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/reset_password")
+    public ResponseEntity<?> sendEmailWithToken(@RequestParam String email) {
+        String token = UUID.randomUUID().toString();
+        userService.createPasswordResetTokenForUser(email, token);
+        emailService.sendEmail(new String[]{email}, "Reset Password", "https://trackup.es/reset_password?token=" + token);
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/new-password")
+    public ResponseEntity<?> changePassword(@RequestParam String token, @RequestParam String newPassword, @RequestParam String email) {
+        userService.updatePassword(email, newPassword, token);
+        return ResponseEntity.ok().build();
     }
 
 }

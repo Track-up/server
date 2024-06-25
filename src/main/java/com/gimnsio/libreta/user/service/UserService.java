@@ -16,18 +16,30 @@ import java.util.Set;
 public interface UserService {
 
     public Set<UserBasicsDTO> getAllUsers(Pageable pageable);
+
     public UserDTO getUserById(long id);
+
     public UserEntity getUserEntityById(long id);
+
     public ResponseEntity<?> createUser(UserRegistryDTO userRegistryDTO);
+
     public UserUpdateDTO updateUser(Long id, UserUpdateDTO userDTO);
+
     public void deleteUser(long id);
 
     public List<UserEntity> getAllUsersEntities(Pageable pageable);
 
     Optional<UserEntity> findByEmail(String email);
+
     void save(UserEntity user);
 
     void deleteUsers();
+
+
+
+    void createPasswordResetTokenForUser(String email, String token);
+
+    void updatePassword(String email, String newPassword,String token);
 
 //    public MeasuresDTO updateUserStats(Long id, MeasuresDTO measuresDTO);
 }

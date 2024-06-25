@@ -17,6 +17,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.*;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -42,6 +44,11 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private MeasuresService measuresService;
+
+    @Autowired
+    PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+    private Map<String, String> tokenRepository = new HashMap<>();
 
 
     @Override
@@ -172,6 +179,24 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteUsers() {
         userRepository.deleteAll();
+    }
+
+    @Override
+    public void createPasswordResetTokenForUser(String email, String token) {
+        UserEntity userEntity = userRepository.findByEmail(email).orElseThrow(() -> new ApiRequestException("No se encontró el usuario con el correo electrónico: " + email));
+        tokenRepository.put(email, token);
+    }
+
+    @Override
+    public void updatePassword(String email, String newPassword, String token) {
+        if (tokenRepository.containsKey(email) && tokenRepository.get(email).equals(token)) {
+            UserEntity userEntity = userRepository.findByEmail(email).orElseThrow(() -> new ApiRequestException("No se encontró el usuario con el correo electrónico: " + email));
+            userEntity.setPassword(passwordEncoder.encode(newPassword));
+            userRepository.save(userEntity);
+            tokenRepository.remove(email);
+        } else {
+            throw new ApiRequestException("El token no es válido o ha expirado.");
+        }
     }
 
 //    @Override
