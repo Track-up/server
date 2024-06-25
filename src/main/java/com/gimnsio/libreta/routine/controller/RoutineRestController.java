@@ -34,10 +34,13 @@ public class RoutineRestController {
             @PageableDefault(size = 20) Pageable pageable) {
         pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("id").descending());
 
-
-        if (name!= null && !name.isEmpty()){
+        if (user_id!= null){
+            return ResponseEntity.ok(this.routineService.getRoutinesByUser(user_id,pageable));
+        } else if (name!= null && !name.isEmpty()){
             return ResponseEntity.ok(this.routineService.getRoutinesByName(name,pageable));
-        }else {
+        } else if (username!= null && !username.isEmpty()){
+            return ResponseEntity.ok(this.routineService.getRoutinesByUsername(username,pageable));
+        } else {
             return ResponseEntity.ok(this.routineService.getAllRoutines(pageable));
         }
 
