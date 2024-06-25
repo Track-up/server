@@ -215,21 +215,16 @@ public class RoutineServiceImpl implements RoutineService {
     }
 
     @Override
-    public List<RoutineBasicsDTO> getRoutinesByUser(long user_id, Pageable pageable) {
+    public List<RoutineDTO> getRoutinesByUser(long user_id, Pageable pageable) {
+        List<RoutineEntity> routineEntities = routineRepository.findByUser(user_id, pageable);
+        return getRoutineDTOs(routineEntities);
 
-        return routineRepository.findByUser(user_id, pageable)
-                .stream()
-                .map(routineMapper::entityToBasics)
-                .collect(Collectors.toList());
     }
 
     @Override
-    public List<RoutineBasicsDTO> getRoutinesByUsername(String username, Pageable pageable) {
-
-        return routineRepository.findByUsername(username, pageable)
-                .stream()
-                .map(routineMapper::entityToBasics)
-                .collect(Collectors.toList());
+    public List<RoutineDTO> getRoutinesByUsername(String username, Pageable pageable) {
+        List<RoutineEntity> routineEntities = routineRepository.findByUsername(username, pageable);
+        return getRoutineDTOs(routineEntities);
     }
 
     @Override

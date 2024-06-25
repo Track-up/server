@@ -17,8 +17,8 @@ public interface RoutineService {
     public RoutineDTO updateRoutine(Long id, RoutineEditDTO routineEditDTO);
     public void deleteRoutine(long id);
 
-    public List<RoutineBasicsDTO> getRoutinesByUser (long user_id, Pageable pageable);
-    public List<RoutineBasicsDTO> getRoutinesByUsername (String username, Pageable pageable);
+    public List<RoutineDTO> getRoutinesByUser (long user_id, Pageable pageable);
+    public List<RoutineDTO> getRoutinesByUsername (String username, Pageable pageable);
     public List<RoutineDTO> getRoutinesByName (String name, Pageable pageable);
 //    public List<List<RoutineBasicsDTO>> getRoutinesByString (String name, Pageable pageable);
     public RoutineForWorkoutDTO getRoutineForWorkout(long id);
