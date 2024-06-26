@@ -4,10 +4,7 @@ import com.gimnsio.libreta.workout.dto.WorkoutDTO;
 import com.gimnsio.libreta.workout.persistence.WorkoutEntity;
 import org.springframework.data.domain.Pageable;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public interface WorkoutService {
 
@@ -17,7 +14,7 @@ public interface WorkoutService {
 
     public WorkoutDTO startWorkout(WorkoutDTO workoutDTO);
 
-    public WorkoutDTO endWorkout(WorkoutDTO workoutDTO);
+    public HashMap endWorkout(WorkoutDTO workoutDTO);
 
     WorkoutDTO getWorkoutById(Long id);
 
@@ -25,7 +22,5 @@ public interface WorkoutService {
 
     public List<WorkoutDTO> getLastWorkoutsOfUserByExercise(Long userId, Date until, String exerciseId);
 
-
-
-
+    HashMap<String,String> getWorkoutStats(Long id);
 }

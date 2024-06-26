@@ -18,6 +18,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.sql.Time;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -62,6 +67,12 @@ public class WorkoutServiceImpl implements WorkoutService {
         List<WorkoutDTO> workoutDTOS = workouts.stream().map(workoutMapper::entityToDTO).collect(Collectors.toList());
         workoutDTOS.forEach(workoutDTO -> workoutDTO.setExercises(serieService.getSeriesOfExerciseForWorkout(workoutRepository.findById(workoutDTO.getId()).orElse(null))));
         return workoutDTOS;
+    }
+
+    @Override
+    public HashMap<String, String> getWorkoutStats(Long id) {
+        WorkoutEntity workout = workoutRepository.findById(id).orElseThrow(() -> new RuntimeException("Workout not found"));
+        return getStatsOfWorkout(workout);
     }
 
     @Override
@@ -259,12 +270,28 @@ public class WorkoutServiceImpl implements WorkoutService {
     }
 
     @Override
-    public WorkoutDTO endWorkout(WorkoutDTO workoutDTO) {
+    public HashMap endWorkout(WorkoutDTO workoutDTO) {
         WorkoutEntity existingWorkout = updateWorkout(workoutDTO);
         existingWorkout.setEndDate(new Date());
         workoutRepository.save(existingWorkout);
-        workoutDTO.setEndDate(new Date());
-        return workoutDTO;
+        HashMap<String, String> statsOfWorkout = getStatsOfWorkout(existingWorkout);
+        return statsOfWorkout;
+    }
+
+
+    private HashMap<String, String> getStatsOfWorkout(WorkoutEntity workout) {
+
+        HashMap<String, String> stats = new HashMap<>();
+        stats.put("workoutId", workout.getId().toString());
+        stats.put("startDate", workout.getStartDate().toString());
+        stats.put("endDate", workout.getEndDate().toString());
+        stats.put("duration", LocalTime.ofNanoOfDay(Duration.ofMillis(workout.getEndDate().getTime() - workout.getStartDate().getTime()).toNanos()).toString());
+        stats.put("worker", workout.getWorker().getUsername());
+        stats.put("totalSeries", String.valueOf(workout.getSeries().size()));
+        stats.put("totalReps", String.valueOf(workout.getSeries().stream().mapToLong(SerieEntity::getReps).sum()));
+        stats.put("totalKg", String.valueOf(workout.getSeries().stream().mapToDouble(SerieEntity::getKg).sum()));
+        return stats;
+
     }
 
     @Override
@@ -274,7 +301,6 @@ public class WorkoutServiceImpl implements WorkoutService {
         workoutDTO.setExercises(serieService.getSeriesOfExerciseForWorkout(workoutEntity));
         return workoutDTO;
     }
-
 
 
 

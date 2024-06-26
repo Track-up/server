@@ -37,6 +37,11 @@ public class WorkoutRestController {
         return ResponseEntity.ok(this.workoutService.getWorkoutById(id));
     }
 
+    @GetMapping("/{id}/stats")
+    public ResponseEntity<?> getWorkoutStats(@PathVariable Long id) {
+        return ResponseEntity.ok(this.workoutService.getWorkoutStats(id));
+    }
+
     @PostMapping("/create")
     public ResponseEntity<?> createWorkout(
             @RequestParam("routine_id") Long routineId,
@@ -56,5 +61,7 @@ public class WorkoutRestController {
             @RequestBody @Valid WorkoutDTO workoutDTO){
         return ResponseEntity.ok(this.workoutService.endWorkout(workoutDTO));
     }
+
+
 
 }
