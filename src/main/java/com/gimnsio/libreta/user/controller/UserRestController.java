@@ -109,7 +109,7 @@ public class UserRestController {
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("/reset_password")
+    @PutMapping("/reset-password")
     public ResponseEntity<?> sendEmailWithToken(@RequestParam String email) {
         String token = UUID.randomUUID().toString();
         userService.createPasswordResetTokenForUser(email, token);
