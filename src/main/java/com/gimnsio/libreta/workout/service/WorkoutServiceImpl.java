@@ -76,7 +76,7 @@ public class WorkoutServiceImpl implements WorkoutService {
     }
 
     @Override
-    public WorkoutDTO createWorkout(Long routineId, Long userId, Long difficulty) {
+    public WorkoutDTO createWorkoutByRoutine(Long routineId, Long userId, Long difficulty) {
         //Busqueda de rutina
         RoutineDTO routineDTO = routineService.getRoutineById(routineId);
 
@@ -191,6 +191,20 @@ public class WorkoutServiceImpl implements WorkoutService {
 //        workoutDTO.setExercisesOfWorkout(exerciseForWorkoutDTOs);
 //        return workoutDTO;
     }
+
+    @Override
+    public WorkoutDTO createWorkoutByWorkout(Long workoutId, Long userId, Long difficulty) {
+        WorkoutEntity workoutEntity = workoutRepository.findById(workoutId).orElseThrow(() -> new RuntimeException("Workout not found"));
+        WorkoutEntity workout = workoutEntity;
+        workout.setId(null);
+        workout.setCreationDate(new Date());
+        workout.setEndDate(null);
+        workout.setStartDate(null);
+        workout.setWorker(userService.getUserEntityById(userId));
+        workout = workoutRepository.save(workout);
+        return workoutMapper.entityToDTO(workout);
+    }
+
 
 
     @Override

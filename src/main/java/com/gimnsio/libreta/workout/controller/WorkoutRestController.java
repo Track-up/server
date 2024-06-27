@@ -28,7 +28,7 @@ public class WorkoutRestController {
     public ResponseEntity<?> getLastWorkouts(
             @PathVariable Long userId,
             @RequestParam() Integer until) {
-        return ResponseEntity.ok(this.workoutService.getLastWorkouts(userId,until));
+        return ResponseEntity.ok(this.workoutService.getLastWorkouts(userId, until));
     }
 
 
@@ -44,21 +44,30 @@ public class WorkoutRestController {
 
     @PostMapping("/create")
     public ResponseEntity<?> createWorkout(
-            @RequestParam("routine_id") Long routineId,
+            @RequestParam(value = "routine_id", required = false)  Long routineId,
+            @RequestParam(value = "workout_id", required = false) Long workoutId,
             @RequestParam("user_id") Long userId,
-            @RequestParam("difficulty") Long difficulty){
-        return ResponseEntity.ok(this.workoutService.createWorkout(routineId,userId,difficulty ));
+            @RequestParam("difficulty") Long difficulty) {
+        WorkoutDTO workout = null;
+        if (workoutId != null && workoutId != 0) {
+            workout = this.workoutService.createWorkoutByWorkout(workoutId, userId, difficulty);
+        } else {
+            workout = this.workoutService.createWorkoutByRoutine(routineId, userId, difficulty);
+        }
+        return ResponseEntity.ok(workout);
     }
+
+
 
     @PutMapping("/start")
     public ResponseEntity<?> startWorkout(
-            @RequestBody @Valid WorkoutDTO workoutDTO){
+            @RequestBody @Valid WorkoutDTO workoutDTO) {
         return ResponseEntity.ok(this.workoutService.startWorkout(workoutDTO));
     }
 
     @PutMapping("/end")
     public ResponseEntity<?> endWorkout(
-            @RequestBody @Valid WorkoutDTO workoutDTO){
+            @RequestBody @Valid WorkoutDTO workoutDTO) {
         return ResponseEntity.ok(this.workoutService.endWorkout(workoutDTO));
     }
 

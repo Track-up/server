@@ -10,7 +10,9 @@ public interface WorkoutService {
 
     public Set<WorkoutEntity> getAllWorkouts(Pageable pageable);
 
-    public WorkoutDTO createWorkout (Long routineId, Long userId, Long difficulty);
+    public WorkoutDTO createWorkoutByRoutine(Long routineId, Long userId, Long difficulty);
+
+    public WorkoutDTO createWorkoutByWorkout(Long workoutId, Long userId, Long difficulty);
 
     public WorkoutDTO startWorkout(WorkoutDTO workoutDTO);
 
