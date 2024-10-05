@@ -20,10 +20,10 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/users")
-@Tag(name = "Usuarios", description = "CRUD de usurarios")
+@Tag(name = "Users", description = "Users API")
 public class UserRestController {
 
-    private UserService userService;
+    private final UserService userService;
 
     public UserRestController(UserService userService) {
         this.userService = userService;
